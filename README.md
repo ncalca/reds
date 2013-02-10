@@ -1,4 +1,4 @@
-REDS Publish/Subscribe middleware
+REDS Publish/Subscribe middleware.
 
 ====
 
