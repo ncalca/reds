@@ -60,11 +60,9 @@ public class ClientTester {
 		DispatchingService ds = null;
 		String[] transportProtocol = args[0].split(":");
 		if (transportProtocol[0].equals("reds-tcp"))
-			ds = new TCPDispatchingService(transportProtocol[1],
-					Integer.parseInt(transportProtocol[2]));
+			ds = new TCPDispatchingService(transportProtocol[1], Integer.parseInt(transportProtocol[2]));
 		else if (transportProtocol[0].equals("reds-udp"))
-			ds = new UDPDispatchingService(transportProtocol[1],
-					Integer.parseInt(transportProtocol[2]), localPort);
+			ds = new UDPDispatchingService(transportProtocol[1], Integer.parseInt(transportProtocol[2]), localPort);
 		else
 			throw new IllegalArgumentException();
 
@@ -82,8 +80,8 @@ public class ClientTester {
 				int j = 0;
 				for (i = 0; i < numOfTurns; i++) {
 					for (j = 0; j < numOfMessages; j++) {
-//						if (j % 100 == 0)
-//							System.out.println(j);
+						// if (j % 100 == 0)
+						// System.out.println(j);
 						ds.publish(m);
 					}
 					System.out.println("Published " + (j) + " messages");
@@ -102,8 +100,7 @@ public class ClientTester {
 					System.out.println("Got " + (j) + " messages");
 				}
 			}
-			System.out.println("Publish/receive time: "
-					+ (System.currentTimeMillis() - time));
+			System.out.println("Publish/receive time: " + (System.currentTimeMillis() - time));
 			ds.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -20,37 +20,40 @@
 
 package polimi.reds.broker.overlay;
 
-
 class ManetOverlayMgrGRPH extends ManetOverlayMgrMessage {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 59404839170404018L;
-	// The most recently known group sequence number at the sender of the message.
+	// The most recently known group sequence number at the sender of the
+	// message.
 	private long groupSequenceNumber;
-	
+
 	/**
 	 * Builds a new Group Hello message.
 	 * 
-	 * @param senderId the logical sender of the message, i.e. the current group leader of a given partition.
-	 * @param groupSequenceNumber the current value of the group sequence number.
+	 * @param senderId
+	 *            the logical sender of the message, i.e. the current group
+	 *            leader of a given partition.
+	 * @param groupSequenceNumber
+	 *            the current value of the group sequence number.
 	 */
-	public ManetOverlayMgrGRPH (String senderId, long groupSequenceNumber){
-		
+	public ManetOverlayMgrGRPH(String senderId, long groupSequenceNumber) {
+
 		super(senderId, ManetOverlayMgrMessage.MANET_GPRH);
 		this.groupSequenceNumber = groupSequenceNumber;
-		
+
 		setMulticast(true);
 	}
-	
+
 	/**
 	 * Return the group sequence number the message carries.
 	 * 
 	 * @return the value of the group sequence number contained in the message.
 	 */
 	public long getGroupSequenceNumber() {
-		
+
 		return groupSequenceNumber;
 	}
 }

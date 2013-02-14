@@ -25,27 +25,31 @@ import polimi.reds.TextMessage;
 
 /**
  * This is a TextMessage that supports replies.
+ * 
  * @author Alessandro Monguzzi
  */
 public class RepliableTextMessage extends TextMessage implements Repliable {
-  /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8719225950966565488L;
-	
+
 	private String temp;
-public RepliableTextMessage(){
-    super();
-  }
-  public RepliableTextMessage(String data){
-    super(data);
-  }
-public String getTemp() {
-	return temp;
-}
-public void setTemp(String temp) {
-	this.temp = temp;
-}
-  
-  
+
+	public RepliableTextMessage() {
+		super();
+	}
+
+	public RepliableTextMessage(String data) {
+		super(data);
+	}
+
+	public String getTemp() {
+		return temp;
+	}
+
+	public void setTemp(String temp) {
+		this.temp = temp;
+	}
+
 }

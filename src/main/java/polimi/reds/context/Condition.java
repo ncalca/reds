@@ -91,18 +91,18 @@ public class Condition implements Serializable {
 		public String toString() {
 			return "ANY";
 		}
-		
+
 		@Override
-		public boolean equals( Object obj ) {
-			if ( obj == null ) {
+		public boolean equals(Object obj) {
+			if (obj == null) {
 				return false;
 			}
-			if ( !( this.getClass().equals( obj.getClass() ) ) ) {
+			if (!(this.getClass().equals(obj.getClass()))) {
 				return false;
 			}
-			
+
 			return true;
-			
+
 		}
 	}
 
@@ -150,7 +150,7 @@ public class Condition implements Serializable {
 		return this.operator;
 	}
 
-	private void init( String name, int dataType, int operator, Object value ) {
+	private void init(String name, int dataType, int operator, Object value) {
 		this.name = name;
 		this.dataType = dataType;
 		this.operator = operator;
@@ -164,8 +164,8 @@ public class Condition implements Serializable {
 	 *            the condition to clone
 	 * @return the cloned condition
 	 */
-	public Condition ( Condition c ) {
-		this( c.name, c.dataType, c.operator, c.value );
+	public Condition(Condition c) {
+		this(c.name, c.dataType, c.operator, c.value);
 	}
 
 	/**
@@ -181,73 +181,71 @@ public class Condition implements Serializable {
 	 *            the value
 	 * @return a new condition with the specified params
 	 */
-	public Condition ( String name, int dataType, int operator, Object value ) {
+	public Condition(String name, int dataType, int operator, Object value) {
 
-		if ( ( operator == EQUALS ) && ( value == Condition.ANY ) ) {
-			this.init( name, dataType, operator, value );
+		if ((operator == EQUALS) && (value == Condition.ANY)) {
+			this.init(name, dataType, operator, value);
 			return;
 		}
 
-		switch ( dataType ) {
-			case ( Property.INTEGER          ): {
-				if ( operator > 10 ) {
-					throw new IllegalOperatorException();
-				}
-
-				if ( ( operator <= 3 ) || ( operator == 10 ) ) {
-					if ( !( value instanceof Integer ) ) {
-						throw new IllegalValueException();
-					}
-				}
-
-				else if ( operator > 3 ) {
-					if ( !( value instanceof Interval ) ) {
-						throw new IllegalValueException();
-					}
-				}
-				break;
+		switch (dataType) {
+		case (Property.INTEGER): {
+			if (operator > 10) {
+				throw new IllegalOperatorException();
 			}
 
-			case ( Property.REAL         ): {
-				if ( operator > 10 ) {
-					throw new IllegalOperatorException();
-				}
-
-				if ( ( operator <= 3 ) || ( operator == 10 ) ) {
-					if ( !( value instanceof Double ) ) {
-						throw new IllegalValueException();
-					}
-				}
-
-				else if ( operator > 3 ) {
-					if ( !( value instanceof Interval ) ) {
-						throw new IllegalValueException();
-					}
-				}
-				break;
-			}
-
-			case ( Property.STRING       ): {
-				if ( operator < 10 ) {
-					throw new IllegalOperatorException();
-				}
-
-				if ( !( value instanceof String ) ) {
+			if ((operator <= 3) || (operator == 10)) {
+				if (!(value instanceof Integer)) {
 					throw new IllegalValueException();
 				}
-				break;
 			}
 
-			default: {
-				throw new IllegalDataTypeException();
+			else if (operator > 3) {
+				if (!(value instanceof Interval)) {
+					throw new IllegalValueException();
+				}
 			}
+			break;
 		}
 
-		this.init( name, dataType, operator, value );
+		case (Property.REAL): {
+			if (operator > 10) {
+				throw new IllegalOperatorException();
+			}
+
+			if ((operator <= 3) || (operator == 10)) {
+				if (!(value instanceof Double)) {
+					throw new IllegalValueException();
+				}
+			}
+
+			else if (operator > 3) {
+				if (!(value instanceof Interval)) {
+					throw new IllegalValueException();
+				}
+			}
+			break;
+		}
+
+		case (Property.STRING): {
+			if (operator < 10) {
+				throw new IllegalOperatorException();
+			}
+
+			if (!(value instanceof String)) {
+				throw new IllegalValueException();
+			}
+			break;
+		}
+
+		default: {
+			throw new IllegalDataTypeException();
+		}
+		}
+
+		this.init(name, dataType, operator, value);
 
 	}
-
-
 
 	/**
 	 * Creates a new Condition with ANY as value
@@ -258,36 +256,34 @@ public class Condition implements Serializable {
 	 *            the data type
 	 * @return
 	 */
-	public static Condition CreateANYCondition( String name, int dataType ) {
-		return new Condition( name, dataType, EQUALS, ANY );
+	public static Condition CreateANYCondition(String name, int dataType) {
+		return new Condition(name, dataType, EQUALS, ANY);
 	}
-
-
 
 	/*
 	 * (non-Javadoc)
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals( Object o ) {
-		if ( o == null ) {
+	public boolean equals(Object o) {
+		if (o == null) {
 			return false;
 		}
-		if ( !( this.getClass().equals( o.getClass() ) ) ) {
+		if (!(this.getClass().equals(o.getClass()))) {
 			return false;
 		}
 
 		Condition other = (Condition) o;
-		if ( !this.name.equals( other.name ) ) {
+		if (!this.name.equals(other.name)) {
 			return false;
 		}
-		if ( this.dataType != other.dataType ) {
+		if (this.dataType != other.dataType) {
 			return false;
 		}
-		if ( !this.value.equals( other.value ) ) {
+		if (!this.value.equals(other.value)) {
 			return false;
 		}
-		if ( this.operator != other.operator ) {
+		if (this.operator != other.operator) {
 			return false;
 		}
 
@@ -301,8 +297,8 @@ public class Condition implements Serializable {
 	 * @param c
 	 * @return true is this has the same structure o
 	 */
-	public boolean isStructuralEqualsTo( Condition c ) {
-		return ( ( this.dataType == c.dataType ) && ( this.name.equals( c.name ) ) );
+	public boolean isStructuralEqualsTo(Condition c) {
+		return ((this.dataType == c.dataType) && (this.name.equals(c.name)));
 	}
 
 	@Override
@@ -310,6 +306,5 @@ public class Condition implements Serializable {
 		return "Nome: " + name + " - Tipo: " + dataType + " - Operatore: " + operator + " - Valore: "
 				+ value.toString();
 	}
-
 
 }

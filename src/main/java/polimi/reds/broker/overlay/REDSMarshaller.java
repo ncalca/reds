@@ -19,27 +19,30 @@
  ***/
 
 package polimi.reds.broker.overlay;
+
 import java.io.*;
 
-
 /**********************************************************************
- * An <code>ObjectOutputStream</code> that annotate classes with a codebase
- * URL. This codebase is used at unmarshalling time to retrieve the bytecode
- * of the objects to be unmarshalled. The codebase URL is either taken from
- * the system property: "polimi.reds.client.codebase", or it is the codebase
- * associated to classes retrieved via a REDSUnmarshaller.
- *
+ * An <code>ObjectOutputStream</code> that annotate classes with a codebase URL.
+ * This codebase is used at unmarshalling time to retrieve the bytecode of the
+ * objects to be unmarshalled. The codebase URL is either taken from the system
+ * property: "polimi.reds.client.codebase", or it is the codebase associated to
+ * classes retrieved via a REDSUnmarshaller.
+ * 
  * @see polimi.reds.broker.overlay.REDSUnmarshaller
  **********************************************************************/
 public class REDSMarshaller extends ObjectOutputStream {
-  private final String CODEBASE_PROPERTY_NAME="polimi.reds.client.codebase";
-  public REDSMarshaller(OutputStream os) throws IOException {
-    super(os);
-    os.flush();
-  }
-  protected void annotateClass(Class cl) throws IOException {
-    String codebase = java.rmi.server.RMIClassLoader.getClassAnnotation(cl);
-    if(codebase==null) codebase = System.getProperty(CODEBASE_PROPERTY_NAME);
-    writeObject(codebase);
-  }
+	private final String CODEBASE_PROPERTY_NAME = "polimi.reds.client.codebase";
+
+	public REDSMarshaller(OutputStream os) throws IOException {
+		super(os);
+		os.flush();
+	}
+
+	protected void annotateClass(Class cl) throws IOException {
+		String codebase = java.rmi.server.RMIClassLoader.getClassAnnotation(cl);
+		if (codebase == null)
+			codebase = System.getProperty(CODEBASE_PROPERTY_NAME);
+		writeObject(codebase);
+	}
 }

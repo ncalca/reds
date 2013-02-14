@@ -20,23 +20,29 @@
 
 package polimi.reds.broker.overlay;
 
-
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the opening of a connection.<br>
- * Users implement the <code>LinkOpenedListener</code> interface and register their listener using the 
- * <code>AddLinkOpenedListener</code> method. The users should also remove their listener after they have completed using the 
+ * This interface is the primary method for being notified about the opening of
+ * a connection.<br>
+ * Users implement the <code>LinkOpenedListener</code> interface and register
+ * their listener using the <code>AddLinkOpenedListener</code> method. The users
+ * should also remove their listener after they have completed using the
  * listener.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
-interface LinkOpenedListener{
-	
+interface LinkOpenedListener {
+
 	/**
-	 * This method is called whenever a link is opened by a new neighbor of the local node.
-	 * @param senderID the <code>NodeDescriptor</code> of the new neighbor
-	 * @param t the <code>Transport</code> where the new node is connected
+	 * This method is called whenever a link is opened by a new neighbor of the
+	 * local node.
+	 * 
+	 * @param senderID
+	 *            the <code>NodeDescriptor</code> of the new neighbor
+	 * @param t
+	 *            the <code>Transport</code> where the new node is connected
 	 */
 	public void signalLinkOpened(NodeDescriptor senderID, Transport t);
 

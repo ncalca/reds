@@ -20,12 +20,14 @@
 package polimi.reds.broker.overlay;
 
 import polimi.reds.NodeDescriptor;
+
 /**
- * This exception is thrown when the someone tries to add to local neighbors' list an already present node.<br>
+ * This exception is thrown when the someone tries to add to local neighbors'
+ * list an already present node.<br>
  * It carries the <code>NodeDescriptor</code> of the remote node.
  * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
 public class AlreadyAddedNeighborException extends Exception {
 
@@ -33,21 +35,25 @@ public class AlreadyAddedNeighborException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = 1646904461660801608L;
-	
-	private NodeDescriptor remoteNodeDescriptor; 
-	
+
+	private NodeDescriptor remoteNodeDescriptor;
+
 	/**
 	 * Create a new exception.
-	 * @param n the <code>NodeDescriptor</code> of the remote node.
+	 * 
+	 * @param n
+	 *            the <code>NodeDescriptor</code> of the remote node.
 	 */
-	public AlreadyAddedNeighborException(NodeDescriptor n){
+	public AlreadyAddedNeighborException(NodeDescriptor n) {
 		this.remoteNodeDescriptor = n;
 	}
+
 	/**
 	 * Get the <code>NodeDescripton</code> of the remote node.
+	 * 
 	 * @return <code>NodeDescripton</code>
 	 */
-	public NodeDescriptor getRemoteNodeDescriptor(){
+	public NodeDescriptor getRemoteNodeDescriptor() {
 		return remoteNodeDescriptor;
 	}
 

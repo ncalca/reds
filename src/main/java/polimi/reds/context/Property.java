@@ -78,12 +78,12 @@ public class Property implements Serializable {
 	public Object getValue() {
 		return this.value;
 	}
-	
-	protected Property(){
-		
+
+	protected Property() {
+
 	}
 
-	private void init( String name, int dataType, Object value ) {
+	private void init(String name, int dataType, Object value) {
 		this.name = name;
 		this.value = value;
 		this.dataType = dataType;
@@ -98,8 +98,8 @@ public class Property implements Serializable {
 	 *            the value of the property
 	 * @return
 	 */
-	public  Property ( String name, String value ) {
-		this( name, STRING, value );
+	public Property(String name, String value) {
+		this(name, STRING, value);
 	}
 
 	/**
@@ -111,8 +111,8 @@ public class Property implements Serializable {
 	 *            the value of the property
 	 * @return
 	 */
-	public Property( String name, Double value ) {
-		this( name, REAL, value );
+	public Property(String name, Double value) {
+		this(name, REAL, value);
 	}
 
 	/**
@@ -124,8 +124,8 @@ public class Property implements Serializable {
 	 *            the value of the property
 	 * @return
 	 */
-	public  Property ( String name, Integer value ) {
-		 this( name, INTEGER, value );
+	public Property(String name, Integer value) {
+		this(name, INTEGER, value);
 	}
 
 	/**
@@ -139,54 +139,53 @@ public class Property implements Serializable {
 	 *            the value of the property
 	 * @return
 	 */
-	public Property ( String name, int dataType, Object value ) {
+	public Property(String name, int dataType, Object value) {
 
 		try {
-			switch ( dataType ) {
-				case ( INTEGER ): {
-					value = (Integer) value;
-					break;
-				}
-
-				case ( REAL ): {
-					value = (Double) value;
-					break;
-				}
-
-				case ( STRING ): {
-					value = (String) value;
-					break;
-				}
-
-				default: {
-					throw new IllegalDataTypeException();
-				}
+			switch (dataType) {
+			case (INTEGER): {
+				value = (Integer) value;
+				break;
 			}
-		}
-		catch ( ClassCastException e ) {
+
+			case (REAL): {
+				value = (Double) value;
+				break;
+			}
+
+			case (STRING): {
+				value = (String) value;
+				break;
+			}
+
+			default: {
+				throw new IllegalDataTypeException();
+			}
+			}
+		} catch (ClassCastException e) {
 			throw new IllegalValueException();
 		}
 
-		this.init( name, dataType, value );
+		this.init(name, dataType, value);
 
 	}
 
-	public boolean equals( Object o ) {
-		if ( o == null ) {
+	public boolean equals(Object o) {
+		if (o == null) {
 			return false;
 		}
-		if ( !( this.getClass().equals( o.getClass() ) ) ) {
+		if (!(this.getClass().equals(o.getClass()))) {
 			return false;
 		}
 
 		Property other = (Property) o;
-		if ( !this.name.equals( other.name ) ) {
+		if (!this.name.equals(other.name)) {
 			return false;
 		}
-		if ( this.dataType != other.dataType ) {
+		if (this.dataType != other.dataType) {
 			return false;
 		}
-		if ( !this.value.equals( other.value ) ) {
+		if (!this.value.equals(other.value)) {
 			return false;
 		}
 

@@ -25,20 +25,27 @@ import java.io.Serializable;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the arrival of a new packet from a neighbor of the local node.<br>
- * Users implement the <code>PacketListener</code> interface and register their listener using the <code>AddPacketListener</code> 
- * method. The users should also remove their listener after they have completed using the listener.
+ * This interface is the primary method for being notified about the arrival of
+ * a new packet from a neighbor of the local node.<br>
+ * Users implement the <code>PacketListener</code> interface and register their
+ * listener using the <code>AddPacketListener</code> method. The users should
+ * also remove their listener after they have completed using the listener.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
-public interface PacketListener{
+public interface PacketListener {
 
 	/**
-	 * This method is called whenever a new packet arrives from a neighbor of the local node.
-	 *
-	 * @param subject the subject of the packet
-	 * @param senderID the <code>NodeDescriptor</code> of the sender
-	 * @param payload the message
+	 * This method is called whenever a new packet arrives from a neighbor of
+	 * the local node.
+	 * 
+	 * @param subject
+	 *            the subject of the packet
+	 * @param senderID
+	 *            the <code>NodeDescriptor</code> of the sender
+	 * @param payload
+	 *            the message
 	 */
 	public void signalPacket(String subject, NodeDescriptor senderID, Serializable payload);
 }

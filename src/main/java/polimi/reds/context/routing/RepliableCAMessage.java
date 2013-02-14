@@ -32,8 +32,8 @@ public class RepliableCAMessage extends CAMessage implements Repliable {
 
 	private static final long serialVersionUID = 3515617313506131674L;
 
-	public RepliableCAMessage( Message message, Context sourceContext, ContextFilter destinationContext ) {
-		super( message, sourceContext, destinationContext );
+	public RepliableCAMessage(Message message, Context sourceContext, ContextFilter destinationContext) {
+		super(message, sourceContext, destinationContext);
 	}
 
 }

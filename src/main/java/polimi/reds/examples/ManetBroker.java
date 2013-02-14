@@ -20,7 +20,6 @@
 
 package polimi.reds.examples;
 
-
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.logging.ConsoleHandler;
@@ -45,67 +44,65 @@ import polimi.reds.broker.routing.SubscriptionTable;
  * overlay manager without using the Locator service.
  */
 public class ManetBroker {
-  public ManetBroker(String protocol, int localPort, int overlayManagerPort, int simulationTime) {
-    // Configuring logging facility.
-    ConsoleHandler ch = new ConsoleHandler();
-    ch.setLevel(Level.ALL);
-    Logger logger = Logger.getLogger("polimi");
-    logger.addHandler(ch);
-    
-    	logger.setLevel(Level.ALL);
-    // Setting up the broker.
-    
-    Transport transport = null;
-    TopologyManager topolMgr = null;
-    if(protocol.equals(Transport.TCP)){
-    	transport = new TCPTransport(localPort);
-    	((TCPTransport)transport).setBeaconing(true);
-    }
-    else if(protocol.equals(Transport.UDP)){
-    	transport = new UDPTransport(localPort);
-    	((UDPTransport)transport).setBeaconing(true);
-    }
-    else{
-    	System.err.println("Unknown protocol");
-    	System.exit(-1);
-    }
-    Set transports = new LinkedHashSet();
-    transports.add(transport);
-    topolMgr = new WirelessTopologyManager(overlayManagerPort);
-    GenericOverlay overlay = new GenericOverlay(topolMgr, transports);
-    GenericRouter router = new GenericRouter(overlay);
-    
-    DeferredUnsubscriptionReconfigurator reconf = new DeferredUnsubscriptionReconfigurator();
-    reconf.setOverlay(overlay);
-    SubscriptionForwardingRoutingStrategy routingStrat = new SubscriptionForwardingRoutingStrategy();
-    routingStrat.setOverlay(overlay);
-    SubscriptionTable subscriptionTable = new GenericTable();
-    reconf.setRouter(router);
-    router.setRoutingStrategy(routingStrat);
-    router.setSubscriptionTable(subscriptionTable);
-    overlay.start();
-         	
-    waitSimulationTime(simulationTime);    
-    logger.log(Level.CONFIG, "Manet Broker stopping...");
-    
-    overlay.stop();   
-  }
-  
-  public synchronized void waitSimulationTime(int secs){
-    
-    try {
-      wait(secs*1000);
-    } catch(InterruptedException e) {
-      e.printStackTrace();
-    }    	
-  }
+	public ManetBroker(String protocol, int localPort, int overlayManagerPort, int simulationTime) {
+		// Configuring logging facility.
+		ConsoleHandler ch = new ConsoleHandler();
+		ch.setLevel(Level.ALL);
+		Logger logger = Logger.getLogger("polimi");
+		logger.addHandler(ch);
 
-  public static void main(String[] args) {
-    if(args.length==0) {
-      System.err
-          .println("USAGE: java polimi.reds.examples.ManetBroker <protocol> <localPort> <topologyManagerPort> <simulationTime>");
-      return;
-    }
-    new ManetBroker(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
-  }
+		logger.setLevel(Level.ALL);
+		// Setting up the broker.
+
+		Transport transport = null;
+		TopologyManager topolMgr = null;
+		if (protocol.equals(Transport.TCP)) {
+			transport = new TCPTransport(localPort);
+			((TCPTransport) transport).setBeaconing(true);
+		} else if (protocol.equals(Transport.UDP)) {
+			transport = new UDPTransport(localPort);
+			((UDPTransport) transport).setBeaconing(true);
+		} else {
+			System.err.println("Unknown protocol");
+			System.exit(-1);
+		}
+		Set transports = new LinkedHashSet();
+		transports.add(transport);
+		topolMgr = new WirelessTopologyManager(overlayManagerPort);
+		GenericOverlay overlay = new GenericOverlay(topolMgr, transports);
+		GenericRouter router = new GenericRouter(overlay);
+
+		DeferredUnsubscriptionReconfigurator reconf = new DeferredUnsubscriptionReconfigurator();
+		reconf.setOverlay(overlay);
+		SubscriptionForwardingRoutingStrategy routingStrat = new SubscriptionForwardingRoutingStrategy();
+		routingStrat.setOverlay(overlay);
+		SubscriptionTable subscriptionTable = new GenericTable();
+		reconf.setRouter(router);
+		router.setRoutingStrategy(routingStrat);
+		router.setSubscriptionTable(subscriptionTable);
+		overlay.start();
+
+		waitSimulationTime(simulationTime);
+		logger.log(Level.CONFIG, "Manet Broker stopping...");
+
+		overlay.stop();
+	}
+
+	public synchronized void waitSimulationTime(int secs) {
+
+		try {
+			wait(secs * 1000);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.err
+					.println("USAGE: java polimi.reds.examples.ManetBroker <protocol> <localPort> <topologyManagerPort> <simulationTime>");
+			return;
+		}
+		new ManetBroker(args[0], Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
+	}
 }

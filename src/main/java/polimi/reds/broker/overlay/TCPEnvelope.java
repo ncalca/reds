@@ -27,23 +27,23 @@ import java.io.Serializable;
  * it is attached to or among neighboring brokers.
  ******************************************************************************/
 public class TCPEnvelope extends Envelope {
-  private static final long serialVersionUID = -1233116801597947207L;
+	private static final long serialVersionUID = -1233116801597947207L;
 
-  /**
-   * Base constructor.
-   * 
-   * @see Envelope#Envelope(String, Serializable, String)
-   */
-  public TCPEnvelope(String typeOfMessage, Serializable payload, String trafficClass) {
-    super(typeOfMessage, payload, trafficClass);
-  }
+	/**
+	 * Base constructor.
+	 * 
+	 * @see Envelope#Envelope(String, Serializable, String)
+	 */
+	public TCPEnvelope(String typeOfMessage, Serializable payload, String trafficClass) {
+		super(typeOfMessage, payload, trafficClass);
+	}
 
-  /**
-   * An empty envelope.
-   * 
-   * @see Envelope#Envelope(String)
-   */
-  public TCPEnvelope(String typeOfMessage) {
-    this(typeOfMessage, null, Transport.MISCELLANEOUS_CLASS);
-  }
+	/**
+	 * An empty envelope.
+	 * 
+	 * @see Envelope#Envelope(String)
+	 */
+	public TCPEnvelope(String typeOfMessage) {
+		this(typeOfMessage, null, Transport.MISCELLANEOUS_CLASS);
+	}
 }

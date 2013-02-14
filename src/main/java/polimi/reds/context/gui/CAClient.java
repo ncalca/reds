@@ -41,32 +41,32 @@ public class CAClient extends Thread {
 	private class ReplyThread extends Thread {
 
 		public void run() {
-			while ( true ) {
+			while (true) {
 				Message reply = ds.getNextReply();
-				gui.scrivi( "Ho ricevuto una reply: " );
+				gui.scrivi("Ho ricevuto una reply: ");
 			}
 		}
 	}
 
-	public CAClient( String host, int port, Context context, ClientGui gui ) {
+	public CAClient(String host, int port, Context context, ClientGui gui) {
 		super();
 		this.port = port;
-		ds = new CATCPDispatchingService( host, port, context );
+		ds = new CATCPDispatchingService(host, port, context);
 		this.gui = gui;
 		// ds.setContext( context );
 	}
 
-	public void setContext( Context context ) {
-		ds.setContext( context );
+	public void setContext(Context context) {
+		ds.setContext(context);
 	}
 
-	public void publish( Message m, ContextFilter contextFilter ) {
-		gui.scrivi( "Invio messaggio: " + m.toString() + "  verso i " + contextFilter.toString() );
-		ds.publish( m, contextFilter );
+	public void publish(Message m, ContextFilter contextFilter) {
+		gui.scrivi("Invio messaggio: " + m.toString() + "  verso i " + contextFilter.toString());
+		ds.publish(m, contextFilter);
 	}
 
-	public void subscribe( Filter filter, ContextFilter destinationContextFilter ) {
-		ds.subscribe( filter, destinationContextFilter );
+	public void subscribe(Filter filter, ContextFilter destinationContextFilter) {
+		ds.subscribe(filter, destinationContextFilter);
 	}
 
 	public void run() {
@@ -76,21 +76,20 @@ public class CAClient extends Thread {
 			ReplyThread replyThread = new ReplyThread();
 			replyThread.start();
 
-		}
-		catch ( ConnectException e ) {
+		} catch (ConnectException e) {
 			e.printStackTrace();
 		}
 
-		while ( true ) {
+		while (true) {
 			Message m = ds.getNextMessage();
-			gui.scrivi( "Ho ricevuto: " + m.toString() );
+			gui.scrivi("Ho ricevuto: " + m.toString());
 
-			if ( m instanceof RepliableCAMessage ) {
+			if (m instanceof RepliableCAMessage) {
 				RepliableCAMessage repliableMessage = (RepliableCAMessage) m;
-				gui.scrivi( "Il messaggio e replyable.. invio un ACK" );
+				gui.scrivi("Il messaggio e replyable.. invio un ACK");
 
-				TextMessage reply = new TextMessage( "Ho ricevuto il mess" );
-				ds.reply( reply, repliableMessage.getID() );
+				TextMessage reply = new TextMessage("Ho ricevuto il mess");
+				ds.reply(reply, repliableMessage.getID());
 			}
 		}
 

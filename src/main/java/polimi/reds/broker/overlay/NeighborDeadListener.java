@@ -23,17 +23,22 @@ package polimi.reds.broker.overlay;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the brutal disconnection of a neighbor.<br>
- * Users implement the <code>NeighborDeadListener</code> interface and register their listeners using the 
- * <code>AddNeighborDeadListener</code> method. The users should also remove their listeners after they have completed using the 
+ * This interface is the primary method for being notified about the brutal
+ * disconnection of a neighbor.<br>
+ * Users implement the <code>NeighborDeadListener</code> interface and register
+ * their listeners using the <code>AddNeighborDeadListener</code> method. The
+ * users should also remove their listeners after they have completed using the
  * listener.
+ * 
  * @author Alessandro Monguzzi
  */
 public interface NeighborDeadListener {
-	
+
 	/**
 	 * This method is called whenever a neighbor of the local node dies.
-	 * @param deadNeighbor the <code>NodeDescriptor</code> of the neighbor
+	 * 
+	 * @param deadNeighbor
+	 *            the <code>NodeDescriptor</code> of the neighbor
 	 */
 	public void signalNeighborDead(NodeDescriptor deadNeighbor);
 

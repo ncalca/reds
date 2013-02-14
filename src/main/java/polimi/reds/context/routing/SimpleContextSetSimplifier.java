@@ -28,9 +28,11 @@ public class SimpleContextSetSimplifier implements ContextSetSimplifier {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.definition.Simplifier#simplify(polimi.reds.context.definition.ContextSet)
+	 * @see
+	 * polimi.reds.context.definition.Simplifier#simplify(polimi.reds.context
+	 * .definition.ContextSet)
 	 */
-	public ContextSet simplify( ContextSet c1 ) {
+	public ContextSet simplify(ContextSet c1) {
 		return c1;
 	}
 

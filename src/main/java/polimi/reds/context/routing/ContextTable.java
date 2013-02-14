@@ -45,7 +45,7 @@ public interface ContextTable {
 	 * @param contextSet
 	 *            the received context
 	 */
-	public void putContextReceived( NodeDescriptor n, ContextSet contextSet );
+	public void putContextReceived(NodeDescriptor n, ContextSet contextSet);
 
 	/**
 	 * Updates in the table the computed context for node
@@ -55,7 +55,7 @@ public interface ContextTable {
 	 * @param contextSet
 	 *            the computed context
 	 */
-	public void putContextComputed( NodeDescriptor n, ContextSet contextSet );
+	public void putContextComputed(NodeDescriptor n, ContextSet contextSet);
 
 	/**
 	 * Updates in the table the context to send for node
@@ -65,7 +65,7 @@ public interface ContextTable {
 	 * @param contextSet
 	 *            the context to send
 	 */
-	public void putContextToSend( NodeDescriptor n, ContextSet contextSet );
+	public void putContextToSend(NodeDescriptor n, ContextSet contextSet);
 
 	/**
 	 * Updates in the table the last sent context for node
@@ -75,7 +75,7 @@ public interface ContextTable {
 	 * @param contextSet
 	 *            the last sent context
 	 */
-	public void putContextSent( NodeDescriptor n, ContextSet contextSet );
+	public void putContextSent(NodeDescriptor n, ContextSet contextSet);
 
 	/**
 	 * Returns from the table the received context for node
@@ -83,7 +83,7 @@ public interface ContextTable {
 	 * @param n
 	 *            the node
 	 */
-	public ContextSet getContextReceived( NodeDescriptor n );
+	public ContextSet getContextReceived(NodeDescriptor n);
 
 	/**
 	 * Returns from the table the computed context for node
@@ -91,7 +91,7 @@ public interface ContextTable {
 	 * @param n
 	 *            the node
 	 */
-	public ContextSet getContextToSend( NodeDescriptor n );
+	public ContextSet getContextToSend(NodeDescriptor n);
 
 	/**
 	 * Returns from the table the context to send for node
@@ -99,7 +99,7 @@ public interface ContextTable {
 	 * @param n
 	 *            the node
 	 */
-	public ContextSet getContextSent( NodeDescriptor n );
+	public ContextSet getContextSent(NodeDescriptor n);
 
 	/**
 	 * Returns from the table the last sent context for node
@@ -107,7 +107,7 @@ public interface ContextTable {
 	 * @param n
 	 *            the node
 	 */
-	public ContextSet getContextComputed( NodeDescriptor n );
+	public ContextSet getContextComputed(NodeDescriptor n);
 
 	/**
 	 * Remove a neighbor from the table
@@ -115,14 +115,14 @@ public interface ContextTable {
 	 * @param n
 	 *            the neigbor to remove
 	 */
-	public void removeNeighbor( NodeDescriptor n );
+	public void removeNeighbor(NodeDescriptor n);
 
-	public void setContextSetSimplifier( ContextSetSimplifier contextSetSimplifier );
+	public void setContextSetSimplifier(ContextSetSimplifier contextSetSimplifier);
 
-	public void createViewAndUpdateTable( NodeDescriptor destinationNode );
+	public void createViewAndUpdateTable(NodeDescriptor destinationNode);
 
-	public void simplifyViewAndUpdateTable( NodeDescriptor destinationNode );
+	public void simplifyViewAndUpdateTable(NodeDescriptor destinationNode);
 
-	public ContextSet simplifyView( NodeDescriptor destinationNode );
+	public ContextSet simplifyView(NodeDescriptor destinationNode);
 
 }

@@ -23,18 +23,24 @@ package polimi.reds.broker.overlay;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the closing of a connection.<br>
- * Users implement the <code>LinkClosedListener</code> interface and register their listener using the 
- * <code>AddLinkClosedListener</code> method. The users should also remove their listener after they have completed using the 
+ * This interface is the primary method for being notified about the closing of
+ * a connection.<br>
+ * Users implement the <code>LinkClosedListener</code> interface and register
+ * their listener using the <code>AddLinkClosedListener</code> method. The users
+ * should also remove their listener after they have completed using the
  * listener.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
-interface LinkClosedListener{
+interface LinkClosedListener {
 
 	/**
-	 * This method is called whenever a link is closed by a neighbor of the local node.
-	 * @param closingNeighbor the closing neighbor
+	 * This method is called whenever a link is closed by a neighbor of the
+	 * local node.
+	 * 
+	 * @param closingNeighbor
+	 *            the closing neighbor
 	 */
 	public void signalLinkClosed(NodeDescriptor closingNeighbor);
 }

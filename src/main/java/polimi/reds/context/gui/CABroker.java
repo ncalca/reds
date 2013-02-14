@@ -60,62 +60,61 @@ public class CABroker {
 
 	private int portToConnect;
 
-	public CABroker( int myPort ) {
+	public CABroker(int myPort) {
 
-		init( myPort );
+		init(myPort);
 	}
 
-	private void init( int port ) {
+	private void init(int port) {
 		this.myPort = port;
-		Transport transport = new TCPTransport( port );
+		Transport transport = new TCPTransport(port);
 
 		Set transports = new LinkedHashSet();
-		transports.add( transport );
+		transports.add(transport);
 
 		TopologyManager topologyManager = new SimpleTopologyManager();
 
 		Reconfigurator caReconfigurator = new CAReconfigurator();
 
-		this.overlay = new GenericOverlay( topologyManager, transports );
+		this.overlay = new GenericOverlay(topologyManager, transports);
 
 		CASubscriptionForwardingRoutingStratgy routingStrategy = new CASubscriptionForwardingRoutingStratgy();
 
-		routingStrategy.setOverlay( overlay );
+		routingStrategy.setOverlay(overlay);
 
 		SubscriptionTable subscriptionTable = new GenericTable();
 		ContextTable contextTable = new GenericContextTable();
 
 		PropertyRangeSimplifier conditionSimplifier = new SimplePropertyRangeSimplifier();
-		ContextSetSimplifier contextSetSimplifier = new StructuralContextSetSimplifier( conditionSimplifier );
-		contextTable.setContextSetSimplifier( contextSetSimplifier );
+		ContextSetSimplifier contextSetSimplifier = new StructuralContextSetSimplifier(conditionSimplifier);
+		contextTable.setContextSetSimplifier(contextSetSimplifier);
 
-		CARouter router = new CARouter( overlay, routingStrategy, subscriptionTable, contextTable);
+		CARouter router = new CARouter(overlay, routingStrategy, subscriptionTable, contextTable);
 
-		ViewSendingStrategy viewSendingStrategy = new ImmediateViewSendingStrategy( router );
-		routingStrategy.setViewSendingStrategy( viewSendingStrategy );
+		ViewSendingStrategy viewSendingStrategy = new ImmediateViewSendingStrategy(router);
+		routingStrategy.setViewSendingStrategy(viewSendingStrategy);
 
 		try {
-			Thread.sleep( 1000 );
-		}
-		catch ( InterruptedException e ) {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		caReconfigurator.setRouter( router );
-		caReconfigurator.setOverlay( overlay );
+		caReconfigurator.setRouter(router);
+		caReconfigurator.setOverlay(overlay);
 
-		router.setOverlay( overlay );
-		router.setRoutingStrategy( routingStrategy );
-		router.setSubscriptionTable( subscriptionTable );
+		router.setOverlay(overlay);
+		router.setRoutingStrategy(routingStrategy);
+		router.setSubscriptionTable(subscriptionTable);
 
-		routingStrategy.setRouter( router );
+		routingStrategy.setRouter(router);
 
 		ReplyManager replyManager = new ImmediateForwardReplyManager();
 		ReplyTable replyTable = new HashReplyTable();
-		router.setReplyManager( replyManager );
-		router.setReplyTable( replyTable );
-		replyManager.setReplyTable( replyTable );
-		replyManager.setOverlay( overlay );
+		router.setReplyManager(replyManager);
+		router.setReplyTable(replyTable);
+		replyManager.setReplyTable(replyTable);
+		replyManager.setOverlay(overlay);
 
 		overlay.start();
 
@@ -125,16 +124,16 @@ public class CABroker {
 
 	}
 
-	public void connect( String host, int portToConnect ) throws ConnectException, MalformedURLException, AlreadyAddedNeighborException {
+	public void connect(String host, int portToConnect) throws ConnectException, MalformedURLException,
+			AlreadyAddedNeighborException {
 		this.portToConnect = portToConnect;
-		overlay.addNeighbor( "reds-tcp:" + host + ":" + portToConnect );
+		overlay.addNeighbor("reds-tcp:" + host + ":" + portToConnect);
 	}
 
-	private static void Dormi( int millisec ) {
+	private static void Dormi(int millisec) {
 		try {
-			Thread.sleep( millisec );
-		}
-		catch ( InterruptedException e ) {
+			Thread.sleep(millisec);
+		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}

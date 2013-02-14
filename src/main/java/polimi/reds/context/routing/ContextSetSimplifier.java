@@ -34,6 +34,6 @@ public interface ContextSetSimplifier {
 	 *            the contextset to semplify
 	 * @return a semplified version of c1
 	 */
-	public ContextSet simplify( ContextSet c1 );
+	public ContextSet simplify(ContextSet c1);
 
 }

@@ -24,39 +24,41 @@ import polimi.reds.Message;
 import polimi.reds.Repliable;
 
 class LocationMessage extends Message {
-  /**
+	/**
    * 
    */
-  private static final long serialVersionUID = -4352683673194932891L;
-  protected Message payload;
-  protected Zone destinationZone;
-  protected Location sourceLocation;
+	private static final long serialVersionUID = -4352683673194932891L;
+	protected Message payload;
+	protected Zone destinationZone;
+	protected Location sourceLocation;
 
-  public LocationMessage(Message payload, Location sourceLocation,
-      Zone destinationZone) {
-    this.payload = payload;
-    this.sourceLocation = sourceLocation;
-    this.destinationZone = destinationZone;
-  }
+	public LocationMessage(Message payload, Location sourceLocation, Zone destinationZone) {
+		this.payload = payload;
+		this.sourceLocation = sourceLocation;
+		this.destinationZone = destinationZone;
+	}
 
-  public Message getPayload() {
-    return payload;
-  }
+	public Message getPayload() {
+		return payload;
+	}
 
-  public Zone getDestinationZone() {
-    return destinationZone;
-  }
+	public Zone getDestinationZone() {
+		return destinationZone;
+	}
 
-  public String toString() {
-    return "Message: "+payload.toString()+" coming from "+sourceLocation+" adressed to "+destinationZone.toString();
-  }
-  /**
-   * Create the its own <code>MessageID</code> and the payload's. The two are equal. 
-   */
-  public void createID(){
-	payload.createID();
-	super.id = payload.getID();
-  }
+	public String toString() {
+		return "Message: " + payload.toString() + " coming from " + sourceLocation + " adressed to "
+				+ destinationZone.toString();
+	}
+
+	/**
+	 * Create the its own <code>MessageID</code> and the payload's. The two are
+	 * equal.
+	 */
+	public void createID() {
+		payload.createID();
+		super.id = payload.getID();
+	}
 }
 
 class RepliableLocationMessage extends LocationMessage implements Repliable {
@@ -69,4 +71,4 @@ class RepliableLocationMessage extends LocationMessage implements Repliable {
 	public RepliableLocationMessage(Message payload, Location sourceLocation, Zone destinationZone) {
 		super(payload, sourceLocation, destinationZone);
 	}
-} 
+}

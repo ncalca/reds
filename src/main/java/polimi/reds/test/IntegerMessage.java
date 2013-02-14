@@ -23,18 +23,18 @@ package polimi.reds.test;
 import polimi.reds.Message;
 
 public class IntegerMessage extends Message {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 3389908467238450802L;
 	private int value = 0;
-	
-	public IntegerMessage(int v){
+
+	public IntegerMessage(int v) {
 		value = v;
 	}
 
-	public int getValue(){
+	public int getValue() {
 		return value;
 	}
 }

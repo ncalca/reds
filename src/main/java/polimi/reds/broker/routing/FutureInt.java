@@ -30,74 +30,81 @@ package polimi.reds.broker.routing;
  * @author Alessandro Monguzzi
  */
 public class FutureInt {
-  private int value = -1;
+	private int value = -1;
 
-  /**
-   * Default constructor. The value is not set.
-   */
-  public FutureInt() {}
+	/**
+	 * Default constructor. The value is not set.
+	 */
+	public FutureInt() {
+	}
 
-  /**
-   * Sets the <code>value</code> and awake all those were waiting on it.
-   * 
-   * @param value The value of the <code>FutureInt</code>
-   */
-  public FutureInt(int value) {
-    this.value = value;
-    synchronized(this) {
-      this.notifyAll();
-    }
-  }
+	/**
+	 * Sets the <code>value</code> and awake all those were waiting on it.
+	 * 
+	 * @param value
+	 *            The value of the <code>FutureInt</code>
+	 */
+	public FutureInt(int value) {
+		this.value = value;
+		synchronized (this) {
+			this.notifyAll();
+		}
+	}
 
-  /**
-   * Checks whether the <code>value</code> has been set or not.
-   * 
-   * @return <code>true</code> iff the <code>value</code> has been set.
-   */
-  public boolean isDone() {
-    if(value==-1) return false;
-    return true;
-  }
+	/**
+	 * Checks whether the <code>value</code> has been set or not.
+	 * 
+	 * @return <code>true</code> iff the <code>value</code> has been set.
+	 */
+	public boolean isDone() {
+		if (value == -1)
+			return false;
+		return true;
+	}
 
-  /**
-   * Sets the value and awake all those were waiting on it.
-   * 
-   * @param value the value to set.
-   */
-  public void setValue(int value) {
-    this.value = value;
-    synchronized(this) {
-      this.notifyAll();
-    }
-  }
+	/**
+	 * Sets the value and awake all those were waiting on it.
+	 * 
+	 * @param value
+	 *            the value to set.
+	 */
+	public void setValue(int value) {
+		this.value = value;
+		synchronized (this) {
+			this.notifyAll();
+		}
+	}
 
-  /**
-   * Gets the value of the FutureInt. This method is blocking until
-   * <code>FutureInt.isDone</code> == <code>true</code>.
-   * 
-   * @return the value
-   */
-  public int getValue() {
-    if(!this.isDone()) try {
-      synchronized(this) {
-        this.wait();
-      }
-    } catch(InterruptedException e) {
-      e.printStackTrace();
-    }
-    return value;
-  }
+	/**
+	 * Gets the value of the FutureInt. This method is blocking until
+	 * <code>FutureInt.isDone</code> == <code>true</code>.
+	 * 
+	 * @return the value
+	 */
+	public int getValue() {
+		if (!this.isDone())
+			try {
+				synchronized (this) {
+					this.wait();
+				}
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		return value;
+	}
 
-  /**
-   * Decrements of 1 the value of the FutureInt. This method is blocking until
-   * <code>FutureInt.isDone</code> == <code>true</code>.
-   */
-  public void decrement() {
-    if(!this.isDone()) try {
-      synchronized(this) {
-        this.wait();
-      }
-    } catch(InterruptedException e) {}
-    value--;
-  }
+	/**
+	 * Decrements of 1 the value of the FutureInt. This method is blocking until
+	 * <code>FutureInt.isDone</code> == <code>true</code>.
+	 */
+	public void decrement() {
+		if (!this.isDone())
+			try {
+				synchronized (this) {
+					this.wait();
+				}
+			} catch (InterruptedException e) {
+			}
+		value--;
+	}
 }

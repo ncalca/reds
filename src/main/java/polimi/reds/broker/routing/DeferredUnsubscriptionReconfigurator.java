@@ -38,121 +38,126 @@ public class DeferredUnsubscriptionReconfigurator implements Reconfigurator {
 	/**
 	 * The local router.
 	 */
-	  protected Router router;
-	  /**
-	   * The logger
-	   */
-	  protected Logger logger;
-	  private final static int DEFER_TIMEOUT = 3000;
-	  /**
-	   * The overlay.
-	   */
-	  protected Overlay overlay = null;
-	  /**
-	   * Create a new <code>DeferredUnsubscriptionReconfigurator</code>.
-	   *
-	   */
-	  public DeferredUnsubscriptionReconfigurator() {
-	    logger = Logger.getLogger("polimi.reds.Reconfigurator");
-	  }
-
-	  /**
-	   * @see Reconfigurator#setRouter(Router)
-	   */
-	  public void setRouter(Router router) {
-	    if(this.router==router) return;
-	    this.router = router;
-	  }
-	  /**
-	   * Unsubscribe to all the subscriptions of the removed neighbor.
-	   * @see polimi.reds.broker.overlay.NeighborRemovedListener#signalNeighborRemoved(NodeDescriptor)
-	   */
-	public void signalNeighborRemoved(NodeDescriptor removedNeighbor) {
-		logger.finest("Soft-disconnecting "+removedNeighbor.getID());
-	    // logger.fine("Soft-disconnecting "+neighborID);
-	    // Check if the neighbor exists
-	    if(!overlay.hasNeighbor(removedNeighbor)) {
-	      logger.warning(removedNeighbor.getID()
-	          +" is not known, ignoring call to softDisconnect.");
-	      return;
-	    }
-	    // Remove all the subscription of the neighbor
-	    router.unsubscribeAll(removedNeighbor);
-	}
+	protected Router router;
 	/**
-	 * If the new neighbor is a broker subscribe the new neighbor to all the necessary filters.
+	 * The logger
+	 */
+	protected Logger logger;
+	private final static int DEFER_TIMEOUT = 3000;
+	/**
+	 * The overlay.
+	 */
+	protected Overlay overlay = null;
+
+	/**
+	 * Create a new <code>DeferredUnsubscriptionReconfigurator</code>.
+	 * 
+	 */
+	public DeferredUnsubscriptionReconfigurator() {
+		logger = Logger.getLogger("polimi.reds.Reconfigurator");
+	}
+
+	/**
+	 * @see Reconfigurator#setRouter(Router)
+	 */
+	public void setRouter(Router router) {
+		if (this.router == router)
+			return;
+		this.router = router;
+	}
+
+	/**
+	 * Unsubscribe to all the subscriptions of the removed neighbor.
+	 * 
+	 * @see polimi.reds.broker.overlay.NeighborRemovedListener#signalNeighborRemoved(NodeDescriptor)
+	 */
+	public void signalNeighborRemoved(NodeDescriptor removedNeighbor) {
+		logger.finest("Soft-disconnecting " + removedNeighbor.getID());
+		// logger.fine("Soft-disconnecting "+neighborID);
+		// Check if the neighbor exists
+		if (!overlay.hasNeighbor(removedNeighbor)) {
+			logger.warning(removedNeighbor.getID() + " is not known, ignoring call to softDisconnect.");
+			return;
+		}
+		// Remove all the subscription of the neighbor
+		router.unsubscribeAll(removedNeighbor);
+	}
+
+	/**
+	 * If the new neighbor is a broker subscribe the new neighbor to all the
+	 * necessary filters.
 	 */
 	public void signalNeighborAdded(NodeDescriptor newNeighbor) {
 		logger.finest("Neighbor added: " + newNeighbor.toString());
-		//Connects a new neighbor to this broker.
-	    if(newNeighbor.isBroker()) {
-	      // forward local subscriptions to the new neighboring broker
-	      Iterator it = router.getSubscriptionTable().getAllFiltersExcept(false, newNeighbor)
-	          .iterator();
-	      while(it.hasNext())
-			try {
-				overlay.send(Router.SUBSCRIBE,(Filter)it.next(), newNeighbor);
-			} catch (NotConnectedException e) {
-				logger.warning("Error while connecting to "+newNeighbor.getID()
-			              +", the broker is now disconnected.");
-			}
-	    }
-		
+		// Connects a new neighbor to this broker.
+		if (newNeighbor.isBroker()) {
+			// forward local subscriptions to the new neighboring broker
+			Iterator it = router.getSubscriptionTable().getAllFiltersExcept(false, newNeighbor).iterator();
+			while (it.hasNext())
+				try {
+					overlay.send(Router.SUBSCRIBE, (Filter) it.next(), newNeighbor);
+				} catch (NotConnectedException e) {
+					logger.warning("Error while connecting to " + newNeighbor.getID()
+							+ ", the broker is now disconnected.");
+				}
+		}
+
 	}
+
 	/**
 	 * Manages the brutal disconnection of the given neighbor.
-	 * @param deadNeighbor the dead neighbor
+	 * 
+	 * @param deadNeighbor
+	 *            the dead neighbor
 	 */
 	public void signalNeighborDead(NodeDescriptor deadNeighbor) {
-		logger.finest("Hard-disconnecting "+deadNeighbor);
-	    // Check if the neighbor exists
-		if(deadNeighbor== null)
+		logger.finest("Hard-disconnecting " + deadNeighbor);
+		// Check if the neighbor exists
+		if (deadNeighbor == null)
 			return;
-	    if(!overlay.hasNeighbor(deadNeighbor)) {
-	      logger.warning(deadNeighbor.getID()
-	          +" is not known, ignoring call to hardDisconnect.");
-	      return;
-	    }
-	    // Is this broker an end-point (a leaf) of the tree?
-	    if(overlay.numberOfBrokers()==1) {
-	      // This disconnecting neighbor is a leaf: the hardDisconnect should
-	      // behave like a softDisconnect
-	      logger.fine(deadNeighbor.getID()
-	          +" is a leaf: hardDisconnect behaves like softDisconnect");
-	      signalNeighborRemoved(deadNeighbor);
-	      return;
-	    }
-	    // Locally unsubscription of the disconnected neighbor
-	    SubscriptionTable subscriptionTable = router.getSubscriptionTable();
-	    if(!subscriptionTable.isSubscribed(deadNeighbor)) {
-	      return;
-	    }
-	    // Store the filters in a local buffer for the deferred forwarding
-	    Collection tempBuffer = new ArrayList(subscriptionTable
-	        .getAllFilters(deadNeighbor));
-	    // Update the local subscription table, removing the above filters from the
-	    // local subscription table
-	    subscriptionTable.removeAllSubscriptions(deadNeighbor);
-	    Object x = new Object();
-	    synchronized(x) {
-	      try {
-	        x.wait(DEFER_TIMEOUT);
-	      } catch(InterruptedException e) {
-	        logger.log(Level.SEVERE,
-	            "InterruptedException while waiting for deferred unsubscription.");
-	      }
-	    }
-	    // The timeout expires: forwards the unsubscription, using the temporary
-	    // buffer
-	    Iterator it = tempBuffer.iterator();
-	    while(it.hasNext()) {
-	      router.unsubscribe(deadNeighbor, (Filter) it.next());
-	    }		
+		if (!overlay.hasNeighbor(deadNeighbor)) {
+			logger.warning(deadNeighbor.getID() + " is not known, ignoring call to hardDisconnect.");
+			return;
+		}
+		// Is this broker an end-point (a leaf) of the tree?
+		if (overlay.numberOfBrokers() == 1) {
+			// This disconnecting neighbor is a leaf: the hardDisconnect should
+			// behave like a softDisconnect
+			logger.fine(deadNeighbor.getID() + " is a leaf: hardDisconnect behaves like softDisconnect");
+			signalNeighborRemoved(deadNeighbor);
+			return;
+		}
+		// Locally unsubscription of the disconnected neighbor
+		SubscriptionTable subscriptionTable = router.getSubscriptionTable();
+		if (!subscriptionTable.isSubscribed(deadNeighbor)) {
+			return;
+		}
+		// Store the filters in a local buffer for the deferred forwarding
+		Collection tempBuffer = new ArrayList(subscriptionTable.getAllFilters(deadNeighbor));
+		// Update the local subscription table, removing the above filters from
+		// the
+		// local subscription table
+		subscriptionTable.removeAllSubscriptions(deadNeighbor);
+		Object x = new Object();
+		synchronized (x) {
+			try {
+				x.wait(DEFER_TIMEOUT);
+			} catch (InterruptedException e) {
+				logger.log(Level.SEVERE, "InterruptedException while waiting for deferred unsubscription.");
+			}
+		}
+		// The timeout expires: forwards the unsubscription, using the temporary
+		// buffer
+		Iterator it = tempBuffer.iterator();
+		while (it.hasNext()) {
+			router.unsubscribe(deadNeighbor, (Filter) it.next());
+		}
 	}
 
 	/**
 	 * Get the router.
-	 * @return  the local router
+	 * 
+	 * @return the local router
 	 */
 	public Router getRouter() {
 		return router;
@@ -160,7 +165,9 @@ public class DeferredUnsubscriptionReconfigurator implements Reconfigurator {
 
 	/**
 	 * Set the overlay.
-	 * @param o the overlay
+	 * 
+	 * @param o
+	 *            the overlay
 	 */
 	public void setOverlay(Overlay o) {
 		overlay = o;
@@ -171,6 +178,7 @@ public class DeferredUnsubscriptionReconfigurator implements Reconfigurator {
 
 	/**
 	 * Get the overlay.
+	 * 
 	 * @return the overlay
 	 */
 	public Overlay getOverlay() {

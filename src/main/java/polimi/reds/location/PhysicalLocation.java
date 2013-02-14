@@ -24,37 +24,40 @@ package polimi.reds.location;
  * A physical location in a geode, represented by a latitude and a longitude.
  */
 public class PhysicalLocation implements Location {
-  /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -658916060646033079L;
-protected double latitude;
-  protected double longitude;
+	protected double latitude;
+	protected double longitude;
 
-  /**
-   * Creaes a new location which represent the point of given latitude and
-   * longitde.
-   * 
-   * @param latitude the latitude of the new location.
-   * @param longitude the longitude of the new location.
-   */
-  public PhysicalLocation(double latitude, double longitude) {
-    this.latitude = latitude;
-    this.longitude = longitude;
-  }
+	/**
+	 * Creaes a new location which represent the point of given latitude and
+	 * longitde.
+	 * 
+	 * @param latitude
+	 *            the latitude of the new location.
+	 * @param longitude
+	 *            the longitude of the new location.
+	 */
+	public PhysicalLocation(double latitude, double longitude) {
+		this.latitude = latitude;
+		this.longitude = longitude;
+	}
 
-  public boolean equals(Object obj) {
-    if(obj instanceof PhysicalLocation) {
-      PhysicalLocation l = (PhysicalLocation) obj;
-      return latitude==l.latitude&&longitude==l.longitude;
-    } else return false;
-  }
+	public boolean equals(Object obj) {
+		if (obj instanceof PhysicalLocation) {
+			PhysicalLocation l = (PhysicalLocation) obj;
+			return latitude == l.latitude && longitude == l.longitude;
+		} else
+			return false;
+	}
 
-  public int hashCode() {
-    return (int) Math.round(latitude+longitude);
-  }
-  
-  public String toString() {
-    return "<"+latitude+","+longitude+">";
-  }
+	public int hashCode() {
+		return (int) Math.round(latitude + longitude);
+	}
+
+	public String toString() {
+		return "<" + latitude + "," + longitude + ">";
+	}
 }

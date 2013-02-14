@@ -37,25 +37,27 @@ public class CARouter extends AbstractRouter {
 
 	private ContextTable contextTable;
 
-	public CARouter( Overlay overlay, RoutingStrategy routingStrategy, SubscriptionTable subscriptionTable, ContextTable contextTable ) {
-		super( overlay, routingStrategy, subscriptionTable );
+	public CARouter(Overlay overlay, RoutingStrategy routingStrategy, SubscriptionTable subscriptionTable,
+			ContextTable contextTable) {
+		super(overlay, routingStrategy, subscriptionTable);
 		this.contextTable = contextTable;
 
-		overlay.addPacketListener( this, CARouter.UPDATE_CONTEXT );
+		overlay.addPacketListener(this, CARouter.UPDATE_CONTEXT);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.AbstractRouter#customProcessPacket(java.lang.String,
-	 *      polimi.reds.NodeDescriptor, java.io.Serializable)
+	 * @see
+	 * polimi.reds.context.routing.AbstractRouter#customProcessPacket(java.lang
+	 * .String, polimi.reds.NodeDescriptor, java.io.Serializable)
 	 */
 	@Override
-	protected void customProcessPacket( String subject, NodeDescriptor sender, Serializable payload ) {
-		if ( subject.equals( CARouter.UPDATE_CONTEXT ) ) {
+	protected void customProcessPacket(String subject, NodeDescriptor sender, Serializable payload) {
+		if (subject.equals(CARouter.UPDATE_CONTEXT)) {
 			ContextSet newContextSet = (ContextSet) payload;
-			this.logger.fine( "New Context received:\n" +  newContextSet.toString() );
-			( (CASubscriptionForwardingRoutingStratgy) routingStrategy ).signalNewContextReceived( sender, newContextSet );
+			this.logger.fine("New Context received:\n" + newContextSet.toString());
+			((CASubscriptionForwardingRoutingStratgy) routingStrategy).signalNewContextReceived(sender, newContextSet);
 		}
 
 	}
@@ -78,9 +80,8 @@ public class CARouter extends AbstractRouter {
 	 * @param newContextSet
 	 *            the new node context
 	 */
-	public void signalNewContextReceived( NodeDescriptor node, ContextSet newContextSet ) {
-		( (CASubscriptionForwardingRoutingStratgy) this.routingStrategy ).signalNewContextReceived( node, newContextSet );
+	public void signalNewContextReceived(NodeDescriptor node, ContextSet newContextSet) {
+		((CASubscriptionForwardingRoutingStratgy) this.routingStrategy).signalNewContextReceived(node, newContextSet);
 	}
-
 
 }

@@ -95,26 +95,24 @@ public class PropertyRange extends Property {
 		public String toString() {
 			return "ANY";
 		}
-		
+
 		@Override
-		public boolean equals( Object obj ) {
-			if ( obj == null ) {
+		public boolean equals(Object obj) {
+			if (obj == null) {
 				return false;
 			}
-			if ( !( this.getClass().equals( obj.getClass() ) ) ) {
+			if (!(this.getClass().equals(obj.getClass()))) {
 				return false;
 			}
-			
+
 			return true;
-			
+
 		}
-		
+
 	}
-	
-	
+
 	protected int operator;
-	
-	
+
 	/**
 	 * Returns the operator of this attribute
 	 * 
@@ -124,9 +122,7 @@ public class PropertyRange extends Property {
 		return this.operator;
 	}
 
-	
-
-	private void init( String name, int dataType, int operator, Object value ) {
+	private void init(String name, int dataType, int operator, Object value) {
 		this.name = name;
 		this.dataType = dataType;
 		this.operator = operator;
@@ -140,10 +136,10 @@ public class PropertyRange extends Property {
 	 *            the condition to clone
 	 * @return the cloned condition
 	 */
-	public PropertyRange ( PropertyRange p ) {
-		this( p.name, p.dataType, p.operator, p.value );
+	public PropertyRange(PropertyRange p) {
+		this(p.name, p.dataType, p.operator, p.value);
 	}
-	
+
 	/**
 	 * Clone the condition c
 	 * 
@@ -151,10 +147,9 @@ public class PropertyRange extends Property {
 	 *            the condition to clone
 	 * @return the cloned condition
 	 */
-	public PropertyRange( Property p ) {
-		this( p.getName(), p.getDataType(), EQUALS, p.getValue() );
+	public PropertyRange(Property p) {
+		this(p.getName(), p.getDataType(), EQUALS, p.getValue());
 	}
-	
 
 	/**
 	 * Create a new condition with the specified params
@@ -169,73 +164,71 @@ public class PropertyRange extends Property {
 	 *            the value
 	 * @return a new condition with the specified params
 	 */
-	public PropertyRange( String name, int dataType, int operator, Object value ) {
+	public PropertyRange(String name, int dataType, int operator, Object value) {
 
-		if ( ( operator == EQUALS ) && ( PropertyRange.ANY.equals( value ) ) ) {
-			this.init( name, dataType, operator, value );
+		if ((operator == EQUALS) && (PropertyRange.ANY.equals(value))) {
+			this.init(name, dataType, operator, value);
 			return;
 		}
 
-		switch ( dataType ) {
-			case ( Property.INTEGER          ): {
-				if ( operator > 10 ) {
-					throw new IllegalOperatorException();
-				}
-
-				if ( ( operator <= 3 ) || ( operator == 10 ) ) {
-					if ( !( value instanceof Integer ) ) {
-						throw new IllegalValueException();
-					}
-				}
-
-				else if ( operator > 3 ) {
-					if ( !( value instanceof Interval ) ) {
-						throw new IllegalValueException();
-					}
-				}
-				break;
+		switch (dataType) {
+		case (Property.INTEGER): {
+			if (operator > 10) {
+				throw new IllegalOperatorException();
 			}
 
-			case ( Property.REAL         ): {
-				if ( operator > 10 ) {
-					throw new IllegalOperatorException();
-				}
-
-				if ( ( operator <= 3 ) || ( operator == 10 ) ) {
-					if ( !( value instanceof Double ) ) {
-						throw new IllegalValueException();
-					}
-				}
-
-				else if ( operator > 3 ) {
-					if ( !( value instanceof Interval ) ) {
-						throw new IllegalValueException();
-					}
-				}
-				break;
-			}
-
-			case ( Property.STRING       ): {
-				if ( operator < 10 ) {
-					throw new IllegalOperatorException();
-				}
-
-				if ( !( value instanceof String ) ) {
+			if ((operator <= 3) || (operator == 10)) {
+				if (!(value instanceof Integer)) {
 					throw new IllegalValueException();
 				}
-				break;
 			}
 
-			default: {
-				throw new IllegalDataTypeException();
+			else if (operator > 3) {
+				if (!(value instanceof Interval)) {
+					throw new IllegalValueException();
+				}
 			}
+			break;
 		}
 
-		this.init( name, dataType, operator, value );
+		case (Property.REAL): {
+			if (operator > 10) {
+				throw new IllegalOperatorException();
+			}
+
+			if ((operator <= 3) || (operator == 10)) {
+				if (!(value instanceof Double)) {
+					throw new IllegalValueException();
+				}
+			}
+
+			else if (operator > 3) {
+				if (!(value instanceof Interval)) {
+					throw new IllegalValueException();
+				}
+			}
+			break;
+		}
+
+		case (Property.STRING): {
+			if (operator < 10) {
+				throw new IllegalOperatorException();
+			}
+
+			if (!(value instanceof String)) {
+				throw new IllegalValueException();
+			}
+			break;
+		}
+
+		default: {
+			throw new IllegalDataTypeException();
+		}
+		}
+
+		this.init(name, dataType, operator, value);
 
 	}
-
-
 
 	/**
 	 * Creates a new PropertyRange with ANY as value
@@ -246,8 +239,8 @@ public class PropertyRange extends Property {
 	 *            the data type
 	 * @return
 	 */
-	public static PropertyRange CreatePropertyRangeANY ( String name, int dataType ) {
-		return new PropertyRange( name, dataType, EQUALS, ANY );
+	public static PropertyRange CreatePropertyRangeANY(String name, int dataType) {
+		return new PropertyRange(name, dataType, EQUALS, ANY);
 	}
 
 	/**
@@ -257,225 +250,220 @@ public class PropertyRange extends Property {
 	 *            the other condition
 	 * @return true is this overlaps c2
 	 */
-	public boolean isSatifiedBy( Condition condition ) {
-		
+	public boolean isSatifiedBy(Condition condition) {
+
 		String conditionName = condition.getName();
 		int conditionDataType = condition.getDataType();
 		int conditionOperator = condition.getOperator();
 		Object conditionValue = condition.getValue();
-		
-		if ( ( conditionOperator == Condition.EQUALS ) && ( Condition.ANY.equals( conditionValue  ) ) ) {
-			conditionValue = PropertyRange.ANY;			
+
+		if ((conditionOperator == Condition.EQUALS) && (Condition.ANY.equals(conditionValue))) {
+			conditionValue = PropertyRange.ANY;
 		}
-		
-		
-		PropertyRange otherPropertyRange = new PropertyRange(conditionName, conditionDataType, conditionOperator, conditionValue);
-		
-		if ( !this.name.equals( otherPropertyRange.name ) ) {
+
+		PropertyRange otherPropertyRange = new PropertyRange(conditionName, conditionDataType, conditionOperator,
+				conditionValue);
+
+		if (!this.name.equals(otherPropertyRange.name)) {
 			return false;
 		}
 
-		if ( this.dataType != otherPropertyRange.dataType ) {
+		if (this.dataType != otherPropertyRange.dataType) {
 			return false;
 		}
 
-		if ( Util.isOneANY( this, otherPropertyRange ) ) {
+		if (Util.isOneANY(this, otherPropertyRange)) {
 			return true;
 		}
 
-		if ( this.dataType == Property.STRING ) {
-			return overlapsStrings( otherPropertyRange );
+		if (this.dataType == Property.STRING) {
+			return overlapsStrings(otherPropertyRange);
 		}
-		if ( ( this.dataType == Property.REAL ) || ( this.dataType == Property.INTEGER ) ) {
-			return overlapsNumbers( otherPropertyRange );
+		if ((this.dataType == Property.REAL) || (this.dataType == Property.INTEGER)) {
+			return overlapsNumbers(otherPropertyRange);
 		}
 
 		throw new IllegalArgumentException();
 
 	}
 
-	private boolean overlapsNumbers( PropertyRange c2 ) {
+	private boolean overlapsNumbers(PropertyRange c2) {
 
-		if ( Util.isOneOperator( EQUALS, this, c2 ) ) {
+		if (Util.isOneOperator(EQUALS, this, c2)) {
 
 			PropertyRange conditionWithEQUALS;
 			PropertyRange otherPropertyRange;
 
-			if ( this.operator == EQUALS ) {
+			if (this.operator == EQUALS) {
 				conditionWithEQUALS = this;
 				otherPropertyRange = c2;
-			}
-			else {
+			} else {
 				conditionWithEQUALS = c2;
 				otherPropertyRange = this;
 			}
 
-			double valueEquals = Util.getDoubleValue( conditionWithEQUALS );
+			double valueEquals = Util.getDoubleValue(conditionWithEQUALS);
 
-			switch ( otherPropertyRange.operator ) {
+			switch (otherPropertyRange.operator) {
 
-				case ( EQUALS ): {
-					if ( valueEquals != Util.getDoubleValue( otherPropertyRange ) )
-						return false;
-					break;
-				}
+			case (EQUALS): {
+				if (valueEquals != Util.getDoubleValue(otherPropertyRange))
+					return false;
+				break;
+			}
 
-				case ( LOWER ): {
-					if ( valueEquals >= Util.getDoubleValue( otherPropertyRange ) )
-						return false;
-					break;
-				}
+			case (LOWER): {
+				if (valueEquals >= Util.getDoubleValue(otherPropertyRange))
+					return false;
+				break;
+			}
 
-				case ( GREATER ): {
-					if ( valueEquals <= Util.getDoubleValue( otherPropertyRange ) )
-						return false;
-					break;
-				}
+			case (GREATER): {
+				if (valueEquals <= Util.getDoubleValue(otherPropertyRange))
+					return false;
+				break;
+			}
 
-				case ( NOT_EQUALS ): {
-					if ( valueEquals == Util.getDoubleValue( otherPropertyRange ) )
-						return false;
-					break;
-				}
+			case (NOT_EQUALS): {
+				if (valueEquals == Util.getDoubleValue(otherPropertyRange))
+					return false;
+				break;
+			}
 
-				case ( INNER ): {
-					double lower = ( (Interval<Double>) otherPropertyRange.value ).getLowerDouble();
-					double upper = ( (Interval<Double>) otherPropertyRange.value ).getUpperDouble();
+			case (INNER): {
+				double lower = ((Interval<Double>) otherPropertyRange.value).getLowerDouble();
+				double upper = ((Interval<Double>) otherPropertyRange.value).getUpperDouble();
 
-					if ( ( valueEquals < lower ) || ( valueEquals > upper ) )
-						return false;
-					break;
-				}
+				if ((valueEquals < lower) || (valueEquals > upper))
+					return false;
+				break;
+			}
 
-				case ( NOT_INNER ): {
-					double lower = ( (Interval<Double>) otherPropertyRange.value ).getLowerDouble();
-					double upper = ( (Interval<Double>) otherPropertyRange.value ).getUpperDouble();
+			case (NOT_INNER): {
+				double lower = ((Interval<Double>) otherPropertyRange.value).getLowerDouble();
+				double upper = ((Interval<Double>) otherPropertyRange.value).getUpperDouble();
 
-					if ( ( lower < valueEquals ) && ( valueEquals < upper ) )
-						return false;
-					break;
-				}
+				if ((lower < valueEquals) && (valueEquals < upper))
+					return false;
+				break;
+			}
 			}
 		}
 
-		else if ( Util.isOneOperator( LOWER, this, c2 ) ) {
+		else if (Util.isOneOperator(LOWER, this, c2)) {
 			PropertyRange conditionWithLOWER;
 			PropertyRange otherPropertyRange;
 
-			if ( this.operator == LOWER ) {
+			if (this.operator == LOWER) {
 				conditionWithLOWER = this;
 				otherPropertyRange = c2;
-			}
-			else {
+			} else {
 				conditionWithLOWER = c2;
 				otherPropertyRange = this;
 			}
 
-			double doubleLower = Util.getDoubleValue( conditionWithLOWER );
+			double doubleLower = Util.getDoubleValue(conditionWithLOWER);
 
-			switch ( otherPropertyRange.operator ) {
+			switch (otherPropertyRange.operator) {
 
-				case ( GREATER ): {
-					if ( doubleLower <= Util.getDoubleValue( otherPropertyRange ) )
-						return false;
-					break;
-				}
+			case (GREATER): {
+				if (doubleLower <= Util.getDoubleValue(otherPropertyRange))
+					return false;
+				break;
+			}
 
-				case ( INNER ): {
-					double lower = ( (Interval<Double>) otherPropertyRange.value ).getLowerDouble();
+			case (INNER): {
+				double lower = ((Interval<Double>) otherPropertyRange.value).getLowerDouble();
 
-					if ( doubleLower <= lower )
-						return false;
-					break;
-				}
+				if (doubleLower <= lower)
+					return false;
+				break;
+			}
 
 			}
 		}
 
-		else if ( Util.isOneOperator( GREATER, this, c2 ) ) {
+		else if (Util.isOneOperator(GREATER, this, c2)) {
 			PropertyRange conditionWithGREATER;
 			PropertyRange otherPropertyRange;
 
-			if ( this.operator == GREATER ) {
+			if (this.operator == GREATER) {
 				conditionWithGREATER = this;
 				otherPropertyRange = c2;
-			}
-			else {
+			} else {
 				conditionWithGREATER = c2;
 				otherPropertyRange = this;
 			}
 
-			double doubleGreater = Util.getDoubleValue( conditionWithGREATER );
+			double doubleGreater = Util.getDoubleValue(conditionWithGREATER);
 
-			if ( otherPropertyRange.operator == INNER ) {
-				double upper = ( (Interval<Double>) otherPropertyRange.value ).getUpperDouble();
+			if (otherPropertyRange.operator == INNER) {
+				double upper = ((Interval<Double>) otherPropertyRange.value).getUpperDouble();
 
-				if ( doubleGreater >= upper )
+				if (doubleGreater >= upper)
 					return false;
 			}
 
 		}
 
-		else if ( Util.isOneOperator( NOT_EQUALS, this, c2 ) ) {
+		else if (Util.isOneOperator(NOT_EQUALS, this, c2)) {
 			PropertyRange conditionNotEquals;
 			PropertyRange otherPropertyRange;
 
-			if ( this.operator == NOT_EQUALS ) {
+			if (this.operator == NOT_EQUALS) {
 				conditionNotEquals = this;
 				otherPropertyRange = c2;
-			}
-			else {
+			} else {
 				conditionNotEquals = c2;
 				otherPropertyRange = this;
 			}
 
-			double doubleNotEquals = Util.getDoubleValue( conditionNotEquals );
+			double doubleNotEquals = Util.getDoubleValue(conditionNotEquals);
 
-			switch ( otherPropertyRange.operator ) {
-				case ( INNER ): {
-					double lower = ( (Interval<Double>) otherPropertyRange.value ).getLowerDouble();
-					double upper = ( (Interval<Double>) otherPropertyRange.value ).getUpperDouble();
+			switch (otherPropertyRange.operator) {
+			case (INNER): {
+				double lower = ((Interval<Double>) otherPropertyRange.value).getLowerDouble();
+				double upper = ((Interval<Double>) otherPropertyRange.value).getUpperDouble();
 
-					if ( ( doubleNotEquals == lower ) && ( doubleNotEquals == upper ) )
-						return false;
-					break;
-				}
+				if ((doubleNotEquals == lower) && (doubleNotEquals == upper))
+					return false;
+				break;
+			}
 			}
 		}
 
-		else if ( Util.isOneOperator( INNER, this, c2 ) ) {
+		else if (Util.isOneOperator(INNER, this, c2)) {
 			PropertyRange conditionWithINTERNO_A;
 			PropertyRange otherPropertyRange;
 
-			if ( this.operator == INNER ) {
+			if (this.operator == INNER) {
 				conditionWithINTERNO_A = this;
 				otherPropertyRange = c2;
-			}
-			else {
+			} else {
 				conditionWithINTERNO_A = c2;
 				otherPropertyRange = this;
 			}
-			double lower = ( (Interval<Double>) conditionWithINTERNO_A.value ).getLowerDouble();
-			double upper = ( (Interval<Double>) conditionWithINTERNO_A.value ).getUpperDouble();
+			double lower = ((Interval<Double>) conditionWithINTERNO_A.value).getLowerDouble();
+			double upper = ((Interval<Double>) conditionWithINTERNO_A.value).getUpperDouble();
 
-			switch ( otherPropertyRange.operator ) {
-				case ( INNER ): {
-					double otherLower = ( (Interval<Double>) otherPropertyRange.value ).getLowerDouble();
-					double otherUpper = ( (Interval<Double>) otherPropertyRange.value ).getUpperDouble();
+			switch (otherPropertyRange.operator) {
+			case (INNER): {
+				double otherLower = ((Interval<Double>) otherPropertyRange.value).getLowerDouble();
+				double otherUpper = ((Interval<Double>) otherPropertyRange.value).getUpperDouble();
 
-					if ( ( upper < otherLower ) || ( lower > otherUpper ) )
-						return false;
-					break;
+				if ((upper < otherLower) || (lower > otherUpper))
+					return false;
+				break;
 
-				}
-				case ( NOT_INNER ): {
-					double otherLower = ( (Interval<Double>) otherPropertyRange.value ).getLowerDouble();
-					double otherUpper = ( (Interval<Double>) otherPropertyRange.value ).getUpperDouble();
+			}
+			case (NOT_INNER): {
+				double otherLower = ((Interval<Double>) otherPropertyRange.value).getLowerDouble();
+				double otherUpper = ((Interval<Double>) otherPropertyRange.value).getUpperDouble();
 
-					if ( ( lower > otherLower ) && ( upper < otherUpper ) )
-						return false;
-					break;
-				}
+				if ((lower > otherLower) && (upper < otherUpper))
+					return false;
+				break;
+			}
 
 			}
 		}
@@ -483,45 +471,44 @@ public class PropertyRange extends Property {
 		return true;
 	}
 
-	private boolean overlapsStrings( PropertyRange c2 ) {
+	private boolean overlapsStrings(PropertyRange c2) {
 		String s1 = (String) this.value;
 		String s2 = (String) c2.value;
 
-		if ( Util.hasSameOperator( this, c2 ) ) {
+		if (Util.hasSameOperator(this, c2)) {
 			int sameOperator = this.operator;
 
-			String shortString = Util.getShortString( s1, s2 );
-			String longString = Util.getLongString( s1, s2 );
+			String shortString = Util.getShortString(s1, s2);
+			String longString = Util.getLongString(s1, s2);
 
-			switch ( sameOperator ) {
-				case ( STARTS_WITH ): {
-					if ( !longString.startsWith( shortString ) )
-						return false;
-					break;
-				}
-				case ( ENDS_WITH ): {
-					if ( !longString.endsWith( shortString ) )
-						return false;
-					break;
-				}
-				case ( EQUALS ): {
-					if ( !longString.equals( shortString ) )
-						return false;
-					break;
-				}
+			switch (sameOperator) {
+			case (STARTS_WITH): {
+				if (!longString.startsWith(shortString))
+					return false;
+				break;
+			}
+			case (ENDS_WITH): {
+				if (!longString.endsWith(shortString))
+					return false;
+				break;
+			}
+			case (EQUALS): {
+				if (!longString.equals(shortString))
+					return false;
+				break;
+			}
 			}
 		}
 
-		else if ( Util.isOneOperator( EQUALS, this, c2 ) ) {
+		else if (Util.isOneOperator(EQUALS, this, c2)) {
 
 			PropertyRange conditionWithEQUALS;
 			PropertyRange otherPropertyRange;
 
-			if ( this.operator == EQUALS ) {
+			if (this.operator == EQUALS) {
 				conditionWithEQUALS = this;
 				otherPropertyRange = c2;
-			}
-			else {
+			} else {
 				conditionWithEQUALS = c2;
 				otherPropertyRange = this;
 			}
@@ -529,22 +516,22 @@ public class PropertyRange extends Property {
 			String stringEquals = (String) conditionWithEQUALS.value;
 			String otherString = (String) otherPropertyRange.value;
 
-			switch ( otherPropertyRange.operator ) {
-				case ( STARTS_WITH ): {
-					if ( !stringEquals.startsWith( otherString ) )
-						return false;
-					break;
-				}
-				case ( ENDS_WITH ): {
-					if ( !stringEquals.endsWith( otherString ) )
-						return false;
-					break;
-				}
-				case ( CONTAINS ): {
-					if ( !stringEquals.contains( otherString ) )
-						return false;
-					break;
-				}
+			switch (otherPropertyRange.operator) {
+			case (STARTS_WITH): {
+				if (!stringEquals.startsWith(otherString))
+					return false;
+				break;
+			}
+			case (ENDS_WITH): {
+				if (!stringEquals.endsWith(otherString))
+					return false;
+				break;
+			}
+			case (CONTAINS): {
+				if (!stringEquals.contains(otherString))
+					return false;
+				break;
+			}
 			}
 		}
 
@@ -556,25 +543,25 @@ public class PropertyRange extends Property {
 	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
-	public boolean equals( Object o ) {
-		if ( o == null ) {
+	public boolean equals(Object o) {
+		if (o == null) {
 			return false;
 		}
-		if ( !( this.getClass().equals( o.getClass() ) ) ) {
+		if (!(this.getClass().equals(o.getClass()))) {
 			return false;
 		}
 
 		PropertyRange other = (PropertyRange) o;
-		if ( !this.name.equals( other.name ) ) {
+		if (!this.name.equals(other.name)) {
 			return false;
 		}
-		if ( this.dataType != other.dataType ) {
+		if (this.dataType != other.dataType) {
 			return false;
 		}
-		if ( !this.value.equals( other.value ) ) {
+		if (!this.value.equals(other.value)) {
 			return false;
 		}
-		if ( this.operator != other.operator ) {
+		if (this.operator != other.operator) {
 			return false;
 		}
 
@@ -588,8 +575,8 @@ public class PropertyRange extends Property {
 	 * @param r
 	 * @return true is this has the same structure o
 	 */
-	public boolean isStructuralEqualsTo( PropertyRange r ) {
-		return ( ( this.dataType == r.dataType ) && ( this.name.equals( r.name ) ) );
+	public boolean isStructuralEqualsTo(PropertyRange r) {
+		return ((this.dataType == r.dataType) && (this.name.equals(r.name)));
 	}
 
 	@Override
@@ -605,427 +592,385 @@ public class PropertyRange extends Property {
 	 *            the other condition
 	 * @return the relation beetween this and the other condition
 	 */
-	public ComparisonResult compareTo( PropertyRange oldPropertyRange ) {
-		if ( !this.name.equals( oldPropertyRange.name ) ) {
+	public ComparisonResult compareTo(PropertyRange oldPropertyRange) {
+		if (!this.name.equals(oldPropertyRange.name)) {
 			return ComparisonResult.NOT_COMPARABLE;
 		}
 
-		if ( this.dataType != oldPropertyRange.dataType ) {
+		if (this.dataType != oldPropertyRange.dataType) {
 			return ComparisonResult.NOT_COMPARABLE;
 		}
 
-		if ( Util.isANY( oldPropertyRange ) ) {
-			if ( Util.isANY( this ) ) {
+		if (Util.isANY(oldPropertyRange)) {
+			if (Util.isANY(this)) {
 				return ComparisonResult.EQUALS;
-			}
-			else {
+			} else {
 				return ComparisonResult.SMALLER;
 			}
 		}
 
-		if ( Util.isANY( this ) && !Util.isANY( oldPropertyRange ) ) {
+		if (Util.isANY(this) && !Util.isANY(oldPropertyRange)) {
 			return ComparisonResult.BIGGER;
 		}
 
-		if ( this.dataType == Property.STRING ) {
-			return compareString( oldPropertyRange );
+		if (this.dataType == Property.STRING) {
+			return compareString(oldPropertyRange);
 		}
 
-		if ( this.dataType == Property.REAL ) {
-			return compareReal( this, oldPropertyRange );
+		if (this.dataType == Property.REAL) {
+			return compareReal(this, oldPropertyRange);
 		}
 
-		if ( this.dataType == Property.INTEGER ) {
+		if (this.dataType == Property.INTEGER) {
 
-			PropertyRange thisPropertyRange = transformIntegerToRealPropertyRange( this );
-			PropertyRange otherPropertyRange = transformIntegerToRealPropertyRange( oldPropertyRange );
+			PropertyRange thisPropertyRange = transformIntegerToRealPropertyRange(this);
+			PropertyRange otherPropertyRange = transformIntegerToRealPropertyRange(oldPropertyRange);
 
-			return compareReal( thisPropertyRange, otherPropertyRange );
+			return compareReal(thisPropertyRange, otherPropertyRange);
 		}
 
 		throw new IllegalArgumentException();
 	}
 
-	private PropertyRange transformIntegerToRealPropertyRange( PropertyRange integerPropertyRange ) {
+	private PropertyRange transformIntegerToRealPropertyRange(PropertyRange integerPropertyRange) {
 		PropertyRange otherPropertyRange = null;
 
-		if ( ( integerPropertyRange.operator == INNER ) || ( integerPropertyRange.operator == NOT_INNER ) ) {
+		if ((integerPropertyRange.operator == INNER) || (integerPropertyRange.operator == NOT_INNER)) {
 			Interval<Integer> integerBounds = (Interval<Integer>) integerPropertyRange.value;
-			Interval<Double> otherDoubleValue = new Interval<Double>( integerBounds.getLower().doubleValue(), integerBounds.getUpper().doubleValue() );
-			otherPropertyRange = new PropertyRange( integerPropertyRange.name, Property.REAL, integerPropertyRange.operator, otherDoubleValue );
-		}
-		else {
-			Double otherDoubleValue = new Double( ( (Integer) integerPropertyRange.value ).intValue() );
-			otherPropertyRange = new PropertyRange( integerPropertyRange.name, Property.REAL, integerPropertyRange.operator, otherDoubleValue );
+			Interval<Double> otherDoubleValue = new Interval<Double>(integerBounds.getLower().doubleValue(),
+					integerBounds.getUpper().doubleValue());
+			otherPropertyRange = new PropertyRange(integerPropertyRange.name, Property.REAL,
+					integerPropertyRange.operator, otherDoubleValue);
+		} else {
+			Double otherDoubleValue = new Double(((Integer) integerPropertyRange.value).intValue());
+			otherPropertyRange = new PropertyRange(integerPropertyRange.name, Property.REAL,
+					integerPropertyRange.operator, otherDoubleValue);
 		}
 		return otherPropertyRange;
 	}
 
-	private static ComparisonResult compareReal( PropertyRange newPropertyRange, PropertyRange oldPropertyRange ) {
+	private static ComparisonResult compareReal(PropertyRange newPropertyRange, PropertyRange oldPropertyRange) {
 
-		if ( newPropertyRange.operator == EQUALS ) {
-			double newValue = ( (Double) newPropertyRange.value ).doubleValue();
+		if (newPropertyRange.operator == EQUALS) {
+			double newValue = ((Double) newPropertyRange.value).doubleValue();
 
-			if ( oldPropertyRange.operator == EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
+			if (oldPropertyRange.operator == EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
 
-				if ( oldValue == newValue ) {
+				if (oldValue == newValue) {
 					return ComparisonResult.EQUALS;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == LOWER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
+			if (oldPropertyRange.operator == LOWER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
 
-				if ( oldValue > newValue ) {
+				if (oldValue > newValue) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == GREATER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
+			if (oldPropertyRange.operator == GREATER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
 
-				if ( oldValue < newValue ) {
+				if (oldValue < newValue) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue != oldValue ) {
+			if (oldPropertyRange.operator == NOT_EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue != oldValue) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == INNER ) {
+			if (oldPropertyRange.operator == INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( ( oldValue.getLower() <= newValue ) && ( newValue <= oldValue.getUpper() ) ) {
+				if ((oldValue.getLower() <= newValue) && (newValue <= oldValue.getUpper())) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_INNER ) {
+			if (oldPropertyRange.operator == NOT_INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
 
-				if ( ( oldValue.getLower() <= newValue ) && ( newValue <= oldValue.getUpper() ) ) {
+				if ((oldValue.getLower() <= newValue) && (newValue <= oldValue.getUpper())) {
 					return ComparisonResult.NOT_COMPARABLE;
-				}
-				else {
+				} else {
 					return ComparisonResult.SMALLER;
 				}
 			}
 
 		}
 
-		if ( newPropertyRange.operator == LOWER ) {
-			double newValue = ( (Double) newPropertyRange.value ).doubleValue();
-			if ( oldPropertyRange.operator == EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
+		if (newPropertyRange.operator == LOWER) {
+			double newValue = ((Double) newPropertyRange.value).doubleValue();
+			if (oldPropertyRange.operator == EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
 
-				if ( newValue > oldValue ) {
+				if (newValue > oldValue) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 
 			}
-			if ( oldPropertyRange.operator == LOWER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
+			if (oldPropertyRange.operator == LOWER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
 
-				if ( oldValue == newValue ) {
+				if (oldValue == newValue) {
 					return ComparisonResult.EQUALS;
-				}
-				else if ( oldValue < newValue ) {
+				} else if (oldValue < newValue) {
 					return ComparisonResult.BIGGER;
-				}
-				else if ( oldValue > newValue ) {
+				} else if (oldValue > newValue) {
 					return ComparisonResult.SMALLER;
 				}
 
 			}
-			if ( oldPropertyRange.operator == GREATER ) {
+			if (oldPropertyRange.operator == GREATER) {
 				return ComparisonResult.NOT_COMPARABLE;
 			}
-			if ( oldPropertyRange.operator == NOT_EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue <= oldValue ) {
+			if (oldPropertyRange.operator == NOT_EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue <= oldValue) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 
 			}
-			if ( oldPropertyRange.operator == INNER ) {
+			if (oldPropertyRange.operator == INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( newValue >= oldValue.getUpper() ) {
+				if (newValue >= oldValue.getUpper()) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_INNER ) {
+			if (oldPropertyRange.operator == NOT_INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( newValue <= oldValue.getLower() ) {
+				if (newValue <= oldValue.getLower()) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
 		}
 
-		if ( newPropertyRange.operator == GREATER ) {
-			double newValue = ( (Double) newPropertyRange.value ).doubleValue();
-			if ( oldPropertyRange.operator == EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue < oldValue ) {
+		if (newPropertyRange.operator == GREATER) {
+			double newValue = ((Double) newPropertyRange.value).doubleValue();
+			if (oldPropertyRange.operator == EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue < oldValue) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == LOWER ) {
+			if (oldPropertyRange.operator == LOWER) {
 				return ComparisonResult.NOT_COMPARABLE;
 			}
-			if ( oldPropertyRange.operator == GREATER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue == oldValue ) {
+			if (oldPropertyRange.operator == GREATER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue == oldValue) {
 					return ComparisonResult.EQUALS;
-				}
-				else if ( newValue > oldValue ) {
+				} else if (newValue > oldValue) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.BIGGER;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue >= oldValue ) {
+			if (oldPropertyRange.operator == NOT_EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue >= oldValue) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == INNER ) {
+			if (oldPropertyRange.operator == INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( newValue < oldValue.getLower() ) {
+				if (newValue < oldValue.getLower()) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_INNER ) {
+			if (oldPropertyRange.operator == NOT_INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( newValue >= oldValue.getUpper() ) {
+				if (newValue >= oldValue.getUpper()) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
 		}
 
-		if ( newPropertyRange.operator == NOT_EQUALS ) {
-			double newValue = ( (Double) newPropertyRange.value ).doubleValue();
-			if ( oldPropertyRange.operator == EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( oldValue == newValue ) {
+		if (newPropertyRange.operator == NOT_EQUALS) {
+			double newValue = ((Double) newPropertyRange.value).doubleValue();
+			if (oldPropertyRange.operator == EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (oldValue == newValue) {
 					return ComparisonResult.NOT_COMPARABLE;
-				}
-				else {
+				} else {
 					return ComparisonResult.BIGGER;
 				}
 			}
-			if ( oldPropertyRange.operator == LOWER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue >= oldValue ) {
+			if (oldPropertyRange.operator == LOWER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue >= oldValue) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == GREATER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( newValue <= oldValue ) {
+			if (oldPropertyRange.operator == GREATER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (newValue <= oldValue) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( oldValue == newValue ) {
+			if (oldPropertyRange.operator == NOT_EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (oldValue == newValue) {
 					return ComparisonResult.EQUALS;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == INNER ) {
+			if (oldPropertyRange.operator == INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( ( newValue < oldValue.getLower() ) || ( newValue > oldValue.getUpper() ) ) {
+				if ((newValue < oldValue.getLower()) || (newValue > oldValue.getUpper())) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_INNER ) {
+			if (oldPropertyRange.operator == NOT_INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( ( oldValue.getLower() <= newValue ) && ( newValue <= oldValue.getUpper() ) ) {
+				if ((oldValue.getLower() <= newValue) && (newValue <= oldValue.getUpper())) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
 		}
 
-		if ( newPropertyRange.operator == INNER ) {
+		if (newPropertyRange.operator == INNER) {
 			Interval<Double> newValue = (Interval<Double>) newPropertyRange.value;
-			if ( oldPropertyRange.operator == EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( ( newValue.getLower() <= oldValue ) && ( oldValue <= newValue.getUpper() ) ) {
+			if (oldPropertyRange.operator == EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if ((newValue.getLower() <= oldValue) && (oldValue <= newValue.getUpper())) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					{
 						return ComparisonResult.NOT_COMPARABLE;
 					}
 				}
 			}
-			if ( oldPropertyRange.operator == LOWER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( oldValue >= newValue.getUpper() ) {
+			if (oldPropertyRange.operator == LOWER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (oldValue >= newValue.getUpper()) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == GREATER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( oldValue <= newValue.getLower() ) {
+			if (oldPropertyRange.operator == GREATER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (oldValue <= newValue.getLower()) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( ( oldValue < newValue.getLower() ) || ( newValue.getUpper() < oldValue ) ) {
+			if (oldPropertyRange.operator == NOT_EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if ((oldValue < newValue.getLower()) || (newValue.getUpper() < oldValue)) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == INNER ) {
+			if (oldPropertyRange.operator == INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( oldValue.equals( newValue ) ) {
+				if (oldValue.equals(newValue)) {
 					return ComparisonResult.EQUALS;
-				}
-				else if ( ( oldValue.getLower() <= newValue.getLower() )
-							&& ( oldValue.getUpper() >= newValue.getUpper() ) ) {
+				} else if ((oldValue.getLower() <= newValue.getLower()) && (oldValue.getUpper() >= newValue.getUpper())) {
 					return ComparisonResult.SMALLER;
-				}
-				else if ( ( oldValue.getLower() >= newValue.getLower() )
-							&& ( oldValue.getUpper() <= newValue.getUpper() ) ) {
+				} else if ((oldValue.getLower() >= newValue.getLower()) && (oldValue.getUpper() <= newValue.getUpper())) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_INNER ) {
+			if (oldPropertyRange.operator == NOT_INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( ( newValue.getUpper() <= oldValue.getLower() || ( newValue.getLower() >= newValue.getUpper() ) ) ) {
+				if ((newValue.getUpper() <= oldValue.getLower() || (newValue.getLower() >= newValue.getUpper()))) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
 		}
-		if ( newPropertyRange.operator == NOT_INNER ) {
+		if (newPropertyRange.operator == NOT_INNER) {
 			Interval<Double> newValue = (Interval<Double>) newPropertyRange.value;
-			if ( oldPropertyRange.operator == EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( ( oldValue >= newValue.getUpper() ) || ( oldValue <= newValue.getLower() ) ) {
+			if (oldPropertyRange.operator == EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if ((oldValue >= newValue.getUpper()) || (oldValue <= newValue.getLower())) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == LOWER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( oldValue <= newValue.getLower() ) {
+			if (oldPropertyRange.operator == LOWER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (oldValue <= newValue.getLower()) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == GREATER ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( oldValue >= newValue.getUpper() ) {
+			if (oldPropertyRange.operator == GREATER) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if (oldValue >= newValue.getUpper()) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == NOT_EQUALS ) {
-				double oldValue = ( (Double) oldPropertyRange.value ).doubleValue();
-				if ( ( newValue.getLower() <= oldValue ) && ( oldValue <= newValue.getUpper() ) ) {
+			if (oldPropertyRange.operator == NOT_EQUALS) {
+				double oldValue = ((Double) oldPropertyRange.value).doubleValue();
+				if ((newValue.getLower() <= oldValue) && (oldValue <= newValue.getUpper())) {
 					return ComparisonResult.SMALLER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
-			if ( oldPropertyRange.operator == INNER ) {
+			if (oldPropertyRange.operator == INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( ( oldValue.getUpper() <= newValue.getLower() ) || ( oldValue.getLower() >= newValue.getUpper() ) ) {
+				if ((oldValue.getUpper() <= newValue.getLower()) || (oldValue.getLower() >= newValue.getUpper())) {
 					return ComparisonResult.BIGGER;
 				}
 				return ComparisonResult.NOT_COMPARABLE;
 			}
-			if ( oldPropertyRange.operator == NOT_INNER ) {
+			if (oldPropertyRange.operator == NOT_INNER) {
 				Interval<Double> oldValue = (Interval<Double>) oldPropertyRange.value;
-				if ( oldValue.equals( newValue ) ) {
+				if (oldValue.equals(newValue)) {
 					return ComparisonResult.EQUALS;
-				}
-				else if ( ( newValue.getLower() <= oldValue.getLower() )
-							&& ( newValue.getUpper() >= oldValue.getUpper() ) ) {
+				} else if ((newValue.getLower() <= oldValue.getLower()) && (newValue.getUpper() >= oldValue.getUpper())) {
 					return ComparisonResult.SMALLER;
-				}
-				else if ( ( newValue.getLower() >= oldValue.getLower() )
-							&& ( newValue.getUpper() <= oldValue.getUpper() ) ) {
+				} else if ((newValue.getLower() >= oldValue.getLower()) && (newValue.getUpper() <= oldValue.getUpper())) {
 					return ComparisonResult.BIGGER;
-				}
-				else {
+				} else {
 					return ComparisonResult.NOT_COMPARABLE;
 				}
 			}
@@ -1033,164 +978,143 @@ public class PropertyRange extends Property {
 		throw new IllegalArgumentException();
 	}
 
-	private ComparisonResult compareString( PropertyRange oldPropertyRange ) {
+	private ComparisonResult compareString(PropertyRange oldPropertyRange) {
 		String newString = (String) this.value;
 		String oldString = (String) oldPropertyRange.value;
 
-		if ( oldPropertyRange.operator == EQUALS ) {
-			switch ( this.operator ) {
-				case ( EQUALS ): {
-					if ( newString.equals( oldString ) ) {
-						return ComparisonResult.EQUALS;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-				case ( STARTS_WITH ): {
-					if ( oldString.startsWith( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-
-				case ( ENDS_WITH ): {
-					if ( oldString.endsWith( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-
-				case ( CONTAINS ): {
-					if ( oldString.contains( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-
-			}
-		}
-
-		else if ( oldPropertyRange.operator == STARTS_WITH ) {
-			switch ( this.operator ) {
-				case ( EQUALS ): {
-					if ( newString.startsWith( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-				case ( STARTS_WITH ): {
-					if ( newString.equals( oldString ) ) {
-						return ComparisonResult.EQUALS;
-					}
-					else if ( newString.startsWith( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else if ( oldString.startsWith( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-
-				case ( ENDS_WITH ): {
+		if (oldPropertyRange.operator == EQUALS) {
+			switch (this.operator) {
+			case (EQUALS): {
+				if (newString.equals(oldString)) {
+					return ComparisonResult.EQUALS;
+				} else
 					return ComparisonResult.NOT_COMPARABLE;
-				}
-
-				case ( CONTAINS ): {
-					if ( oldString.contains( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-
-				}
-
 			}
-		}
-
-		else if ( oldPropertyRange.operator == ENDS_WITH ) {
-			switch ( this.operator ) {
-				case ( EQUALS ): {
-					if ( newString.endsWith( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-				case ( STARTS_WITH ): {
+			case (STARTS_WITH): {
+				if (oldString.startsWith(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
 					return ComparisonResult.NOT_COMPARABLE;
-				}
+			}
 
-				case ( ENDS_WITH ): {
-					if ( newString.equals( oldString ) ) {
-						return ComparisonResult.EQUALS;
-					}
-					else if ( newString.endsWith( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else if ( oldString.endsWith( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
+			case (ENDS_WITH): {
+				if (oldString.endsWith(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
 
-				case ( CONTAINS ): {
-					if ( oldString.contains( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
+			case (CONTAINS): {
+				if (oldString.contains(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
 
 			}
 		}
 
-		else if ( oldPropertyRange.operator == CONTAINS ) {
-			switch ( this.operator ) {
-				case ( EQUALS ): {
-					if ( newString.contains( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
-				case ( STARTS_WITH ): {
-					if ( newString.contains( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else if ( oldString.contains( newString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
+		else if (oldPropertyRange.operator == STARTS_WITH) {
+			switch (this.operator) {
+			case (EQUALS): {
+				if (newString.startsWith(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+			case (STARTS_WITH): {
+				if (newString.equals(oldString)) {
+					return ComparisonResult.EQUALS;
+				} else if (newString.startsWith(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else if (oldString.startsWith(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
 
-				case ( ENDS_WITH ): {
-					if ( newString.contains( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else if ( oldString.contains( newString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
+			case (ENDS_WITH): {
+				return ComparisonResult.NOT_COMPARABLE;
+			}
 
-				case ( CONTAINS ): {
-					if ( oldString.contains( newString ) ) {
-						return ComparisonResult.BIGGER;
-					}
-					else if ( newString.contains( oldString ) ) {
-						return ComparisonResult.SMALLER;
-					}
-					else
-						return ComparisonResult.NOT_COMPARABLE;
-				}
+			case (CONTAINS): {
+				if (oldString.contains(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+
+			}
+
+			}
+		}
+
+		else if (oldPropertyRange.operator == ENDS_WITH) {
+			switch (this.operator) {
+			case (EQUALS): {
+				if (newString.endsWith(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+			case (STARTS_WITH): {
+				return ComparisonResult.NOT_COMPARABLE;
+			}
+
+			case (ENDS_WITH): {
+				if (newString.equals(oldString)) {
+					return ComparisonResult.EQUALS;
+				} else if (newString.endsWith(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else if (oldString.endsWith(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+
+			case (CONTAINS): {
+				if (oldString.contains(newString)) {
+					return ComparisonResult.BIGGER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+
+			}
+		}
+
+		else if (oldPropertyRange.operator == CONTAINS) {
+			switch (this.operator) {
+			case (EQUALS): {
+				if (newString.contains(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+			case (STARTS_WITH): {
+				if (newString.contains(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else if (oldString.contains(newString)) {
+					return ComparisonResult.SMALLER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+
+			case (ENDS_WITH): {
+				if (newString.contains(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else if (oldString.contains(newString)) {
+					return ComparisonResult.SMALLER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
+
+			case (CONTAINS): {
+				if (oldString.contains(newString)) {
+					return ComparisonResult.BIGGER;
+				} else if (newString.contains(oldString)) {
+					return ComparisonResult.SMALLER;
+				} else
+					return ComparisonResult.NOT_COMPARABLE;
+			}
 
 			}
 		}
@@ -1199,6 +1123,3 @@ public class PropertyRange extends Property {
 	}
 
 }
-
-	
-

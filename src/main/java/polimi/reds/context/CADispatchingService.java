@@ -35,18 +35,18 @@ public interface CADispatchingService extends DispatchingService {
 	 * @param destinationContext
 	 *            the required receiver context
 	 */
-	public void publish( Message msg, ContextFilter destinationContext );
+	public void publish(Message msg, ContextFilter destinationContext);
 
 	/**
-	 * Subscribe the client to messages matched by <tt>filter</tt> whose
-	 * sender context is matched by <tt>senderContext</tt>
+	 * Subscribe the client to messages matched by <tt>filter</tt> whose sender
+	 * context is matched by <tt>senderContext</tt>
 	 * 
 	 * @param filter
 	 *            the message filter
 	 * @param senderContext
 	 *            the required sender context
 	 */
-	public void subscribe( Filter filter, ContextFilter senderContext );
+	public void subscribe(Filter filter, ContextFilter senderContext);
 
 	/**
 	 * Unsubscribe for messages matched by the pair <tt>filter</tt>-
@@ -57,7 +57,7 @@ public interface CADispatchingService extends DispatchingService {
 	 * @param senderContext
 	 *            the required sender context
 	 */
-	public void unsubscribe( Filter filter, ContextFilter senderContext );
+	public void unsubscribe(Filter filter, ContextFilter senderContext);
 
 	/**
 	 * Set the client context
@@ -65,6 +65,6 @@ public interface CADispatchingService extends DispatchingService {
 	 * @param context
 	 *            the context
 	 */
-	public void setContext( Context context );
+	public void setContext(Context context);
 
 }

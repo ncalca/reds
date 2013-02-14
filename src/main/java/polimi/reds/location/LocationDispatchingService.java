@@ -29,52 +29,62 @@ import polimi.reds.DispatchingService;
  * publish-subscribe services.
  */
 public interface LocationDispatchingService extends DispatchingService {
-  /**
-   * Subscribes to messages matching the given filter published by clients
-   * located within the given zone.
-   * 
-   * @param filter the <code>Filter</code> used to determine the messages the
-   *          client is interested in.
-   * @param zone the zone the publishing client must be in for its messages to
-   *          match.
-   */
-  public void subscribe(Filter filter, Zone zone);
+	/**
+	 * Subscribes to messages matching the given filter published by clients
+	 * located within the given zone.
+	 * 
+	 * @param filter
+	 *            the <code>Filter</code> used to determine the messages the
+	 *            client is interested in.
+	 * @param zone
+	 *            the zone the publishing client must be in for its messages to
+	 *            match.
+	 */
+	public void subscribe(Filter filter, Zone zone);
 
-  /**
-   * Unsubscribes from messages matching the given filter and published by
-   * clients located within the give zone.
-   * 
-   * @param filter the <code>Filter</code> used to determine the messages the
-   *          client is no more interested in.
-   * @param zone the zone where the publishing client resides.
-   */
-  public void unsubscribe(Filter filter, Zone zone);
+	/**
+	 * Unsubscribes from messages matching the given filter and published by
+	 * clients located within the give zone.
+	 * 
+	 * @param filter
+	 *            the <code>Filter</code> used to determine the messages the
+	 *            client is no more interested in.
+	 * @param zone
+	 *            the zone where the publishing client resides.
+	 */
+	public void unsubscribe(Filter filter, Zone zone);
 
-  /**
-   * Publish a new message to subscribers located within the given zone.
-   * 
-   * @param msg the <code>Message</code> to publish.
-   * @param zone the zone the subscribed client must be in for the message to be
-   *          routed toward it.
-   */
-  public void publish(Message msg, Zone zone);
+	/**
+	 * Publish a new message to subscribers located within the given zone.
+	 * 
+	 * @param msg
+	 *            the <code>Message</code> to publish.
+	 * @param zone
+	 *            the zone the subscribed client must be in for the message to
+	 *            be routed toward it.
+	 */
+	public void publish(Message msg, Zone zone);
 
-  /**
-   * Sets the current client location, informing the dispatching service.
-   * 
-   * @param loc the current location of the client.
-   */
-  public void setLocation(Location loc);
-  /**
-   * @see DispatchingService#getNextMessage()
-   */
-  public Message getNextMessage();
-  /**
-   * @see DispatchingService#getNextMessage(Filter)
-   */
-  public Message getNextMessage(Filter f);
-  /**
-   * @see DispatchingService#getNextMessage(long)
-   */
-  public Message getNextMessage(long timeout);
+	/**
+	 * Sets the current client location, informing the dispatching service.
+	 * 
+	 * @param loc
+	 *            the current location of the client.
+	 */
+	public void setLocation(Location loc);
+
+	/**
+	 * @see DispatchingService#getNextMessage()
+	 */
+	public Message getNextMessage();
+
+	/**
+	 * @see DispatchingService#getNextMessage(Filter)
+	 */
+	public Message getNextMessage(Filter f);
+
+	/**
+	 * @see DispatchingService#getNextMessage(long)
+	 */
+	public Message getNextMessage(long timeout);
 }

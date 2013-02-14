@@ -23,19 +23,24 @@ package polimi.reds.broker.overlay;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the discover of a new neighbor.<br>
- * Users implement the <code>NeighborAddedListener</code> interface and register their listeners using the 
- * <code>AddNeighborAddedListener</code> method. The users should also remove their listeners after they have completed using the 
+ * This interface is the primary method for being notified about the discover of
+ * a new neighbor.<br>
+ * Users implement the <code>NeighborAddedListener</code> interface and register
+ * their listeners using the <code>AddNeighborAddedListener</code> method. The
+ * users should also remove their listeners after they have completed using the
  * listener.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
-public interface NeighborAddedListener{
+public interface NeighborAddedListener {
 
 	/**
 	 * This method is called whenever a neighbor of the local node appears.
-	 * @param newNeighbor the <code>NodeDescriptor</code> of the new neighbor
+	 * 
+	 * @param newNeighbor
+	 *            the <code>NodeDescriptor</code> of the new neighbor
 	 */
 	public void signalNeighborAdded(NodeDescriptor newNeighbor);
-	
+
 }

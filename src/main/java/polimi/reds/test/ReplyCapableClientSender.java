@@ -20,60 +20,61 @@
 
 package polimi.reds.test;
 
-
 import polimi.reds.DispatchingService;
 import polimi.reds.Message;
 import polimi.reds.MessageID;
 import polimi.reds.TCPDispatchingService;
 import polimi.reds.UDPDispatchingService;
+
 /**
- * Starts a client which publishes messages and waits for replies. It tests the Dispatching
- * Service and the broker. It uses both UDP and TCP.
+ * Starts a client which publishes messages and waits for replies. It tests the
+ * Dispatching Service and the broker. It uses both UDP and TCP.
  */
 public class ReplyCapableClientSender {
 	private static String TCP = "reds-tcp";
 	private static String UDP = "reds-udp";
 	public static int NUMBER_OF_MESSAGES = 2;
+
 	public static void main(String[] args) {
-		if (args.length == 0){
-			System.err.println(
-		      "USAGE: java polimi.reds.examples.reply.ReplyCapableSubjectClientSender <brokerUrl> [<localPort>]");
-		    System.exit(0);
+		if (args.length == 0) {
+			System.err
+					.println("USAGE: java polimi.reds.examples.reply.ReplyCapableSubjectClientSender <brokerUrl> [<localPort>]");
+			System.exit(0);
 		}
 		DispatchingService ds = null;
 		String urlFragments[] = args[0].split(":");
 		if (urlFragments[0].equals(TCP))
-		  ds =  new TCPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]));
-		else if(urlFragments[0].equals(UDP))
-		  ds = new UDPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]), Integer.parseInt(args[1]));
-		else{
+			ds = new TCPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]));
+		else if (urlFragments[0].equals(UDP))
+			ds = new UDPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]),
+					Integer.parseInt(args[1]));
+		else {
 			System.err.println("Malformed url");
 			System.exit(-1);
 		}
-		try{
+		try {
 			ds.open();
 			System.out.println("ds open");
 			MessageID[] ids = new MessageID[NUMBER_OF_MESSAGES];
 			RepliableTextMessage msg = new RepliableTextMessage("prova");
-			for (int i = 0; i<NUMBER_OF_MESSAGES; i++){
-			  msg.setTemp("ciao"+i);
-			  ds.publish(msg);
-			  ids[i] = msg.getID();
-			  
+			for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
+				msg.setTemp("ciao" + i);
+				ds.publish(msg);
+				ids[i] = msg.getID();
+
 			}
 			System.out.println("publish ok");
-			for (int i =0; i<NUMBER_OF_MESSAGES; i++){
+			for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
 				Message r = ds.getNextReply(ids[i]);
-				if (r != null){
-					System.out.println(((RepliableTextMessage)r).getData());
-					System.out.println(((RepliableTextMessage)r).getTemp());
-				}
-				else System.out.println("r null");
+				if (r != null) {
+					System.out.println(((RepliableTextMessage) r).getData());
+					System.out.println(((RepliableTextMessage) r).getTemp());
+				} else
+					System.out.println("r null");
 			}
 			ds.close();
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 }
-

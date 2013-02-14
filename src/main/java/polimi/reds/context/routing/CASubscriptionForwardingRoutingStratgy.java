@@ -52,31 +52,35 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 
 	public CASubscriptionForwardingRoutingStratgy() {
 		super();
-		logger = Logger.getLogger( "polimi.reds.CAReconfigurator" );
+		logger = Logger.getLogger("polimi.reds.CAReconfigurator");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.RoutingStrategy#setRouter(polimi.reds.broker.routing.Router)
+	 * @see
+	 * polimi.reds.broker.routing.RoutingStrategy#setRouter(polimi.reds.broker
+	 * .routing.Router)
 	 */
-	public void setRouter( Router router ) {
-		if ( !( router instanceof CARouter ) ) {
-			throw new IllegalArgumentException( "Router must be a ContextRouter" );
+	public void setRouter(Router router) {
+		if (!(router instanceof CARouter)) {
+			throw new IllegalArgumentException("Router must be a ContextRouter");
 		}
 		this.caRouter = (CARouter) router;
 	}
 
-	public void setViewSendingStrategy( ViewSendingStrategy viewSendingStrategy ) {
+	public void setViewSendingStrategy(ViewSendingStrategy viewSendingStrategy) {
 		this.viewSendingStrategy = viewSendingStrategy;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.RoutingStrategy#setOverlay(polimi.reds.broker.overlay.Overlay)
+	 * @see
+	 * polimi.reds.broker.routing.RoutingStrategy#setOverlay(polimi.reds.broker
+	 * .overlay.Overlay)
 	 */
-	public void setOverlay( Overlay overlay ) {
+	public void setOverlay(Overlay overlay) {
 		this.overlay = overlay;
 	}
 
@@ -92,20 +96,20 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.RoutingStrategy#subscribe(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.Filter)
+	 * @see polimi.reds.broker.routing.RoutingStrategy#subscribe(polimi.reds.
+	 * NodeDescriptor, polimi.reds.Filter)
 	 */
-	public void subscribe( NodeDescriptor sender, Filter filter ) {
+	public void subscribe(NodeDescriptor sender, Filter filter) {
 
-		logger.fine( sender.getID() + " subscribed" );
-		if ( !( filter instanceof CAFilter ) ) {
-			throw new IllegalArgumentException( "Filter must be a ContextFilter" );
+		logger.fine(sender.getID() + " subscribed");
+		if (!(filter instanceof CAFilter)) {
+			throw new IllegalArgumentException("Filter must be a ContextFilter");
 		}
 		CAFilter caFilter = (CAFilter) filter;
 
 		SubscriptionTable subscriptionTable = caRouter.getSubscriptionTable();
-		if ( !subscriptionTable.isFilterInTable( caFilter ) ) {
-			forwardToAllExcept( caFilter, sender, Router.SUBSCRIBE );
+		if (!subscriptionTable.isFilterInTable(caFilter)) {
+			forwardToAllExcept(caFilter, sender, Router.SUBSCRIBE);
 		}
 
 		else {
@@ -115,15 +119,14 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 			// Se ne ho pi di uno, sono gi un punto di passaggio, quindi i
 			// mess mi arrivano gi
 			ContextTable contextTable = caRouter.getContextTable();
-			NodeDescriptor singleNode = (NodeDescriptor) subscriptionTable.getSingleSubscribedBroker( caFilter );
+			NodeDescriptor singleNode = (NodeDescriptor) subscriptionTable.getSingleSubscribedBroker(caFilter);
 
-			if ( singleNode != null && !singleNode.equals( sender ) )
-				if ( contextTable.getContextReceived( singleNode ).isMatchedBy( caFilter.getContextFilter() ) )
+			if (singleNode != null && !singleNode.equals(sender))
+				if (contextTable.getContextReceived(singleNode).isMatchedBy(caFilter.getContextFilter()))
 					try {
-						overlay.send( Router.SUBSCRIBE, caFilter, singleNode );
-					}
-					catch ( NotConnectedException e ) {
-						// TODO: se  necessario, mettere il logger
+						overlay.send(Router.SUBSCRIBE, caFilter, singleNode);
+					} catch (NotConnectedException e) {
+						// TODO: se necessario, mettere il logger
 					}
 		}
 
@@ -131,7 +134,7 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 
 		// if ( !( subscriptionTable.getSubscribedNeighbors( contextFilter
 		// ).contains( sender ) ) ) {
-		subscriptionTable.addSubscription( sender, caFilter );
+		subscriptionTable.addSubscription(sender, caFilter);
 		// }
 
 	}
@@ -139,33 +142,31 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.RoutingStrategy#unsubscribe(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.Filter)
+	 * @see polimi.reds.broker.routing.RoutingStrategy#unsubscribe(polimi.reds.
+	 * NodeDescriptor, polimi.reds.Filter)
 	 */
-	public void unsubscribe( NodeDescriptor source, Filter filter ) {
-		if ( !( filter instanceof CAFilter ) ) {
-			throw new IllegalArgumentException( "Filter must be a ContextFilter" );
+	public void unsubscribe(NodeDescriptor source, Filter filter) {
+		if (!(filter instanceof CAFilter)) {
+			throw new IllegalArgumentException("Filter must be a ContextFilter");
 		}
 		CAFilter contextFilter = (CAFilter) filter;
 
 		SubscriptionTable subscriptionTable = caRouter.getSubscriptionTable();
-		subscriptionTable.removeSubscription( source, contextFilter );
+		subscriptionTable.removeSubscription(source, contextFilter);
 
-		if ( !subscriptionTable.isFilterInTable( contextFilter ) ) {
-			forwardToAllExcept( contextFilter, source, Router.UNSUBSCRIBE );
-		}
-		else {
+		if (!subscriptionTable.isFilterInTable(contextFilter)) {
+			forwardToAllExcept(contextFilter, source, Router.UNSUBSCRIBE);
+		} else {
 			// FIXME: cambiare la lingua
-			// Se  rimasto un solo interessato, devo avvisarlo di non
+			// Se rimasto un solo interessato, devo avvisarlo di non
 			// inoltrarmi pi i suoi mess
-			// Se ce n' pi di uno,  perch sono un punto di passaggio, quindi
+			// Se ce n' pi di uno, perch sono un punto di passaggio, quindi
 			// devo continuare a fare da ponte
-			NodeDescriptor node = (NodeDescriptor) subscriptionTable.getSingleSubscribedBroker( filter );
-			if ( node != null )
+			NodeDescriptor node = (NodeDescriptor) subscriptionTable.getSingleSubscribedBroker(filter);
+			if (node != null)
 				try {
-					overlay.send( Router.UNSUBSCRIBE, filter, node );
-				}
-				catch ( NotConnectedException e ) {
+					overlay.send(Router.UNSUBSCRIBE, filter, node);
+				} catch (NotConnectedException e) {
 				}
 		}
 	}
@@ -173,54 +174,56 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.RoutingStrategy#unsubscribeAll(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.broker.routing.RoutingStrategy#unsubscribeAll(polimi.reds
+	 * .NodeDescriptor)
 	 */
 	@SuppressWarnings("unchecked")
-	public void unsubscribeAll( NodeDescriptor neighbor ) {
+	public void unsubscribeAll(NodeDescriptor neighbor) {
 		SubscriptionTable subscriptionTable = caRouter.getSubscriptionTable();
-		Collection neighborFilters = subscriptionTable.getAllFilters( neighbor );
-		if ( neighborFilters != null && !neighborFilters.isEmpty() ) {
-			Iterator it = new ArrayList( neighborFilters ).iterator();
-			while ( it.hasNext() )
-				unsubscribe( neighbor, (Filter) it.next() );
+		Collection neighborFilters = subscriptionTable.getAllFilters(neighbor);
+		if (neighborFilters != null && !neighborFilters.isEmpty()) {
+			Iterator it = new ArrayList(neighborFilters).iterator();
+			while (it.hasNext())
+				unsubscribe(neighbor, (Filter) it.next());
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.RoutingStrategy#publish(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.Message)
+	 * @see
+	 * polimi.reds.broker.routing.RoutingStrategy#publish(polimi.reds.NodeDescriptor
+	 * , polimi.reds.Message)
 	 */
-	public FutureInt publish( NodeDescriptor source, Message message ) {
+	public FutureInt publish(NodeDescriptor source, Message message) {
 
-		if ( !( message instanceof CAMessage ) ) {
+		if (!(message instanceof CAMessage)) {
 			return null;
 		}
 
-		int messagesSent = forwardToAllInterestedNeighborExcept( (CAMessage) message, source );
-		return new FutureInt( messagesSent );
+		int messagesSent = forwardToAllInterestedNeighborExcept((CAMessage) message, source);
+		return new FutureInt(messagesSent);
 	}
 
-	private void forwardToAllExcept( CAFilter filter, NodeDescriptor sender, String action ) {
-		List neighbors = overlay.getAllNeighborsExcept( sender );
+	private void forwardToAllExcept(CAFilter filter, NodeDescriptor sender, String action) {
+		List neighbors = overlay.getAllNeighborsExcept(sender);
 		ContextTable contextTable = caRouter.getContextTable();
 
-		if ( neighbors != null ) {
+		if (neighbors != null) {
 			NodeDescriptor node;
 			Iterator it = neighbors.iterator();
-			while ( it.hasNext() ) {
+			while (it.hasNext()) {
 				node = (NodeDescriptor) it.next();
-				if ( node.isBroker() ) {
-					ContextSet cs = contextTable.getContextReceived( node );
+				if (node.isBroker()) {
+					ContextSet cs = contextTable.getContextReceived(node);
 
-					if ( cs.isMatchedBy( filter.getContextFilter() ) ) {
-						logger.finest( "Il " + cs.toString() + "isMatchedBy \n"
-											+ filter.getContextFilter().toString() + " --> Invio il filtro\n" );
+					if (cs.isMatchedBy(filter.getContextFilter())) {
+						logger.finest("Il " + cs.toString() + "isMatchedBy \n" + filter.getContextFilter().toString()
+								+ " --> Invio il filtro\n");
 						try {
-							overlay.send( action, filter, node );
-						}
-						catch ( NotConnectedException e ) {
+							overlay.send(action, filter, node);
+						} catch (NotConnectedException e) {
 							// logger.warning( "Error while forwarding
 							// subscription:
 							// neighbor " + sender.getID()
@@ -232,25 +235,24 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 		}
 	}
 
-	private int forwardToAllInterestedNeighborExcept( CAMessage message, NodeDescriptor source ) {
+	private int forwardToAllInterestedNeighborExcept(CAMessage message, NodeDescriptor source) {
 		SubscriptionTable subscriptionTable = caRouter.getSubscriptionTable();
 		ContextTable contextTable = caRouter.getContextTable();
 
-		Collection interestedNeighbor = subscriptionTable.matches( message, source );
+		Collection interestedNeighbor = subscriptionTable.matches(message, source);
 		Iterator it = interestedNeighbor.iterator();
 
 		int messagesSent = 0;
 		NodeDescriptor node;
-		while ( it.hasNext() ) {
+		while (it.hasNext()) {
 			node = (NodeDescriptor) it.next();
 
-			if ( ( !node.equals( source ) )
-					&& ( contextTable.getContextReceived( node ).isMatchedBy( message.getDestinationContext() ) ) ) {
+			if ((!node.equals(source))
+					&& (contextTable.getContextReceived(node).isMatchedBy(message.getDestinationContext()))) {
 				try {
-					overlay.send( Router.PUBLISH, message, node );
+					overlay.send(Router.PUBLISH, message, node);
 					messagesSent++;
-				}
-				catch ( NotConnectedException e ) {
+				} catch (NotConnectedException e) {
 					// logger.warning( "Error while forwarding message: neighbor
 					// " + source.getID() + " is now disconnected." );
 				}
@@ -269,59 +271,59 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 	 * @param newContextSet
 	 *            the new node context
 	 */
-	public synchronized void signalNewContextReceived( NodeDescriptor node, ContextSet newContextSet ) {
-		logger.fine( "Start update view algorithm " );
-		this.updateContextTable( node, newContextSet );
-		this.executePreActionsForSender( node );
+	public synchronized void signalNewContextReceived(NodeDescriptor node, ContextSet newContextSet) {
+		logger.fine("Start update view algorithm ");
+		this.updateContextTable(node, newContextSet);
+		this.executePreActionsForSender(node);
 
-		this.sendViewToOtherNodes( node );
+		this.sendViewToOtherNodes(node);
 
-		this.executePostActionsForOtherNodes( node );
+		this.executePostActionsForOtherNodes(node);
 	}
 
 	/**
 	 * Updates the contextTable putting the received context set
 	 */
-	private void updateContextTable( NodeDescriptor senderNode, ContextSet newContextSet ) {
+	private void updateContextTable(NodeDescriptor senderNode, ContextSet newContextSet) {
 		ContextTable contextTable = caRouter.getContextTable();
-		contextTable.putContextReceived( senderNode, newContextSet );
+		contextTable.putContextReceived(senderNode, newContextSet);
 	}
 
 	/**
 	 * If the new context matches some subscription then sends them to the node
 	 */
-	private void executePreActionsForSender( NodeDescriptor senderNode ) {
-		if ( senderNode.isBroker() ) {
-			sendAllSubscriptionsMatchedByContext( senderNode );
+	private void executePreActionsForSender(NodeDescriptor senderNode) {
+		if (senderNode.isBroker()) {
+			sendAllSubscriptionsMatchedByContext(senderNode);
 		}
 	}
 
 	/**
 	 * Calls the view sender strategy method <code>sendViewDueToNode</code>
 	 */
-	private void sendViewToOtherNodes( NodeDescriptor senderNode ) {
-		this.viewSendingStrategy.sendViewDueTo( senderNode );
+	private void sendViewToOtherNodes(NodeDescriptor senderNode) {
+		this.viewSendingStrategy.sendViewDueTo(senderNode);
 	}
 
 	/**
 	 * For each node, if the new sent view doesn't match an old subscription
 	 * then remove it from the subscription table
 	 */
-	private void executePostActionsForOtherNodes( NodeDescriptor senderNode ) {
+	private void executePostActionsForOtherNodes(NodeDescriptor senderNode) {
 		SubscriptionTable subscriptionTable = caRouter.getSubscriptionTable();
 		ContextTable contextTable = caRouter.getContextTable();
 
-		for ( NodeDescriptor n : contextTable.getNodes() ) {
-			if ( n.isBroker() && ( !n.equals( senderNode ) ) )
+		for (NodeDescriptor n : contextTable.getNodes()) {
+			if (n.isBroker() && (!n.equals(senderNode)))
 
-				if ( subscriptionTable.isSubscribed( n ) ) {
+				if (subscriptionTable.isSubscribed(n)) {
 
-					ContextSet lastViewSent = contextTable.getContextSent( n );
+					ContextSet lastViewSent = contextTable.getContextSent(n);
 
-					Collection<CAFilter> allSubscriptions = new ArrayList<CAFilter>( subscriptionTable.getAllFilters( n ) );
-					for ( CAFilter subscription : allSubscriptions ) {
-						if ( !lastViewSent.isMatchedBy( subscription.getContextFilter() ) ) {
-							subscriptionTable.removeSubscription( n, subscription );
+					Collection<CAFilter> allSubscriptions = new ArrayList<CAFilter>(subscriptionTable.getAllFilters(n));
+					for (CAFilter subscription : allSubscriptions) {
+						if (!lastViewSent.isMatchedBy(subscription.getContextFilter())) {
+							subscriptionTable.removeSubscription(n, subscription);
 						}
 					}
 				}
@@ -329,23 +331,22 @@ public class CASubscriptionForwardingRoutingStratgy implements RoutingStrategy {
 		}
 	}
 
-	private void sendAllSubscriptionsMatchedByContext( NodeDescriptor receiver ) {
+	private void sendAllSubscriptionsMatchedByContext(NodeDescriptor receiver) {
 		SubscriptionTable subscriptionTable = caRouter.getSubscriptionTable();
 
 		ContextTable contextTable = caRouter.getContextTable();
-		ContextSet receiverContextSet = contextTable.getContextReceived( receiver );
+		ContextSet receiverContextSet = contextTable.getContextReceived(receiver);
 
-		if ( receiverContextSet != null ) {
+		if (receiverContextSet != null) {
 
-			Collection<CAFilter> allSubscriptions = subscriptionTable.getAllFiltersExcept( false, receiver );
-			for ( CAFilter subscription : allSubscriptions ) {
-				if ( receiverContextSet.isMatchedBy( subscription.getContextFilter() ) ) {
-					logger.finer( "Il " + receiverContextSet.toString() + "isMatchedBy \n" + subscription.toString()
-							+ " --> Invio il filtro\n" );
+			Collection<CAFilter> allSubscriptions = subscriptionTable.getAllFiltersExcept(false, receiver);
+			for (CAFilter subscription : allSubscriptions) {
+				if (receiverContextSet.isMatchedBy(subscription.getContextFilter())) {
+					logger.finer("Il " + receiverContextSet.toString() + "isMatchedBy \n" + subscription.toString()
+							+ " --> Invio il filtro\n");
 					try {
-						caRouter.getOverlay().send( Router.SUBSCRIBE, subscription, receiver );
-					}
-					catch ( NotConnectedException e ) {
+						caRouter.getOverlay().send(Router.SUBSCRIBE, subscription, receiver);
+					} catch (NotConnectedException e) {
 						e.printStackTrace();
 					}
 				}

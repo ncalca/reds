@@ -21,16 +21,17 @@
 package polimi.reds;
 
 /**********************************************************************
- * A REDS filter which can be compared with others to determine the most
- * generic one.
+ * A REDS filter which can be compared with others to determine the most generic
+ * one.
  **********************************************************************/
 public interface ComparableFilter extends Filter {
-  /**
-   * Test whether this filter is covered by (i.e., is less generic than) 
-   * another one.
-   * 
-   * @param filter the filter to compare with.
-   * @return <tt>true</tt> if this filter is less generic than the given one.
-   */
-  public boolean isCoveredBy(ComparableFilter filter);
+	/**
+	 * Test whether this filter is covered by (i.e., is less generic than)
+	 * another one.
+	 * 
+	 * @param filter
+	 *            the filter to compare with.
+	 * @return <tt>true</tt> if this filter is less generic than the given one.
+	 */
+	public boolean isCoveredBy(ComparableFilter filter);
 }

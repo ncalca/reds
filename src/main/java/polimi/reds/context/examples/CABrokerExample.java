@@ -11,12 +11,12 @@ import java.util.logging.Logger;
 import polimi.reds.context.gui.CABroker;
 
 public class CABrokerExample {
-    public static void main(String[] args) {
-        new CABroker(6000);
-        Logger l = Logger.getLogger("polimi.reds");
-        l.setLevel(Level.FINE);
-        ConsoleHandler ch = new ConsoleHandler();
-        ch.setLevel(Level.FINE);
-        l.addHandler(ch);
-    }
+	public static void main(String[] args) {
+		new CABroker(6000);
+		Logger l = Logger.getLogger("polimi.reds");
+		l.setLevel(Level.FINE);
+		ConsoleHandler ch = new ConsoleHandler();
+		ch.setLevel(Level.FINE);
+		l.addHandler(ch);
+	}
 }

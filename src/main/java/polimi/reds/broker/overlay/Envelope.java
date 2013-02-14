@@ -118,7 +118,6 @@ public class Envelope implements Serializable {
 	 * The accepting node and the requesting node are the same node.
 	 */
 	public static final String SAME_NODE = "sameNode";
-	
 
 	/**
 	 * Link is dead due to an excedeed timeout on one side only
@@ -144,13 +143,13 @@ public class Envelope implements Serializable {
 	 * @param the
 	 *            traffic class
 	 */
-	public Envelope(String typeOfMessage, Serializable payload,
-			String trafficClass) {
+	public Envelope(String typeOfMessage, Serializable payload, String trafficClass) {
 		this.typeOfMessage = typeOfMessage;
 		this.payload = payload;
 		this.senderID = null;
 		this.trafficClass = trafficClass;
 	}
+
 	/**
 	 * An empty envelope of <code>Transport.MISCELLANEOUS_CLASS</code>.
 	 * 
@@ -160,6 +159,7 @@ public class Envelope implements Serializable {
 	public Envelope(String typeOfMessage) {
 		this(typeOfMessage, null, Transport.MISCELLANEOUS_CLASS);
 	}
+
 	/**
 	 * Get the message's type.
 	 * 
@@ -168,6 +168,7 @@ public class Envelope implements Serializable {
 	public String getTypeOfMessage() {
 		return typeOfMessage;
 	}
+
 	/**
 	 * The sender id.
 	 * 
@@ -176,6 +177,7 @@ public class Envelope implements Serializable {
 	public NodeDescriptor getSenderID() {
 		return senderID;
 	}
+
 	/**
 	 * Set the sender id
 	 * 
@@ -185,6 +187,7 @@ public class Envelope implements Serializable {
 	public void setSenderID(NodeDescriptor senderID) {
 		this.senderID = senderID;
 	}
+
 	/**
 	 * Get the payload of the message.
 	 * 
@@ -193,6 +196,7 @@ public class Envelope implements Serializable {
 	public Serializable getPayload() {
 		return payload;
 	}
+
 	/**
 	 * Get the payload iff the type is <code>PUBLISH</code> else
 	 * <code>null</code>.
@@ -205,6 +209,7 @@ public class Envelope implements Serializable {
 		else
 			return null;
 	}
+
 	/**
 	 * Get the payload iff the type is <code>SUBSCRIBE</code> or
 	 * <code>UNSUBSCRIBE</code>, else <code>null</code>.
@@ -212,12 +217,12 @@ public class Envelope implements Serializable {
 	 * @return the payload or null
 	 */
 	public Filter getFilter() {
-		if (typeOfMessage.equals(SUBSCRIBE)
-				|| typeOfMessage.equals(UNSUBSCRIBE))
+		if (typeOfMessage.equals(SUBSCRIBE) || typeOfMessage.equals(UNSUBSCRIBE))
 			return (Filter) payload;
 		else
 			return null;
 	}
+
 	/**
 	 * Get the traffic class of this <code>Envelope</code>.
 	 * 
@@ -226,14 +231,16 @@ public class Envelope implements Serializable {
 	public String getTrafficClass() {
 		return this.trafficClass;
 	}
+
 	/**
 	 * Get the <code>String</code> representation.
+	 * 
 	 * @return a <code>String</code> representing this object
 	 */
-	public String toString(){
+	public String toString() {
 		String p = null;
 		String s = null;
-		if(payload != null)
+		if (payload != null)
 			p = payload.toString();
 		if (senderID != null)
 			s = senderID.toString();

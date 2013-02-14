@@ -44,10 +44,10 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 		contextRanges = new ArrayList<ContextRange>();
 	}
 
-	public ContextSet( ContextSet contextSet ) {
+	public ContextSet(ContextSet contextSet) {
 		contextRanges = new ArrayList<ContextRange>();
-		for ( ContextRange range : contextSet ) {
-			contextRanges.add( new ContextRange( range ) );
+		for (ContextRange range : contextSet) {
+			contextRanges.add(new ContextRange(range));
 		}
 	}
 
@@ -57,8 +57,8 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 	 * @param c
 	 *            the context range to add
 	 */
-	public void addContextRange( ContextRange c ) {
-		contextRanges.add( c );
+	public void addContextRange(ContextRange c) {
+		contextRanges.add(c);
 	}
 
 	/**
@@ -67,9 +67,9 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 	 * @param cs
 	 *            the context set whose context range are to add to this
 	 */
-	public void addAll( ContextSet cs ) {
-		for ( ContextRange range : cs ) {
-			contextRanges.add( range );
+	public void addAll(ContextSet cs) {
+		for (ContextRange range : cs) {
+			contextRanges.add(range);
 		}
 	}
 
@@ -90,13 +90,13 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 	 * @return <code>true</code> is this is matched by the filter,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean isMatchedBy( ContextFilter filter ) {
-		if ( filter.equals( ContextFilter.ANY ) ) {
+	public boolean isMatchedBy(ContextFilter filter) {
+		if (filter.equals(ContextFilter.ANY)) {
 			return true;
 		}
 
-		for ( ContextRange contextRange : contextRanges ) {
-			if ( contextRange.isMatchedBy( filter ) == true ) {
+		for (ContextRange contextRange : contextRanges) {
+			if (contextRange.isMatchedBy(filter) == true) {
 				return true;
 			}
 		}
@@ -110,24 +110,24 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals( Object o ) {
+	public boolean equals(Object o) {
 
-		if ( o == null ) {
+		if (o == null) {
 			return false;
 		}
 
-		if ( !( this.getClass().equals( o.getClass() ) ) ) {
+		if (!(this.getClass().equals(o.getClass()))) {
 			return false;
 		}
 
 		ContextSet cs = (ContextSet) o;
 
-		if ( this.contextRanges.size() != cs.contextRanges.size() ) {
+		if (this.contextRanges.size() != cs.contextRanges.size()) {
 			return false;
 		}
 
-		for ( ContextRange cr : cs ) {
-			if ( !this.contextRanges.contains( cr ) ) {
+		for (ContextRange cr : cs) {
+			if (!this.contextRanges.contains(cr)) {
 				return false;
 			}
 		}
@@ -138,7 +138,7 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 
 	public String toString() {
 		String toString = "ContextSet\n";
-		for ( ContextRange cr : this.contextRanges ) {
+		for (ContextRange cr : this.contextRanges) {
 			toString += cr.toString() + "\n";
 		}
 		return toString;
@@ -151,19 +151,19 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 	 *            the other ContextSet
 	 * @return the relation beetween this and the other context set
 	 */
-	public ComparisonResult compareTo( ContextSet other ) {
-		if ( other == null ) {
+	public ComparisonResult compareTo(ContextSet other) {
+		if (other == null) {
 			return ComparisonResult.NOT_COMPARABLE;
 		}
-		if ( this.equals( other ) ) {
+		if (this.equals(other)) {
 			return ComparisonResult.EQUALS;
 		}
 
-		if ( this.isCompareSmaller( other ) ) {
+		if (this.isCompareSmaller(other)) {
 			return ComparisonResult.SMALLER;
 		}
 
-		if ( other.isCompareSmaller( this ) ) {
+		if (other.isCompareSmaller(this)) {
 			return ComparisonResult.BIGGER;
 		}
 
@@ -171,31 +171,30 @@ public class ContextSet implements Iterable<ContextRange>, Serializable {
 
 	}
 
-	private boolean isCompareSmaller( ContextSet other ) {
+	private boolean isCompareSmaller(ContextSet other) {
 
 		ComparisonResult comparison = null;
 
-		for ( ContextRange myRange : this ) {
+		for (ContextRange myRange : this) {
 
 			boolean smallerFound = false;
 			boolean equalsFound = false;
 
 			Iterator otherRangeIterator = other.iterator();
 
-			while ( otherRangeIterator.hasNext() && ( !smallerFound ) ) {
+			while (otherRangeIterator.hasNext() && (!smallerFound)) {
 				ContextRange otherRange = (ContextRange) otherRangeIterator.next();
 
-				comparison = myRange.compareTo( otherRange );
+				comparison = myRange.compareTo(otherRange);
 
-				if ( comparison == ComparisonResult.SMALLER ) {
+				if (comparison == ComparisonResult.SMALLER) {
 					smallerFound = true;
-				}
-				else if ( comparison == ComparisonResult.EQUALS ) {
+				} else if (comparison == ComparisonResult.EQUALS) {
 					equalsFound = true;
 				}
 			}
 
-			if ( ( !smallerFound ) && ( !equalsFound ) ) {
+			if ((!smallerFound) && (!equalsFound)) {
 				return false;
 			}
 

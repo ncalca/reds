@@ -29,37 +29,36 @@ public class IntegerFilter implements ComparableFilter {
 	private int max = Integer.MAX_VALUE;
 	private static final long serialVersionUID = -7421568140770155321L;
 
-	
-	public IntegerFilter(){
-		
+	public IntegerFilter() {
+
 	}
-	
-	public IntegerFilter(int min, int max){
+
+	public IntegerFilter(int min, int max) {
 		this.min = min;
 		this.max = max;
 	}
-	
+
 	public boolean isCoveredBy(ComparableFilter filter) {
-		if(!(filter instanceof IntegerFilter))
+		if (!(filter instanceof IntegerFilter))
 			return false;
-		if(((IntegerFilter)filter).getMin()<=min && ((IntegerFilter)filter).getMin()>=max)
+		if (((IntegerFilter) filter).getMin() <= min && ((IntegerFilter) filter).getMin() >= max)
 			return true;
 		return false;
 	}
 
 	public boolean matches(Message msg) {
-		if(!(msg instanceof IntegerMessage))
+		if (!(msg instanceof IntegerMessage))
 			return false;
-		if(((IntegerMessage)msg).getValue()>=min && ((IntegerMessage)msg).getValue()<=max)
+		if (((IntegerMessage) msg).getValue() >= min && ((IntegerMessage) msg).getValue() <= max)
 			return true;
 		return false;
 	}
-	
-	public int getMin(){
+
+	public int getMin() {
 		return min;
 	}
-	
-	public int getMax(){
+
+	public int getMax() {
 		return max;
 	}
 

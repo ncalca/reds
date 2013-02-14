@@ -35,23 +35,25 @@ import polimi.reds.broker.routing.Router;
 public class CAReconfigurator implements Reconfigurator {
 
 	private Logger logger;
-	
+
 	private CARouter caRouter;
 
 	private Overlay overlay;
 
 	public CAReconfigurator() {
-		logger = Logger.getLogger( "polimi.reds.CAReconfigurator" );
+		logger = Logger.getLogger("polimi.reds.CAReconfigurator");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Reconfigurator#setRouter(polimi.reds.broker.routing.Router)
+	 * @see
+	 * polimi.reds.broker.routing.Reconfigurator#setRouter(polimi.reds.broker
+	 * .routing.Router)
 	 */
-	public void setRouter( Router router ) {
-		if ( !( router instanceof CARouter ) ) {
-			throw new IllegalArgumentException( "Router must be a ContextRouter" );
+	public void setRouter(Router router) {
+		if (!(router instanceof CARouter)) {
+			throw new IllegalArgumentException("Router must be a ContextRouter");
 		}
 		this.caRouter = (CARouter) router;
 
@@ -69,13 +71,15 @@ public class CAReconfigurator implements Reconfigurator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Reconfigurator#setOverlay(polimi.reds.broker.overlay.Overlay)
+	 * @see
+	 * polimi.reds.broker.routing.Reconfigurator#setOverlay(polimi.reds.broker
+	 * .overlay.Overlay)
 	 */
-	public void setOverlay( Overlay overlay ) {
+	public void setOverlay(Overlay overlay) {
 		this.overlay = overlay;
-		this.overlay.addNeighborAddedListener( this );
-		this.overlay.addNeighborRemovedListener( this );
-		this.overlay.addNeighborDeadListener( this );
+		this.overlay.addNeighborAddedListener(this);
+		this.overlay.addNeighborRemovedListener(this);
+		this.overlay.addNeighborDeadListener(this);
 	}
 
 	/*
@@ -90,50 +94,53 @@ public class CAReconfigurator implements Reconfigurator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.overlay.NeighborRemovedListener#signalNeighborRemoved(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.broker.overlay.NeighborRemovedListener#signalNeighborRemoved
+	 * (polimi.reds.NodeDescriptor)
 	 */
-	public void signalNeighborRemoved( NodeDescriptor removedNeighbor ) {
+	public void signalNeighborRemoved(NodeDescriptor removedNeighbor) {
 
-//		if ( overlay.hasNeighbor( removedNeighbor ) ) {
-			scrivi( "NeighborRemoved: " + removedNeighbor.toString() );
-			caRouter.unsubscribeAll( removedNeighbor );
+		// if ( overlay.hasNeighbor( removedNeighbor ) ) {
+		scrivi("NeighborRemoved: " + removedNeighbor.toString());
+		caRouter.unsubscribeAll(removedNeighbor);
 
-//			overlay.removeNeighbor( removedNeighbor );
+		// overlay.removeNeighbor( removedNeighbor );
 
-			caRouter.signalNewContextReceived( removedNeighbor, new ContextSet() );
+		caRouter.signalNewContextReceived(removedNeighbor, new ContextSet());
 
-			ContextTable contextTable = caRouter.getContextTable();
-			contextTable.removeNeighbor( removedNeighbor );
+		ContextTable contextTable = caRouter.getContextTable();
+		contextTable.removeNeighbor(removedNeighbor);
 
-//		}
+		// }
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.overlay.NeighborAddedListener#signalNeighborAdded(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.broker.overlay.NeighborAddedListener#signalNeighborAdded(
+	 * polimi.reds.NodeDescriptor)
 	 */
-	public void signalNeighborAdded( NodeDescriptor newNeighbor ) {
-		scrivi( "NeighborAdded: " + StampaNodo( newNeighbor ) );
+	public void signalNeighborAdded(NodeDescriptor newNeighbor) {
+		scrivi("NeighborAdded: " + StampaNodo(newNeighbor));
 
 		// Non bisogna fare niente, in quanto l'eventuale invio di sttoscrizioni
 		// ecc va fatto al momento di un cambio di Contesto
 
 		// Devo inviare il mio contesto al nuovo vicino
 		ContextTable contextTable = caRouter.getContextTable();
-		contextTable.putContextReceived( newNeighbor, new ContextSet() );
+		contextTable.putContextReceived(newNeighbor, new ContextSet());
 
-		if ( newNeighbor.isBroker() ) {
+		if (newNeighbor.isBroker()) {
 
-			contextTable.createViewAndUpdateTable( newNeighbor );
-			contextTable.simplifyViewAndUpdateTable( newNeighbor );
+			contextTable.createViewAndUpdateTable(newNeighbor);
+			contextTable.simplifyViewAndUpdateTable(newNeighbor);
 
-			ContextSet view = contextTable.getContextToSend( newNeighbor );
+			ContextSet view = contextTable.getContextToSend(newNeighbor);
 
 			try {
-				caRouter.getOverlay().send( CARouter.UPDATE_CONTEXT, view, newNeighbor );
-			}
-			catch ( NotConnectedException e ) {
+				caRouter.getOverlay().send(CARouter.UPDATE_CONTEXT, view, newNeighbor);
+			} catch (NotConnectedException e) {
 				e.printStackTrace();
 			}
 		}
@@ -143,22 +150,23 @@ public class CAReconfigurator implements Reconfigurator {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.overlay.NeighborDeadListener#signalNeighborDead(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.broker.overlay.NeighborDeadListener#signalNeighborDead(polimi
+	 * .reds.NodeDescriptor)
 	 */
-	public void signalNeighborDead( NodeDescriptor deadNeighbor ) {
-		signalNeighborRemoved( deadNeighbor );
+	public void signalNeighborDead(NodeDescriptor deadNeighbor) {
+		signalNeighborRemoved(deadNeighbor);
 	}
 
-	private void scrivi( String s ) {
+	private void scrivi(String s) {
 		logger.fine(s);
 	}
 
-	private String StampaNodo( NodeDescriptor n ) {
+	private String StampaNodo(NodeDescriptor n) {
 		String result = "";
-		if ( n.isBroker() ) {
+		if (n.isBroker()) {
 			result += "Broker: ";
-		}
-		else {
+		} else {
 			result += "Client: ";
 		}
 

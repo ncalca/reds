@@ -23,7 +23,6 @@ package polimi.reds.context.routing;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 /**
  * This simplifier merges the ContextRange with the same structure
  * 
@@ -31,7 +30,7 @@ import java.util.Collection;
 public class StructuralContextSetSimplifier implements ContextSetSimplifier {
 	PropertyRangeSimplifier propertyRangeSimplifier;
 
-	public StructuralContextSetSimplifier( PropertyRangeSimplifier conditionSimplifier ) {
+	public StructuralContextSetSimplifier(PropertyRangeSimplifier conditionSimplifier) {
 		this.propertyRangeSimplifier = conditionSimplifier;
 	}
 
@@ -41,73 +40,75 @@ public class StructuralContextSetSimplifier implements ContextSetSimplifier {
 	 * @param conditionSimplifier
 	 *            the condition simplifier
 	 */
-	public void setPropertyRangeSimplifier( PropertyRangeSimplifier conditionSimplifier ) {
+	public void setPropertyRangeSimplifier(PropertyRangeSimplifier conditionSimplifier) {
 		this.propertyRangeSimplifier = conditionSimplifier;
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.definition.Simplifier#simplify(polimi.reds.context.definition.ContextSet)
+	 * @see
+	 * polimi.reds.context.definition.Simplifier#simplify(polimi.reds.context
+	 * .definition.ContextSet)
 	 */
-	public ContextSet simplify( ContextSet originalContextSet ) {
-		if ( originalContextSet == null ) {
+	public ContextSet simplify(ContextSet originalContextSet) {
+		if (originalContextSet == null) {
 			return new ContextSet();
 		}
 
-		Collection<ContextSet> clusters = createCluster( originalContextSet );
+		Collection<ContextSet> clusters = createCluster(originalContextSet);
 
 		ContextSet result = new ContextSet();
-		for ( ContextSet set : clusters ) {
-			ContextSet csSemplificato = simplifyOmogeneousContextSet( set );
-			result.addAll( csSemplificato );
+		for (ContextSet set : clusters) {
+			ContextSet csSemplificato = simplifyOmogeneousContextSet(set);
+			result.addAll(csSemplificato);
 		}
 
 		return result;
 	}
 
-	private Collection<ContextSet> createCluster( ContextSet originalContextSet ) {
+	private Collection<ContextSet> createCluster(ContextSet originalContextSet) {
 		boolean added;
 		Collection<ContextSet> clusters = new ArrayList<ContextSet>();
 
-		for ( ContextRange contextRange : originalContextSet ) {
+		for (ContextRange contextRange : originalContextSet) {
 			added = false;
-			for ( ContextSet contextSetInCluster : clusters ) {
-				if ( contextRange.isStructualEqualsTo( contextSetInCluster.iterator().next() ) ) {
-					contextSetInCluster.addContextRange( contextRange );
+			for (ContextSet contextSetInCluster : clusters) {
+				if (contextRange.isStructualEqualsTo(contextSetInCluster.iterator().next())) {
+					contextSetInCluster.addContextRange(contextRange);
 					added = true;
 				}
 			}
 
-			if ( !added ) {
+			if (!added) {
 				ContextSet newContextSetToAdd = new ContextSet();
-				newContextSetToAdd.addContextRange( contextRange );
-				clusters.add( newContextSetToAdd );
+				newContextSetToAdd.addContextRange(contextRange);
+				clusters.add(newContextSetToAdd);
 			}
 		}
 		return clusters;
 	}
 
-	private ContextSet simplifyOmogeneousContextSet( ContextSet contextSet ) {
+	private ContextSet simplifyOmogeneousContextSet(ContextSet contextSet) {
 
 		ContextRange rangeResult = contextSet.iterator().next();
 
-		for ( ContextRange range : contextSet ) {
-			rangeResult = simplify( rangeResult, range );
+		for (ContextRange range : contextSet) {
+			rangeResult = simplify(rangeResult, range);
 		}
 
 		ContextSet result = new ContextSet();
-		result.addContextRange( rangeResult );
+		result.addContextRange(rangeResult);
 		return result;
 
 	}
 
-	private ContextRange simplify( ContextRange cr1, ContextRange cr2 ) {
+	private ContextRange simplify(ContextRange cr1, ContextRange cr2) {
 		ContextRange result = new ContextRange();
 
-		for ( PropertyRange pr1 : cr1 ) {
-			PropertyRange pr2 = cr2.getPropertyRange( pr1.getName(), pr1.getDataType() );
-			result.addPropertyRange( propertyRangeSimplifier.merge( pr1, pr2 ) );
+		for (PropertyRange pr1 : cr1) {
+			PropertyRange pr2 = cr2.getPropertyRange(pr1.getName(), pr1.getDataType());
+			result.addPropertyRange(propertyRangeSimplifier.merge(pr1, pr2));
 		}
 
 		return result;

@@ -27,49 +27,51 @@ package polimi.reds;
  **********************************************************************/
 public class TextMessage extends Message {
 
-  /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 4230620276251246882L;
-/** The message content. */
-  protected String data;
+	/** The message content. */
+	protected String data;
 
-  /**
-   * Builds a new, empty, <tt>TextMessage</tt>.
-   */
-  public TextMessage() {
-    this(null);
-  }
+	/**
+	 * Builds a new, empty, <tt>TextMessage</tt>.
+	 */
+	public TextMessage() {
+		this(null);
+	}
 
-  /**
-   * Builds a new <tt>TextMessage</tt> with the given string as content.
-   *
-   * @param data The content of the new message.
-   */
-  public TextMessage(String data) {
-    this.data = data;
-  }
+	/**
+	 * Builds a new <tt>TextMessage</tt> with the given string as content.
+	 * 
+	 * @param data
+	 *            The content of the new message.
+	 */
+	public TextMessage(String data) {
+		this.data = data;
+	}
 
-  /**
-   * Sets the content of this message.
-   *
-   * @param data The new content of the message.
-   */
-  public void setData(String data) {
-    this.data = data;
-  }
+	/**
+	 * Sets the content of this message.
+	 * 
+	 * @param data
+	 *            The new content of the message.
+	 */
+	public void setData(String data) {
+		this.data = data;
+	}
 
-  /**
-   * Gets the content of this message.
-   *
-   * @return The content of this message.
-   */
-  public String getData() {
-    return data;
-  }
+	/**
+	 * Gets the content of this message.
+	 * 
+	 * @return The content of this message.
+	 */
+	public String getData() {
+		return data;
+	}
 
-  // For debug purposes only
-  public String toString() {
-    return "Class TextMessage: DATA=" + getData();
-  }
+	// For debug purposes only
+	public String toString() {
+		return "Class TextMessage: DATA=" + getData();
+	}
 }

@@ -33,16 +33,16 @@ public class IllegalValueException extends RuntimeException {
 		super();
 	}
 
-	public IllegalValueException( String arg0, Throwable arg1 ) {
-		super( arg0, arg1 );
+	public IllegalValueException(String arg0, Throwable arg1) {
+		super(arg0, arg1);
 	}
 
-	public IllegalValueException( String arg0 ) {
-		super( arg0 );
+	public IllegalValueException(String arg0) {
+		super(arg0);
 	}
 
-	public IllegalValueException( Throwable arg0 ) {
-		super( arg0 );
+	public IllegalValueException(Throwable arg0) {
+		super(arg0);
 	}
 
 }

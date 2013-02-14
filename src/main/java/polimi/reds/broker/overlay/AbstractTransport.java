@@ -34,18 +34,23 @@ import java.util.logging.Logger;
 
 import polimi.reds.NodeDescriptor;
 import polimi.reds.NotConnectedException;
+
 /**
- * Multithreaded abstract implementation of the <code>Transport</code> interface.<br>
- * This class supports multiple traffic classes each served by a specific <code>Thread</code>. Besides the four basic traffic classes
- * <code>MESSAGE_CLASS, FILTER_CLASS, REPLY_CLASS</code> and <code>MISCELLANEOUS_CLASS</code>, it allows the creation of applicaton
+ * Multithreaded abstract implementation of the <code>Transport</code>
+ * interface.<br>
+ * This class supports multiple traffic classes each served by a specific
+ * <code>Thread</code>. Besides the four basic traffic classes
+ * <code>MESSAGE_CLASS, FILTER_CLASS, REPLY_CLASS</code> and
+ * <code>MISCELLANEOUS_CLASS</code>, it allows the creation of applicaton
  * specific traffic classes.<br>
- * No priority is given to the <code>Thread</code>s, so no guarantee is given about the order in which two messages belonging to 
- * different class are processed.
+ * No priority is given to the <code>Thread</code>s, so no guarantee is given
+ * about the order in which two messages belonging to different class are
+ * processed.
  * 
  * @author Alessandro Monguzzi
  */
 public abstract class AbstractTransport implements Transport {
-	protected boolean running = false; 
+	protected boolean running = false;
 
 	protected boolean beaconing = false;
 
@@ -55,7 +60,7 @@ public abstract class AbstractTransport implements Transport {
 
 	protected NodeDescriptor localID = null;
 
-	private Map linksInUse=new HashMap();
+	private Map linksInUse = new HashMap();
 	/**
 	 * This map contains all the packetListeners for messages directed to the
 	 * routing level. The key is the subject, the value is the listener.
@@ -76,7 +81,7 @@ public abstract class AbstractTransport implements Transport {
 	 * This list contains all the LinkClosingListeners.
 	 */
 	protected List linkClosingListeners = new LinkedList();
-	
+
 	/**
 	 * This list contains all the LinkDeadListeners.
 	 */
@@ -93,13 +98,13 @@ public abstract class AbstractTransport implements Transport {
 	 */
 	protected Map trafficQueues = new HashMap();
 
-	
-	protected abstract NodeDescriptor openLinkHelper(String url) throws MalformedURLException,
-    ConnectException, AlreadyExistingLinkException;
-	
+	protected abstract NodeDescriptor openLinkHelper(String url) throws MalformedURLException, ConnectException,
+			AlreadyExistingLinkException;
+
 	/**
-	 * Stop all the threads that are waiting for messages and remove the corresponding traffic classes.
-	 *
+	 * Stop all the threads that are waiting for messages and remove the
+	 * corresponding traffic classes.
+	 * 
 	 */
 	protected void stopParserThreads() {
 		String[] classes = new String[trafficQueues.keySet().size()];
@@ -123,8 +128,7 @@ public abstract class AbstractTransport implements Transport {
 		if (queue == null) {
 			LinkedList messageList = new LinkedList();
 			trafficQueues.put(name, messageList);
-			ParserThread parserThread = new ParserThread(
-					(LinkedList) messageList);
+			ParserThread parserThread = new ParserThread((LinkedList) messageList);
 			parserThread.setName("Transport." + name + "ParserThread");
 			parserThread.setDaemon(false);
 			trafficThread.put(name, parserThread);
@@ -145,6 +149,7 @@ public abstract class AbstractTransport implements Transport {
 			}
 		}
 	}
+
 	/**
 	 * @see Transport#addLinkOpenedListener(LinkOpenedListener)
 	 */
@@ -187,20 +192,19 @@ public abstract class AbstractTransport implements Transport {
 		linkDeadListeners.remove(listener);
 	}
 
-	boolean mayCloseLink(NodeDescriptor closingNeighbor){
-		synchronized(linksInUse){
+	boolean mayCloseLink(NodeDescriptor closingNeighbor) {
+		synchronized (linksInUse) {
 			if (linksInUse.containsKey(closingNeighbor))
-				if (((Integer)linksInUse.get(closingNeighbor)).intValue()>0)
+				if (((Integer) linksInUse.get(closingNeighbor)).intValue() > 0)
 					return false;
 			return true;
 		}
 	}
-	
+
 	/**
 	 * @see Transport#send(String, Serializable, NodeDescriptor)
 	 */
-	public void send(String subject, Serializable payload,
-			NodeDescriptor receiver, String trafficClass)
+	public void send(String subject, Serializable payload, NodeDescriptor receiver, String trafficClass)
 			throws NotConnectedException {
 		Proxy n = proxySet.get(receiver);
 		if (n != null)
@@ -244,6 +248,7 @@ public abstract class AbstractTransport implements Transport {
 			removePacketListener(listener, next);
 		}
 	}
+
 	/**
 	 * @see Transport#start()
 	 */
@@ -259,6 +264,7 @@ public abstract class AbstractTransport implements Transport {
 		addTrafficClass(REPLY_CLASS);
 		addTrafficClass(MISCELLANEOUS_CLASS);
 	}
+
 	/**
 	 * @see Transport#stop()
 	 */
@@ -307,38 +313,38 @@ public abstract class AbstractTransport implements Transport {
 	public boolean isBeaconing() {
 		return beaconing;
 	}
-	
-	public void enqueue(Envelope e){
+
+	public void enqueue(Envelope e) {
 		try {
-	    	LinkedList list = null;
-	    	synchronized (trafficQueues) {
-	    		list = (LinkedList) trafficQueues.get(e.getTrafficClass());
+			LinkedList list = null;
+			synchronized (trafficQueues) {
+				list = (LinkedList) trafficQueues.get(e.getTrafficClass());
 			}
-	    	if(list != null){
-	    		synchronized (list) {
-	    			list.addLast(e);
-	    			list.notifyAll();
-	    			logger.finer("equeued " + e.toString());
+			if (list != null) {
+				synchronized (list) {
+					list.addLast(e);
+					list.notifyAll();
+					logger.finer("equeued " + e.toString());
 				}
-	    	}else{
-	    		logger.warning("No traffic class for message " + e.toString());
-	    	}
-	    } catch(Exception ex) {
-	      ex.printStackTrace();
-	    }
+			} else {
+				logger.warning("No traffic class for message " + e.toString());
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
 	}
 
 	// Main loop to parse the list of received messages and deliver them
 	private void parseAndDeliver(boolean running, LinkedList packets) {
 		Envelope received = null;
-			while (running) {
-				try{
+		while (running) {
+			try {
 				synchronized (packets) {
 					try {
 						while (packets.size() == 0) {
-							logger.finer("Parse and deliver waiting list size "+packets.size());
+							logger.finer("Parse and deliver waiting list size " + packets.size());
 							packets.wait();
-							logger.finer("Parse and deliver woken up list size "+packets.size());
+							logger.finer("Parse and deliver woken up list size " + packets.size());
 						}
 					} catch (InterruptedException e) {
 						e.printStackTrace();
@@ -351,15 +357,17 @@ public abstract class AbstractTransport implements Transport {
 						continue;
 					}
 				}
-				if (received == null){
+				if (received == null) {
 					System.out.println("received is NULL: skipping");
 					System.err.println("received is NULL: skipping");
 					continue;
 				}
 				if (received.getTypeOfMessage().equals(TCPEnvelope.CLOSE)) {
 					logger.severe("This code should be unreachable with TCPTransport");
-					// THE FOLLOWING CODE HAS BEEN MOVED AND SHOULD NOW NEVER RUN in TCPTransport confirm the closing and close the stream
-					if (mayCloseLink(received.getSenderID())){
+					// THE FOLLOWING CODE HAS BEEN MOVED AND SHOULD NOW NEVER
+					// RUN in TCPTransport confirm the closing and close the
+					// stream
+					if (mayCloseLink(received.getSenderID())) {
 						closeLinkAck(received.getSenderID());
 						Iterator it = linkClosedListeners.iterator();
 						while (it.hasNext()) {
@@ -368,78 +376,72 @@ public abstract class AbstractTransport implements Transport {
 						}
 						proxySet.remove(received.getSenderID());
 					}
-				}
-				else {
+				} else {
 					List l = (List) packetListeners.get(received.getTypeOfMessage());
 					if ((l != null)) {
 						Iterator it = l.iterator();
 						while (it.hasNext()) {
 							PacketListener list = (PacketListener) it.next();
-							list.signalPacket(received.getTypeOfMessage(),
-									received.getSenderID(), received
-											.getPayload());
+							list.signalPacket(received.getTypeOfMessage(), received.getSenderID(),
+									received.getPayload());
 						}
 					}
 				}
-				} // end try
-				catch (Exception e) {
-					// FIXME: Manage this exception in a better way.
-					System.err.println("Error parsing and delivering");
-					e.printStackTrace();
-					logger.severe("Error parsing and delivering");
-				}
-			} // end while
-	
+			} // end try
+			catch (Exception e) {
+				// FIXME: Manage this exception in a better way.
+				System.err.println("Error parsing and delivering");
+				e.printStackTrace();
+				logger.severe("Error parsing and delivering");
+			}
+		} // end while
+
 	} // end method
-	
-	protected void closeLinkHelper(NodeDescriptor neighborID){
-		logger.fine("Closing link to neighbor "+neighborID);
+
+	protected void closeLinkHelper(NodeDescriptor neighborID) {
+		logger.fine("Closing link to neighbor " + neighborID);
 		Proxy neighbor = (Proxy) proxySet.get(neighborID);
 		neighbor.disconnect();
 		proxySet.remove(neighborID);
 	}
-	
-		 
+
 	/**
-	   * @see Transport#closeLink(NodeDescriptor)
-	   */
-	  public final void closeLink(NodeDescriptor neighborID) {
-		if (mayCloseLink(neighborID)){
+	 * @see Transport#closeLink(NodeDescriptor)
+	 */
+	public final void closeLink(NodeDescriptor neighborID) {
+		if (mayCloseLink(neighborID)) {
 			closeLinkHelper(neighborID);
 		} else {
-			System.out.println("Not closing link to "+neighborID);
+			System.out.println("Not closing link to " + neighborID);
 		}
-	  }
+	}
 
-	  
-	  /**
+	/**
 	   * 
 	   */
-	  public final NodeDescriptor openLink(String url) throws MalformedURLException,
-      ConnectException{
-		 NodeDescriptor dest = null;
-		 logger.finer("acquiring linksInUseLock");
-		 try{
-		  synchronized(linksInUse){
-			  logger.finer("acquired");
-			  try {
-				  dest = openLinkHelper(url);
-			  } catch (AlreadyExistingLinkException e) {
-				  dest = e.getRemoteNodeDescriptor();
-			  }
-			  if (dest!=null){
-				  if(!linksInUse.containsKey(dest))
-					  linksInUse.put(dest, new Integer(0));
-				  linksInUse.put(dest, new Integer(((Integer)linksInUse.get(dest)).intValue()+1));			
-			  }
-		  }
-		  }
-		 finally{
-			  logger.finer("released linksInUseLock");		
-		 }
+	public final NodeDescriptor openLink(String url) throws MalformedURLException, ConnectException {
+		NodeDescriptor dest = null;
+		logger.finer("acquiring linksInUseLock");
+		try {
+			synchronized (linksInUse) {
+				logger.finer("acquired");
+				try {
+					dest = openLinkHelper(url);
+				} catch (AlreadyExistingLinkException e) {
+					dest = e.getRemoteNodeDescriptor();
+				}
+				if (dest != null) {
+					if (!linksInUse.containsKey(dest))
+						linksInUse.put(dest, new Integer(0));
+					linksInUse.put(dest, new Integer(((Integer) linksInUse.get(dest)).intValue() + 1));
+				}
+			}
+		} finally {
+			logger.finer("released linksInUseLock");
+		}
 		return dest;
-	  }
-	  
+	}
+
 	/**
 	 * Manage the request of closing a connection from the given neighbor.
 	 * 

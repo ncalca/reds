@@ -33,11 +33,11 @@ import polimi.reds.context.ComparisonResult;
 public abstract class ViewSendingStrategy {
 
 	protected CARouter caRouter;
-	
+
 	protected Logger logger;
 
-	public ViewSendingStrategy( CARouter caRouter ) {
-		logger = Logger.getLogger( "polimi.reds.context.ViewSendingStrategy" );
+	public ViewSendingStrategy(CARouter caRouter) {
+		logger = Logger.getLogger("polimi.reds.context.ViewSendingStrategy");
 		this.caRouter = caRouter;
 	}
 
@@ -47,7 +47,7 @@ public abstract class ViewSendingStrategy {
 	 * @param senderNode
 	 *            the sender node
 	 */
-	public abstract void sendViewDueTo( NodeDescriptor senderNode );
+	public abstract void sendViewDueTo(NodeDescriptor senderNode);
 
 	/**
 	 * Create a view and updates the context table
@@ -55,8 +55,8 @@ public abstract class ViewSendingStrategy {
 	 * @param destinationNode
 	 *            the node to compute the view
 	 */
-	protected void createViewAndPutInTable( NodeDescriptor destinationNode ) {
-		caRouter.getContextTable().createViewAndUpdateTable( destinationNode );
+	protected void createViewAndPutInTable(NodeDescriptor destinationNode) {
+		caRouter.getContextTable().createViewAndUpdateTable(destinationNode);
 	}
 
 	/**
@@ -65,8 +65,8 @@ public abstract class ViewSendingStrategy {
 	 * @param destinationNode
 	 *            the node to simplify the view
 	 */
-	protected void simplifyViewAndPutInTable( NodeDescriptor destinationNode ) {
-		caRouter.getContextTable().simplifyViewAndUpdateTable( destinationNode );
+	protected void simplifyViewAndPutInTable(NodeDescriptor destinationNode) {
+		caRouter.getContextTable().simplifyViewAndUpdateTable(destinationNode);
 	}
 
 	/**
@@ -75,8 +75,8 @@ public abstract class ViewSendingStrategy {
 	 * @param destinationNode
 	 *            the node to simplify the view
 	 */
-	protected ContextSet simplifyView( NodeDescriptor destinationNode ) {
-		return caRouter.getContextTable().simplifyView( destinationNode );
+	protected ContextSet simplifyView(NodeDescriptor destinationNode) {
+		return caRouter.getContextTable().simplifyView(destinationNode);
 	}
 
 	/**
@@ -85,24 +85,22 @@ public abstract class ViewSendingStrategy {
 	 * @param destinationNode
 	 *            the node to sendthe view
 	 */
-	protected void sendViewAndPutInTable( NodeDescriptor destinationNode ) {
+	protected void sendViewAndPutInTable(NodeDescriptor destinationNode) {
 		ContextTable contextTable = caRouter.getContextTable();
-		ContextSet view = contextTable.getContextToSend( destinationNode );
-		ContextSet lastSent = contextTable.getContextSent( destinationNode );
+		ContextSet view = contextTable.getContextToSend(destinationNode);
+		ContextSet lastSent = contextTable.getContextSent(destinationNode);
 
-		if ( !( view.compareTo( lastSent ).equals( ComparisonResult.EQUALS ) ) ) {
+		if (!(view.compareTo(lastSent).equals(ComparisonResult.EQUALS))) {
 
 			try {
-				caRouter.getOverlay().send( CARouter.UPDATE_CONTEXT, view, destinationNode );
-				logger.finer( "ViewSenderStrategy.sendView: invio UPDATE CONTEXT" );
-			}
-			catch ( NotConnectedException e ) {
+				caRouter.getOverlay().send(CARouter.UPDATE_CONTEXT, view, destinationNode);
+				logger.finer("ViewSenderStrategy.sendView: invio UPDATE CONTEXT");
+			} catch (NotConnectedException e) {
 			}
 
-			contextTable.putContextSent( destinationNode, view );
-		}
-		else {
-			logger.finer(  "La vista non e' cambiata-- non invio niente" );
+			contextTable.putContextSent(destinationNode, view);
+		} else {
+			logger.finer("La vista non e' cambiata-- non invio niente");
 		}
 	}
 

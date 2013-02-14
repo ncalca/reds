@@ -40,58 +40,60 @@ public class CATCPDispatchingService extends TCPDispatchingService implements CA
 
 	private Context context;
 
-	public CATCPDispatchingService( String host, int port, Context context ) {
-		super( host, port );
+	public CATCPDispatchingService(String host, int port, Context context) {
+		super(host, port);
 	}
 
 	/**
 	 * Publish a message suitable for all destination
 	 */
 	@Override
-	public synchronized void publish( Message msg ) {
-		publish( msg, ContextFilter.ANY );
+	public synchronized void publish(Message msg) {
+		publish(msg, ContextFilter.ANY);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see context.routing.ContextDispatchingServer#publish(polimi.reds.Message,
-	 *      context.ContextFilter)
+	 * @see
+	 * context.routing.ContextDispatchingServer#publish(polimi.reds.Message,
+	 * context.ContextFilter)
 	 */
-	public void publish( Message msg, ContextFilter destinationContext ) {
-		if ( msg instanceof Repliable ) {
-			super.publish( new RepliableCAMessage( msg, this.context, destinationContext ) );
-		}
-		else
-			super.publish( new CAMessage( msg, this.context, destinationContext ) );
+	public void publish(Message msg, ContextFilter destinationContext) {
+		if (msg instanceof Repliable) {
+			super.publish(new RepliableCAMessage(msg, this.context, destinationContext));
+		} else
+			super.publish(new CAMessage(msg, this.context, destinationContext));
 	}
 
 	/**
 	 * Subscribe a client message matched by <tt>filter</tt> coming from all
 	 * sender
 	 */
-	public void subscribe( Filter filter ) {
-		subscribe( filter, ContextFilter.ANY );
+	public void subscribe(Filter filter) {
+		subscribe(filter, ContextFilter.ANY);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see context.routing.ContextDispatchingServer#subscribe(polimi.reds.Filter,
-	 *      context.ContextFilter)
+	 * @see
+	 * context.routing.ContextDispatchingServer#subscribe(polimi.reds.Filter,
+	 * context.ContextFilter)
 	 */
-	public void subscribe( Filter filter, ContextFilter senderContext ) {
-		super.subscribe( new CAFilter( filter, senderContext ) );
+	public void subscribe(Filter filter, ContextFilter senderContext) {
+		super.subscribe(new CAFilter(filter, senderContext));
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see context.routing.ContextDispatchingServer#unsubscribe(polimi.reds.Filter,
-	 *      context.ContextFilter)
+	 * @see
+	 * context.routing.ContextDispatchingServer#unsubscribe(polimi.reds.Filter,
+	 * context.ContextFilter)
 	 */
-	public void unsubscribe( Filter filter, ContextFilter senderContext ) {
-		unsubscribe( new CAFilter( filter, senderContext ) );
+	public void unsubscribe(Filter filter, ContextFilter senderContext) {
+		unsubscribe(new CAFilter(filter, senderContext));
 	}
 
 	/*
@@ -99,13 +101,13 @@ public class CATCPDispatchingService extends TCPDispatchingService implements CA
 	 * 
 	 * @see context.routing.ContextDispatchingServer#setContext(context.Context)
 	 */
-	public void setContext( Context context ) {
+	public void setContext(Context context) {
 		this.context = context;
 
 		ContextSet contextSet = new ContextSet();
-		contextSet.addContextRange( new ContextRange( this.context ) );
+		contextSet.addContextRange(new ContextRange(this.context));
 
-		forward( CARouter.UPDATE_CONTEXT, contextSet );
+		forward(CARouter.UPDATE_CONTEXT, contextSet);
 	}
 
 	/*
@@ -123,8 +125,8 @@ public class CATCPDispatchingService extends TCPDispatchingService implements CA
 	 * 
 	 * @see polimi.reds.TCPDispatchingService#getNextMessage(polimi.reds.Filter)
 	 */
-	public Message getNextMessage( Filter f ) {
-		Message m = super.getNextMessage( f );
+	public Message getNextMessage(Filter f) {
+		Message m = super.getNextMessage(f);
 		return m;
 	}
 
@@ -133,10 +135,9 @@ public class CATCPDispatchingService extends TCPDispatchingService implements CA
 	 * 
 	 * @see polimi.reds.TCPDispatchingService#getNextMessage(long)
 	 */
-	public Message getNextMessage( long timeout ) {
-		Message m = super.getNextMessage( timeout );
+	public Message getNextMessage(long timeout) {
+		Message m = super.getNextMessage(timeout);
 		return m;
 	}
-
 
 }

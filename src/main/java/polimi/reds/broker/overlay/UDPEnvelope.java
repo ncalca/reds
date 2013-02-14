@@ -26,77 +26,85 @@ import java.io.Serializable;
  * This class is used as an envelope to transport messages using UDP.
  */
 public class UDPEnvelope extends Envelope {
-  private static final long serialVersionUID = -1925905765953589547L;
-  // The IP address of the sender
-  private String senderIP;
-  // The originating port
-  private int port;
-  private String url;
+	private static final long serialVersionUID = -1925905765953589547L;
+	// The IP address of the sender
+	private String senderIP;
+	// The originating port
+	private int port;
+	private String url;
 
-  /**
-   * Base constructor.
-   * @see Envelope#Envelope(String, Serializable, String)
-   */
-  public UDPEnvelope(String typeOfMessage, Serializable payload, String trafficClass) {
-    super(typeOfMessage, payload, trafficClass);
-  }
+	/**
+	 * Base constructor.
+	 * 
+	 * @see Envelope#Envelope(String, Serializable, String)
+	 */
+	public UDPEnvelope(String typeOfMessage, Serializable payload, String trafficClass) {
+		super(typeOfMessage, payload, trafficClass);
+	}
 
-  /**
-   * An empty envelope.
-   * 
-   * @see Envelope#Envelope(String)
-   */
-  public UDPEnvelope(String typeOfMessage) {
-    this(typeOfMessage, null, Transport.MISCELLANEOUS_CLASS);
-  }
+	/**
+	 * An empty envelope.
+	 * 
+	 * @see Envelope#Envelope(String)
+	 */
+	public UDPEnvelope(String typeOfMessage) {
+		this(typeOfMessage, null, Transport.MISCELLANEOUS_CLASS);
+	}
 
-  /**
-   * Get the sender ip.
-   * 
-   * @return the ip of the sender of the message
-   */
-  public String getSenderIP() {
-    return senderIP;
-  }
+	/**
+	 * Get the sender ip.
+	 * 
+	 * @return the ip of the sender of the message
+	 */
+	public String getSenderIP() {
+		return senderIP;
+	}
 
-  /**
-   * Set the ip of the sender message.
-   * 
-   * @param senderIP the ip
-   */
-  public void setSenderIP(String senderIP) {
-    this.senderIP = senderIP;
-  }
+	/**
+	 * Set the ip of the sender message.
+	 * 
+	 * @param senderIP
+	 *            the ip
+	 */
+	public void setSenderIP(String senderIP) {
+		this.senderIP = senderIP;
+	}
 
-  /**
-   * Get the port of the sender of the message.
-   * 
-   * @return the port
-   */
-  public int getSenderPort() {
-    return port;
-  }
+	/**
+	 * Get the port of the sender of the message.
+	 * 
+	 * @return the port
+	 */
+	public int getSenderPort() {
+		return port;
+	}
 
-  /**
-   * Set the port of the sender message.
-   * 
-   * @param port the port
-   */
-  public void setSenderPort(int port) {
-    this.port = port;
-  }
-  /**
-   * Get the url. 
-   * @return the sender url
-   */
-    public String getURL(){
-  	  return url;
-    }
-    /**
-     * Set the url.
-     * @param url the url
-     */
-    public void setURL(String url){
-    	this.url = url;
-    }
+	/**
+	 * Set the port of the sender message.
+	 * 
+	 * @param port
+	 *            the port
+	 */
+	public void setSenderPort(int port) {
+		this.port = port;
+	}
+
+	/**
+	 * Get the url.
+	 * 
+	 * @return the sender url
+	 */
+	public String getURL() {
+		return url;
+	}
+
+	/**
+	 * Set the url.
+	 * 
+	 * @param url
+	 *            the url
+	 */
+	public void setURL(String url) {
+		this.url = url;
+	}
 }

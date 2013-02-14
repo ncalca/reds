@@ -27,9 +27,9 @@ public class Interval<T extends Number> implements Serializable {
 	private T upper;
 	private T lower;
 
-	public Interval( T lower, T upper ) {
+	public Interval(T lower, T upper) {
 
-		if ( lower.doubleValue() > upper.doubleValue() ) {
+		if (lower.doubleValue() > upper.doubleValue()) {
 			throw new IllegalArgumentException();
 		}
 
@@ -54,17 +54,17 @@ public class Interval<T extends Number> implements Serializable {
 	}
 
 	@Override
-	public boolean equals( Object obj ) {
-		if ( obj == null ) {
+	public boolean equals(Object obj) {
+		if (obj == null) {
 			return false;
 		}
-		if ( !( this.getClass().equals( obj.getClass() ) ) ) {
+		if (!(this.getClass().equals(obj.getClass()))) {
 			return false;
 		}
 
 		Interval<T> other = (Interval<T>) obj;
 
-		return ( ( other.lower.equals( this.lower ) ) && ( other.upper.equals( this.upper ) ) );
+		return ((other.lower.equals(this.lower)) && (other.upper.equals(this.upper)));
 	}
 
 	@Override

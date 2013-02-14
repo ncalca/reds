@@ -48,8 +48,8 @@ public class Context implements Iterable<Property>, Serializable {
 	 * @param p
 	 *            the property to add
 	 */
-	public void addProperty( Property p ) {
-		properties.put( p.getName() + p.getDataType(), p );
+	public void addProperty(Property p) {
+		properties.put(p.getName() + p.getDataType(), p);
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class Context implements Iterable<Property>, Serializable {
 	 *            the data type
 	 * @return the property or null
 	 */
-	public Property getProperty( String name, int dataType ) {
-		return properties.get( name + dataType );
+	public Property getProperty(String name, int dataType) {
+		return properties.get(name + dataType);
 	}
 
 	/**
@@ -83,22 +83,20 @@ public class Context implements Iterable<Property>, Serializable {
 	 * @return <code>true</code> is this is matched by the filter,
 	 *         <code>false</code> otherwise
 	 */
-	public boolean isMatchedBy( ContextFilter filter ) {
-		ContextRange contextRange = new ContextRange( this );
-		return contextRange.isMatchedBy( filter );
+	public boolean isMatchedBy(ContextFilter filter) {
+		ContextRange contextRange = new ContextRange(this);
+		return contextRange.isMatchedBy(filter);
 	}
 
 	@Override
 	public String toString() {
 		String result = "";
-		for ( Property p : this.properties.values() ) {
-			if ( p.getDataType() == Property.INTEGER ) {
-				result += p.getName() + ": " + ( (Integer) p.getValue() ).intValue() + "\n";
-			}
-			else if ( p.getDataType() == Property.REAL ) {
-				result += p.getName() + ": " + ( (Double) p.getValue() ).longValue() + "\n";
-			}
-			else if ( p.getDataType() == Property.STRING ) {
+		for (Property p : this.properties.values()) {
+			if (p.getDataType() == Property.INTEGER) {
+				result += p.getName() + ": " + ((Integer) p.getValue()).intValue() + "\n";
+			} else if (p.getDataType() == Property.REAL) {
+				result += p.getName() + ": " + ((Double) p.getValue()).longValue() + "\n";
+			} else if (p.getDataType() == Property.STRING) {
 				result += p.getName() + ": " + (String) p.getValue() + "\n";
 			}
 

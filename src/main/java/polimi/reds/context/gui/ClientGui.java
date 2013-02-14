@@ -53,17 +53,17 @@ import polimi.reds.context.Property;
 import polimi.reds.test.RepliableTextMessage;
 
 public class ClientGui extends JFrame {
-	
+
 	private Logger logger;
-	
+
 	private String[] operators = { "Condition.EQUALS", "Condition.GREATER",
-	// "Condition.INNER",
-									"Condition.LOWER", "Condition.NOT_EQUALS",
-									// "Condition.NOT_INNER",
-									// "Condition.CONTAINS",
-									// "Condition.ENDS_WITH",
-									// "Condition.STARTS_WITH",
-									"Condition.ANY" };
+			// "Condition.INNER",
+			"Condition.LOWER", "Condition.NOT_EQUALS",
+			// "Condition.NOT_INNER",
+			// "Condition.CONTAINS",
+			// "Condition.ENDS_WITH",
+			// "Condition.STARTS_WITH",
+			"Condition.ANY" };
 
 	private HashMap stringToOperator = null;
 
@@ -140,23 +140,23 @@ public class ClientGui extends JFrame {
 	/**
 	 * This is the default constructor
 	 */
-	public ClientGui( int port ) {
+	public ClientGui(int port) {
 		super();
 		stringToOperator = new HashMap();
-		stringToOperator.put( "Condition.EQUALS", new Integer( Condition.EQUALS ) );
-		stringToOperator.put( "Condition.GREATER", new Integer( Condition.GREATER ) );
-		stringToOperator.put( "Condition.INNER", new Integer( Condition.INNER ) );
-		stringToOperator.put( "Condition.LOWER", new Integer( Condition.LOWER ) );
-		stringToOperator.put( "Condition.NOT_EQUALS", new Integer( Condition.NOT_EQUALS ) );
-		stringToOperator.put( "Condition.NOT_INNER", new Integer( Condition.NOT_INNER ) );
-		stringToOperator.put( "Condition.CONTAINS", new Integer( Condition.CONTAINS ) );
-		stringToOperator.put( "Condition.ENDS_WITH", new Integer( Condition.ENDS_WITH ) );
-		stringToOperator.put( "Condition.STARTS_WITH", new Integer( Condition.STARTS_WITH ) );
+		stringToOperator.put("Condition.EQUALS", new Integer(Condition.EQUALS));
+		stringToOperator.put("Condition.GREATER", new Integer(Condition.GREATER));
+		stringToOperator.put("Condition.INNER", new Integer(Condition.INNER));
+		stringToOperator.put("Condition.LOWER", new Integer(Condition.LOWER));
+		stringToOperator.put("Condition.NOT_EQUALS", new Integer(Condition.NOT_EQUALS));
+		stringToOperator.put("Condition.NOT_INNER", new Integer(Condition.NOT_INNER));
+		stringToOperator.put("Condition.CONTAINS", new Integer(Condition.CONTAINS));
+		stringToOperator.put("Condition.ENDS_WITH", new Integer(Condition.ENDS_WITH));
+		stringToOperator.put("Condition.STARTS_WITH", new Integer(Condition.STARTS_WITH));
 		initialize();
-		txtPort.setText( String.valueOf( port ) );
-		
-		logger = Logger.getLogger( "polimi.reds" );
-		logger.addHandler( new TextAreaHandler(txtLog) );
+		txtPort.setText(String.valueOf(port));
+
+		logger = Logger.getLogger("polimi.reds");
+		logger.addHandler(new TextAreaHandler(txtLog));
 	}
 
 	/**
@@ -165,13 +165,13 @@ public class ClientGui extends JFrame {
 	 * @return void
 	 */
 	private void initialize() {
-		this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE );
-		this.setResizable( false );
-		this.setLocation( new java.awt.Point( 100, 100 ) );
-		this.setJMenuBar( getJJMenuBar() );
-		this.setSize( 840, 400 );
-		this.setContentPane( getJContentPane() );
-		this.setTitle( "Client" );
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setResizable(false);
+		this.setLocation(new java.awt.Point(100, 100));
+		this.setJMenuBar(getJJMenuBar());
+		this.setSize(840, 400);
+		this.setContentPane(getJContentPane());
+		this.setTitle("Client");
 	}
 
 	/**
@@ -180,60 +180,60 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JPanel
 	 */
 	private JPanel getJContentPane() {
-		if ( jContentPane == null ) {
+		if (jContentPane == null) {
 			lblMyHD = new JLabel();
-			lblMyHD.setText( "My HD" );
-			lblMyHD.setSize( new java.awt.Dimension( 100, 20 ) );
-			lblMyHD.setLocation( new java.awt.Point( 10, 290 ) );
+			lblMyHD.setText("My HD");
+			lblMyHD.setSize(new java.awt.Dimension(100, 20));
+			lblMyHD.setLocation(new java.awt.Point(10, 290));
 			lblMyRAM = new JLabel();
-			lblMyRAM.setText( "My RAM" );
-			lblMyRAM.setSize( new java.awt.Dimension( 100, 20 ) );
-			lblMyRAM.setLocation( new java.awt.Point( 10, 260 ) );
+			lblMyRAM.setText("My RAM");
+			lblMyRAM.setSize(new java.awt.Dimension(100, 20));
+			lblMyRAM.setLocation(new java.awt.Point(10, 260));
 			lblMioContesto = new JLabel();
-			lblMioContesto.setHorizontalAlignment( javax.swing.SwingConstants.CENTER );
-			lblMioContesto.setForeground( new java.awt.Color( 55, 164, 116 ) );
-			lblMioContesto.setBackground( new java.awt.Color( 135, 48, 40 ) );
-			lblMioContesto.setLocation( new java.awt.Point( 10, 230 ) );
-			lblMioContesto.setSize( new java.awt.Dimension( 210, 20 ) );
-			lblMioContesto.setText( "Mio contesto" );
+			lblMioContesto.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+			lblMioContesto.setForeground(new java.awt.Color(55, 164, 116));
+			lblMioContesto.setBackground(new java.awt.Color(135, 48, 40));
+			lblMioContesto.setLocation(new java.awt.Point(10, 230));
+			lblMioContesto.setSize(new java.awt.Dimension(210, 20));
+			lblMioContesto.setText("Mio contesto");
 			lblHD = new JLabel();
-			lblHD.setText( "HD" );
-			lblHD.setSize( new java.awt.Dimension( 100, 20 ) );
-			lblHD.setLocation( new java.awt.Point( 10, 70 ) );
+			lblHD.setText("HD");
+			lblHD.setSize(new java.awt.Dimension(100, 20));
+			lblHD.setLocation(new java.awt.Point(10, 70));
 			lblRAM = new JLabel();
-			lblRAM.setText( "RAM" );
-			lblRAM.setLocation( new java.awt.Point( 10, 40 ) );
-			lblRAM.setSize( new java.awt.Dimension( 100, 20 ) );
+			lblRAM.setText("RAM");
+			lblRAM.setLocation(new java.awt.Point(10, 40));
+			lblRAM.setSize(new java.awt.Dimension(100, 20));
 			lblMessaggio = new JLabel();
-			lblMessaggio.setText( "Messaggio" );
-			lblMessaggio.setSize( new java.awt.Dimension( 100, 20 ) );
-			lblMessaggio.setPreferredSize( new java.awt.Dimension( 60, 16 ) );
-			lblMessaggio.setLocation( new java.awt.Point( 10, 10 ) );
+			lblMessaggio.setText("Messaggio");
+			lblMessaggio.setSize(new java.awt.Dimension(100, 20));
+			lblMessaggio.setPreferredSize(new java.awt.Dimension(60, 16));
+			lblMessaggio.setLocation(new java.awt.Point(10, 10));
 			jContentPane = new JPanel();
-			jContentPane.setLayout( null );
-			jContentPane.add( getTxtMessage(), null );
-			jContentPane.add( lblMessaggio, null );
-			jContentPane.add( getBtnSend(), null );
-			jContentPane.add( getCmbOperatorRAM(), null );
-			jContentPane.add( getCmbOperatorHD(), null );
-			jContentPane.add( lblRAM, null );
-			jContentPane.add( lblHD, null );
-			jContentPane.add( getTxtHD(), null );
-			jContentPane.add( getTxtRAM(), null );
-			jContentPane.add( lblMioContesto, null );
-			jContentPane.add( lblMyRAM, null );
-			jContentPane.add( lblMyHD, null );
-			jContentPane.add( getTxtMiaRAM(), null );
-			jContentPane.add( getTxtMioHD(), null );
-			jContentPane.add( getBtnSetContext(), null );
-			jContentPane.add( getBtnConnect(), null );
-			jContentPane.add( getTxtPort(), null );
-			jContentPane.add( getTxtLog(), null );
-			jContentPane.add( getBtnSubscribe(), null );
-			jContentPane.add( getBtnSubscribeContext(), null );
-			jContentPane.add( getBtnUnsubscribe(), null );
-			jContentPane.add( getTxtHost(), null );
-			jContentPane.add( getChkReply(), null );
+			jContentPane.setLayout(null);
+			jContentPane.add(getTxtMessage(), null);
+			jContentPane.add(lblMessaggio, null);
+			jContentPane.add(getBtnSend(), null);
+			jContentPane.add(getCmbOperatorRAM(), null);
+			jContentPane.add(getCmbOperatorHD(), null);
+			jContentPane.add(lblRAM, null);
+			jContentPane.add(lblHD, null);
+			jContentPane.add(getTxtHD(), null);
+			jContentPane.add(getTxtRAM(), null);
+			jContentPane.add(lblMioContesto, null);
+			jContentPane.add(lblMyRAM, null);
+			jContentPane.add(lblMyHD, null);
+			jContentPane.add(getTxtMiaRAM(), null);
+			jContentPane.add(getTxtMioHD(), null);
+			jContentPane.add(getBtnSetContext(), null);
+			jContentPane.add(getBtnConnect(), null);
+			jContentPane.add(getTxtPort(), null);
+			jContentPane.add(getTxtLog(), null);
+			jContentPane.add(getBtnSubscribe(), null);
+			jContentPane.add(getBtnSubscribeContext(), null);
+			jContentPane.add(getBtnUnsubscribe(), null);
+			jContentPane.add(getTxtHost(), null);
+			jContentPane.add(getChkReply(), null);
 		}
 		return jContentPane;
 	}
@@ -244,11 +244,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuBar
 	 */
 	private JMenuBar getJJMenuBar() {
-		if ( jJMenuBar == null ) {
+		if (jJMenuBar == null) {
 			jJMenuBar = new JMenuBar();
-			jJMenuBar.add( getFileMenu() );
-			jJMenuBar.add( getEditMenu() );
-			jJMenuBar.add( getHelpMenu() );
+			jJMenuBar.add(getFileMenu());
+			jJMenuBar.add(getEditMenu());
+			jJMenuBar.add(getHelpMenu());
 		}
 		return jJMenuBar;
 	}
@@ -259,11 +259,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenu
 	 */
 	private JMenu getFileMenu() {
-		if ( fileMenu == null ) {
+		if (fileMenu == null) {
 			fileMenu = new JMenu();
-			fileMenu.setText( "File" );
-			fileMenu.add( getSaveMenuItem() );
-			fileMenu.add( getExitMenuItem() );
+			fileMenu.setText("File");
+			fileMenu.add(getSaveMenuItem());
+			fileMenu.add(getExitMenuItem());
 		}
 		return fileMenu;
 	}
@@ -274,12 +274,12 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenu
 	 */
 	private JMenu getEditMenu() {
-		if ( editMenu == null ) {
+		if (editMenu == null) {
 			editMenu = new JMenu();
-			editMenu.setText( "Edit" );
-			editMenu.add( getCutMenuItem() );
-			editMenu.add( getCopyMenuItem() );
-			editMenu.add( getPasteMenuItem() );
+			editMenu.setText("Edit");
+			editMenu.add(getCutMenuItem());
+			editMenu.add(getCopyMenuItem());
+			editMenu.add(getPasteMenuItem());
 		}
 		return editMenu;
 	}
@@ -290,10 +290,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenu
 	 */
 	private JMenu getHelpMenu() {
-		if ( helpMenu == null ) {
+		if (helpMenu == null) {
 			helpMenu = new JMenu();
-			helpMenu.setText( "Help" );
-			helpMenu.add( getAboutMenuItem() );
+			helpMenu.setText("Help");
+			helpMenu.add(getAboutMenuItem());
 		}
 		return helpMenu;
 	}
@@ -304,14 +304,14 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getExitMenuItem() {
-		if ( exitMenuItem == null ) {
+		if (exitMenuItem == null) {
 			exitMenuItem = new JMenuItem();
-			exitMenuItem.setText( "Exit" );
-			exitMenuItem.addActionListener( new ActionListener() {
-				public void actionPerformed( ActionEvent e ) {
-					System.exit( 0 );
+			exitMenuItem.setText("Exit");
+			exitMenuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					System.exit(0);
 				}
-			} );
+			});
 		}
 		return exitMenuItem;
 	}
@@ -322,14 +322,14 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getAboutMenuItem() {
-		if ( aboutMenuItem == null ) {
+		if (aboutMenuItem == null) {
 			aboutMenuItem = new JMenuItem();
-			aboutMenuItem.setText( "About" );
-			aboutMenuItem.addActionListener( new ActionListener() {
-				public void actionPerformed( ActionEvent e ) {
-					new JDialog( ClientGui.this, "About", true ).show();
+			aboutMenuItem.setText("About");
+			aboutMenuItem.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					new JDialog(ClientGui.this, "About", true).show();
 				}
-			} );
+			});
 		}
 		return aboutMenuItem;
 	}
@@ -340,10 +340,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getCutMenuItem() {
-		if ( cutMenuItem == null ) {
+		if (cutMenuItem == null) {
 			cutMenuItem = new JMenuItem();
-			cutMenuItem.setText( "Cut" );
-			cutMenuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_X, Event.CTRL_MASK, true ) );
+			cutMenuItem.setText("Cut");
+			cutMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, Event.CTRL_MASK, true));
 		}
 		return cutMenuItem;
 	}
@@ -354,10 +354,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getCopyMenuItem() {
-		if ( copyMenuItem == null ) {
+		if (copyMenuItem == null) {
 			copyMenuItem = new JMenuItem();
-			copyMenuItem.setText( "Copy" );
-			copyMenuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_C, Event.CTRL_MASK, true ) );
+			copyMenuItem.setText("Copy");
+			copyMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK, true));
 		}
 		return copyMenuItem;
 	}
@@ -368,10 +368,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getPasteMenuItem() {
-		if ( pasteMenuItem == null ) {
+		if (pasteMenuItem == null) {
 			pasteMenuItem = new JMenuItem();
-			pasteMenuItem.setText( "Paste" );
-			pasteMenuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_V, Event.CTRL_MASK, true ) );
+			pasteMenuItem.setText("Paste");
+			pasteMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK, true));
 		}
 		return pasteMenuItem;
 	}
@@ -382,10 +382,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JMenuItem
 	 */
 	private JMenuItem getSaveMenuItem() {
-		if ( saveMenuItem == null ) {
+		if (saveMenuItem == null) {
 			saveMenuItem = new JMenuItem();
-			saveMenuItem.setText( "Save" );
-			saveMenuItem.setAccelerator( KeyStroke.getKeyStroke( KeyEvent.VK_S, Event.CTRL_MASK, true ) );
+			saveMenuItem.setText("Save");
+			saveMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK, true));
 		}
 		return saveMenuItem;
 	}
@@ -396,11 +396,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtMessage() {
-		if ( txtMessage == null ) {
+		if (txtMessage == null) {
 			txtMessage = new JTextField();
-			txtMessage.setText( "Server" );
-			txtMessage.setSize( new java.awt.Dimension( 260, 20 ) );
-			txtMessage.setLocation( new java.awt.Point( 120, 10 ) );
+			txtMessage.setText("Server");
+			txtMessage.setSize(new java.awt.Dimension(260, 20));
+			txtMessage.setLocation(new java.awt.Point(120, 10));
 		}
 		return txtMessage;
 	}
@@ -411,13 +411,13 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getBtnSend() {
-		if ( btnSend == null ) {
+		if (btnSend == null) {
 			btnSend = new JButton();
-			btnSend.setText( "Send" );
-			btnSend.setSize( new java.awt.Dimension( 150, 20 ) );
-			btnSend.setLocation( new java.awt.Point( 230, 100 ) );
-			btnSend.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
+			btnSend.setText("Send");
+			btnSend.setSize(new java.awt.Dimension(150, 20));
+			btnSend.setLocation(new java.awt.Point(230, 100));
+			btnSend.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
 					sendMessage();
 				}
 
@@ -427,17 +427,16 @@ public class ClientGui extends JFrame {
 					Message message = null;
 					;
 
-					if ( chkReply.isSelected() ) {
-						message = new RepliableTextMessage( txtMessage.getText() );
-						scrivi( "messaggio repliable" );
+					if (chkReply.isSelected()) {
+						message = new RepliableTextMessage(txtMessage.getText());
+						scrivi("messaggio repliable");
+					} else {
+						message = new TextMessage(txtMessage.getText());
+						scrivi("messaggio non repliable");
 					}
-					else {
-						message = new TextMessage( txtMessage.getText() );
-						scrivi( "messaggio non repliable" );
-					}
-					client.publish( message, f );
+					client.publish(message, f);
 				}
-			} );
+			});
 		}
 		return btnSend;
 	}
@@ -448,10 +447,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JComboBox
 	 */
 	private JComboBox getCmbOperatorRAM() {
-		if ( cmbOperatorRAM == null ) {
-			cmbOperatorRAM = new JComboBox( operators );
-			cmbOperatorRAM.setLocation( new java.awt.Point( 230, 40 ) );
-			cmbOperatorRAM.setSize( new java.awt.Dimension( 150, 20 ) );
+		if (cmbOperatorRAM == null) {
+			cmbOperatorRAM = new JComboBox(operators);
+			cmbOperatorRAM.setLocation(new java.awt.Point(230, 40));
+			cmbOperatorRAM.setSize(new java.awt.Dimension(150, 20));
 		}
 		return cmbOperatorRAM;
 	}
@@ -462,10 +461,10 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JComboBox
 	 */
 	private JComboBox getCmbOperatorHD() {
-		if ( cmbOperatorHD == null ) {
-			cmbOperatorHD = new JComboBox( operators );
-			cmbOperatorHD.setLocation( new java.awt.Point( 230, 70 ) );
-			cmbOperatorHD.setSize( new java.awt.Dimension( 150, 20 ) );
+		if (cmbOperatorHD == null) {
+			cmbOperatorHD = new JComboBox(operators);
+			cmbOperatorHD.setLocation(new java.awt.Point(230, 70));
+			cmbOperatorHD.setSize(new java.awt.Dimension(150, 20));
 		}
 		return cmbOperatorHD;
 	}
@@ -476,11 +475,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtHD() {
-		if ( txtHD == null ) {
+		if (txtHD == null) {
 			txtHD = new JTextField();
-			txtHD.setText( "30" );
-			txtHD.setSize( new java.awt.Dimension( 100, 20 ) );
-			txtHD.setLocation( new java.awt.Point( 120, 70 ) );
+			txtHD.setText("30");
+			txtHD.setSize(new java.awt.Dimension(100, 20));
+			txtHD.setLocation(new java.awt.Point(120, 70));
 		}
 		return txtHD;
 	}
@@ -491,11 +490,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtRAM() {
-		if ( txtRAM == null ) {
+		if (txtRAM == null) {
 			txtRAM = new JTextField();
-			txtRAM.setText( "256" );
-			txtRAM.setSize( new java.awt.Dimension( 100, 20 ) );
-			txtRAM.setLocation( new java.awt.Point( 120, 40 ) );
+			txtRAM.setText("256");
+			txtRAM.setSize(new java.awt.Dimension(100, 20));
+			txtRAM.setLocation(new java.awt.Point(120, 40));
 		}
 		return txtRAM;
 	}
@@ -506,11 +505,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtMiaRAM() {
-		if ( txtMyRAM == null ) {
+		if (txtMyRAM == null) {
 			txtMyRAM = new JTextField();
-			txtMyRAM.setText( "256" );
-			txtMyRAM.setSize( new java.awt.Dimension( 100, 20 ) );
-			txtMyRAM.setLocation( new java.awt.Point( 120, 260 ) );
+			txtMyRAM.setText("256");
+			txtMyRAM.setSize(new java.awt.Dimension(100, 20));
+			txtMyRAM.setLocation(new java.awt.Point(120, 260));
 		}
 		return txtMyRAM;
 	}
@@ -521,11 +520,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtMioHD() {
-		if ( txtMyHD == null ) {
+		if (txtMyHD == null) {
 			txtMyHD = new JTextField();
-			txtMyHD.setText( "30" );
-			txtMyHD.setSize( new java.awt.Dimension( 100, 20 ) );
-			txtMyHD.setLocation( new java.awt.Point( 120, 290 ) );
+			txtMyHD.setText("30");
+			txtMyHD.setSize(new java.awt.Dimension(100, 20));
+			txtMyHD.setLocation(new java.awt.Point(120, 290));
 		}
 		return txtMyHD;
 	}
@@ -536,16 +535,16 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getBtnSetContext() {
-		if ( btnSetContext == null ) {
+		if (btnSetContext == null) {
 			btnSetContext = new JButton();
-			btnSetContext.setText( "Set context" );
-			btnSetContext.setSize( new java.awt.Dimension( 210, 20 ) );
-			btnSetContext.setLocation( new java.awt.Point( 10, 320 ) );
-			btnSetContext.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
+			btnSetContext.setText("Set context");
+			btnSetContext.setSize(new java.awt.Dimension(210, 20));
+			btnSetContext.setLocation(new java.awt.Point(10, 320));
+			btnSetContext.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
 					setContext();
 				}
-			} );
+			});
 		}
 		return btnSetContext;
 	}
@@ -556,17 +555,17 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getBtnConnect() {
-		if ( btnConnect == null ) {
+		if (btnConnect == null) {
 			btnConnect = new JButton();
-			btnConnect.setPreferredSize( new java.awt.Dimension( 81, 20 ) );
-			btnConnect.setLocation( new java.awt.Point( 650, 320 ) );
-			btnConnect.setSize( new java.awt.Dimension( 170, 20 ) );
-			btnConnect.setText( "Connect" );
-			btnConnect.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
+			btnConnect.setPreferredSize(new java.awt.Dimension(81, 20));
+			btnConnect.setLocation(new java.awt.Point(650, 320));
+			btnConnect.setSize(new java.awt.Dimension(170, 20));
+			btnConnect.setText("Connect");
+			btnConnect.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
 					connect();
 				}
-			} );
+			});
 		}
 		return btnConnect;
 	}
@@ -577,11 +576,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtPort() {
-		if ( txtPort == null ) {
+		if (txtPort == null) {
 			txtPort = new JTextField();
-			txtPort.setText( "6000" );
-			txtPort.setSize( new java.awt.Dimension( 120, 20 ) );
-			txtPort.setLocation( new java.awt.Point( 520, 320 ) );
+			txtPort.setText("6000");
+			txtPort.setSize(new java.awt.Dimension(120, 20));
+			txtPort.setLocation(new java.awt.Point(520, 320));
 		}
 		return txtPort;
 	}
@@ -592,10 +591,10 @@ public class ClientGui extends JFrame {
 	 * @return java.awt.TextArea
 	 */
 	private TextArea getTxtLog() {
-		if ( txtLog == null ) {
+		if (txtLog == null) {
 			txtLog = new TextArea();
-			txtLog.setLocation( new java.awt.Point( 390, 10 ) );
-			txtLog.setSize( new java.awt.Dimension( 431, 301 ) );
+			txtLog.setLocation(new java.awt.Point(390, 10));
+			txtLog.setSize(new java.awt.Dimension(431, 301));
 		}
 		return txtLog;
 	}
@@ -606,16 +605,16 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getBtnSubscribe() {
-		if ( btnSubscribe == null ) {
+		if (btnSubscribe == null) {
 			btnSubscribe = new JButton();
-			btnSubscribe.setText( "Subscribe ANY" );
-			btnSubscribe.setSize( new java.awt.Dimension( 181, 21 ) );
-			btnSubscribe.setLocation( new java.awt.Point( 10, 100 ) );
-			btnSubscribe.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
+			btnSubscribe.setText("Subscribe ANY");
+			btnSubscribe.setSize(new java.awt.Dimension(181, 21));
+			btnSubscribe.setLocation(new java.awt.Point(10, 100));
+			btnSubscribe.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
 					subscribe();
 				}
-			} );
+			});
 		}
 		return btnSubscribe;
 	}
@@ -626,16 +625,16 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getBtnSubscribeContext() {
-		if ( btnSubscribeContext == null ) {
+		if (btnSubscribeContext == null) {
 			btnSubscribeContext = new JButton();
-			btnSubscribeContext.setText( "Context-aware Subscribe" );
-			btnSubscribeContext.setSize( new java.awt.Dimension( 181, 21 ) );
-			btnSubscribeContext.setLocation( new java.awt.Point( 10, 130 ) );
-			btnSubscribeContext.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
-					subscribe( createFilter() );
+			btnSubscribeContext.setText("Context-aware Subscribe");
+			btnSubscribeContext.setSize(new java.awt.Dimension(181, 21));
+			btnSubscribeContext.setLocation(new java.awt.Point(10, 130));
+			btnSubscribeContext.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
+					subscribe(createFilter());
 				}
-			} );
+			});
 		}
 		return btnSubscribeContext;
 	}
@@ -646,16 +645,16 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JButton
 	 */
 	private JButton getBtnUnsubscribe() {
-		if ( btnUnsubscribe == null ) {
+		if (btnUnsubscribe == null) {
 			btnUnsubscribe = new JButton();
-			btnUnsubscribe.setText( "Unsubscribe" );
-			btnUnsubscribe.setSize( new java.awt.Dimension( 181, 21 ) );
-			btnUnsubscribe.setLocation( new java.awt.Point( 10, 160 ) );
-			btnUnsubscribe.addActionListener( new java.awt.event.ActionListener() {
-				public void actionPerformed( java.awt.event.ActionEvent e ) {
+			btnUnsubscribe.setText("Unsubscribe");
+			btnUnsubscribe.setSize(new java.awt.Dimension(181, 21));
+			btnUnsubscribe.setLocation(new java.awt.Point(10, 160));
+			btnUnsubscribe.addActionListener(new java.awt.event.ActionListener() {
+				public void actionPerformed(java.awt.event.ActionEvent e) {
 					client.unsubscribeAll();
 				}
-			} );
+			});
 		}
 		return btnUnsubscribe;
 	}
@@ -666,11 +665,11 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JTextField
 	 */
 	private JTextField getTxtHost() {
-		if ( txtHost == null ) {
+		if (txtHost == null) {
 			txtHost = new JTextField();
-			txtHost.setText( "localhost" );
-			txtHost.setSize( new java.awt.Dimension( 120, 20 ) );
-			txtHost.setLocation( new java.awt.Point( 390, 320 ) );
+			txtHost.setText("localhost");
+			txtHost.setSize(new java.awt.Dimension(120, 20));
+			txtHost.setLocation(new java.awt.Point(390, 320));
 		}
 		return txtHost;
 	}
@@ -681,13 +680,13 @@ public class ClientGui extends JFrame {
 	 * @return javax.swing.JCheckBox
 	 */
 	private JCheckBox getChkReply() {
-		if ( chkReply == null ) {
+		if (chkReply == null) {
 			chkReply = new JCheckBox();
-			chkReply.setText( "Replyable?" );
-			chkReply.setSize( new java.awt.Dimension( 150, 20 ) );
-			chkReply.setHorizontalAlignment( javax.swing.SwingConstants.RIGHT );
-			chkReply.setHorizontalTextPosition( javax.swing.SwingConstants.LEADING );
-			chkReply.setLocation( new java.awt.Point( 230, 130 ) );
+			chkReply.setText("Replyable?");
+			chkReply.setSize(new java.awt.Dimension(150, 20));
+			chkReply.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
+			chkReply.setHorizontalTextPosition(javax.swing.SwingConstants.LEADING);
+			chkReply.setLocation(new java.awt.Point(230, 130));
 		}
 		return chkReply;
 	}
@@ -695,76 +694,74 @@ public class ClientGui extends JFrame {
 	/**
 	 * Launches this application
 	 */
-	public static void main( String[] args ) {
-		ClientGui application = new ClientGui( 6000 );
+	public static void main(String[] args) {
+		ClientGui application = new ClientGui(6000);
 		application.show();
 	}
 
-	public void scrivi( String s ) {
-		txtLog.setText( txtLog.getText() + s + "\n" );
-		txtLog.setCaretPosition( txtLog.getText().length() );
+	public void scrivi(String s) {
+		txtLog.setText(txtLog.getText() + s + "\n");
+		txtLog.setCaretPosition(txtLog.getText().length());
 	}
 
 	public void connect() {
-		int port = Integer.parseInt( txtPort.getText() );
-		client = new CAClient( txtHost.getText(), port, Context.nullContext, this );
-		scrivi( "Client creato correttamente" );
+		int port = Integer.parseInt(txtPort.getText());
+		client = new CAClient(txtHost.getText(), port, Context.nullContext, this);
+		scrivi("Client creato correttamente");
 		client.start();
 	}
 
 	public void subscribe() {
-		TextFilter tf = new TextFilter( txtMessage.getText(), TextFilter.CONTAINS );
+		TextFilter tf = new TextFilter(txtMessage.getText(), TextFilter.CONTAINS);
 		ContextFilter cf = ContextFilter.ANY;
-		client.subscribe( tf, cf );
-		scrivi( "Mi sono anche registrato per i messaggi di testo che contengono " + txtMessage.getText()
-				+ " che arrivano da qualsiasi parte" );
+		client.subscribe(tf, cf);
+		scrivi("Mi sono anche registrato per i messaggi di testo che contengono " + txtMessage.getText()
+				+ " che arrivano da qualsiasi parte");
 	}
 
-	public void subscribe( ContextFilter cf ) {
-		TextFilter tf = new TextFilter( txtMessage.getText(), TextFilter.CONTAINS );
-		client.subscribe( tf, cf );
-		scrivi( "Mi sono anche registrato per i messaggi di testo che contengono " + txtMessage.getText()
-				+ " provenienti dal contesto " + cf );
+	public void subscribe(ContextFilter cf) {
+		TextFilter tf = new TextFilter(txtMessage.getText(), TextFilter.CONTAINS);
+		client.subscribe(tf, cf);
+		scrivi("Mi sono anche registrato per i messaggi di testo che contengono " + txtMessage.getText()
+				+ " provenienti dal contesto " + cf);
 	}
 
 	public void setContext() {
-		Property ram = new Property( lblRAM.getText(), Property.INTEGER, Integer.parseInt( txtMyRAM.getText() ) );
-		Property hd = new Property( lblHD.getText(), Property.INTEGER, Integer.parseInt( txtMyHD.getText() ) );
+		Property ram = new Property(lblRAM.getText(), Property.INTEGER, Integer.parseInt(txtMyRAM.getText()));
+		Property hd = new Property(lblHD.getText(), Property.INTEGER, Integer.parseInt(txtMyHD.getText()));
 
 		Context myContext = new Context();
-		myContext.addProperty( ram );
-		myContext.addProperty( hd );
+		myContext.addProperty(ram);
+		myContext.addProperty(hd);
 
-		client.setContext( myContext );
-		scrivi( "Ho settato il contesto: \n" + myContext );
+		client.setContext(myContext);
+		scrivi("Ho settato il contesto: \n" + myContext);
 	}
 
-	public void setContext( int ram, int hd ) {
-		txtMyRAM.setText( String.valueOf( ram ) );
-		txtMyHD.setText( String.valueOf( hd ) );
+	public void setContext(int ram, int hd) {
+		txtMyRAM.setText(String.valueOf(ram));
+		txtMyHD.setText(String.valueOf(hd));
 		setContext();
 	}
 
 	private Condition createRAMCondition() {
 		Condition ram;
-		if ( cmbOperatorRAM.getSelectedItem().equals( "Condition.ANY" ) ) {
-			ram = Condition.CreateANYCondition( lblRAM.getText(), Property.INTEGER );
-		}
-		else {
-			int value = ( (Integer) stringToOperator.get( cmbOperatorRAM.getSelectedItem() ) ).intValue();
-			ram = new Condition( lblRAM.getText(), Property.INTEGER, value, new Integer( txtRAM.getText() ) );
+		if (cmbOperatorRAM.getSelectedItem().equals("Condition.ANY")) {
+			ram = Condition.CreateANYCondition(lblRAM.getText(), Property.INTEGER);
+		} else {
+			int value = ((Integer) stringToOperator.get(cmbOperatorRAM.getSelectedItem())).intValue();
+			ram = new Condition(lblRAM.getText(), Property.INTEGER, value, new Integer(txtRAM.getText()));
 		}
 		return ram;
 	}
 
 	private Condition createHDCondition() {
 		Condition hd;
-		if ( cmbOperatorHD.getSelectedItem().equals( "Condition.ANY" ) ) {
-			hd = Condition.CreateANYCondition( lblHD.getText(), Property.INTEGER );
-		}
-		else {
-			int value = ( (Integer) stringToOperator.get( cmbOperatorHD.getSelectedItem() ) ).intValue();
-			hd = new Condition( lblHD.getText(), Property.INTEGER, value, new Integer( txtHD.getText() ) );
+		if (cmbOperatorHD.getSelectedItem().equals("Condition.ANY")) {
+			hd = Condition.CreateANYCondition(lblHD.getText(), Property.INTEGER);
+		} else {
+			int value = ((Integer) stringToOperator.get(cmbOperatorHD.getSelectedItem())).intValue();
+			hd = new Condition(lblHD.getText(), Property.INTEGER, value, new Integer(txtHD.getText()));
 		}
 		return hd;
 	}
@@ -775,8 +772,8 @@ public class ClientGui extends JFrame {
 		Condition hd = createHDCondition();
 
 		ContextFilter f = new ContextFilter();
-		f.addCondition( ram );
-		f.addCondition( hd );
+		f.addCondition(ram);
+		f.addCondition(hd);
 		return f;
 	}
 

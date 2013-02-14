@@ -26,34 +26,40 @@ import polimi.reds.broker.overlay.NeighborRemovedListener;
 import polimi.reds.broker.overlay.NeighborAddedListener;
 
 /**
- * In a REDS broker the <code>Reconfigurator</code> is the module in charge of managing the dispatching network in presence 
- * of reconfigurations. In particular, it forwards subscriptions/unsubscriptions as required. <br>
- * It is registered to the <code>Overlay</code> to receive notifications about the neighbors of the local node.  
+ * In a REDS broker the <code>Reconfigurator</code> is the module in charge of
+ * managing the dispatching network in presence of reconfigurations. In
+ * particular, it forwards subscriptions/unsubscriptions as required. <br>
+ * It is registered to the <code>Overlay</code> to receive notifications about
+ * the neighbors of the local node.
  */
-public interface Reconfigurator extends NeighborRemovedListener, NeighborAddedListener, NeighborDeadListener{
-	
+public interface Reconfigurator extends NeighborRemovedListener, NeighborAddedListener, NeighborDeadListener {
+
 	/**
 	 * Set the router.
+	 * 
 	 * @param r
 	 */
 	public void setRouter(Router r);
-	
+
 	/**
 	 * Get the router.
+	 * 
 	 * @return the router
 	 */
 	public Router getRouter();
-	
+
 	/**
 	 * Set the overlay.
+	 * 
 	 * @param o
 	 */
 	public void setOverlay(Overlay o);
-	
+
 	/**
 	 * Get the overlay.
+	 * 
 	 * @return the overlay
 	 */
 	public Overlay getOverlay();
-	
+
 }

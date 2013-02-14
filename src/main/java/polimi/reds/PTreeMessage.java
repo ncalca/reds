@@ -23,31 +23,31 @@ package polimi.reds;
 import java.util.HashMap;
 
 /**
- * This class implements a message to be used with the
- * <code>PTreeTable</code>.
+ * This class implements a message to be used with the <code>PTreeTable</code>.
  */
 public class PTreeMessage extends Message {
-  /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -8848959575126630707L;
-// The set of variables defined in this message with their respective values.
-  private HashMap variableValues;
+	// The set of variables defined in this message with their respective
+	// values.
+	private HashMap variableValues;
 
-  public PTreeMessage() {
-    variableValues = new HashMap();
-  }
+	public PTreeMessage() {
+		variableValues = new HashMap();
+	}
 
-  public void addValue(String key, String value) {
-    variableValues.put(key, value);
-  }
+	public void addValue(String key, String value) {
+		variableValues.put(key, value);
+	}
 
-  public Object getValue(String key) {
-    return variableValues.get(key);
-  }
+	public Object getValue(String key) {
+		return variableValues.get(key);
+	}
 
-  // For testing purposes...
-  public String toString() {
-    return variableValues.toString();
-  }
+	// For testing purposes...
+	public String toString() {
+		return variableValues.toString();
+	}
 }

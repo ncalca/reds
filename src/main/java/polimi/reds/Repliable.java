@@ -20,9 +20,10 @@
 
 package polimi.reds;
 
-
 /**
  * It indicates that the message is repliable.
+ * 
  * @author Alessandro Monguzzi
  */
-public interface Repliable{}
+public interface Repliable {
+}

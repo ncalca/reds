@@ -62,60 +62,65 @@ public abstract class AbstractRouter implements Router {
 		super();
 	}
 
-	public AbstractRouter( Overlay overlay, RoutingStrategy routingStrategy, SubscriptionTable subscriptionTable ) {
+	public AbstractRouter(Overlay overlay, RoutingStrategy routingStrategy, SubscriptionTable subscriptionTable) {
 		super();
 
 		this.overlay = overlay;
 		this.routingStrategy = routingStrategy;
 		this.subscriptionTable = subscriptionTable;
-		this.routingStrategy.setOverlay( overlay );
+		this.routingStrategy.setOverlay(overlay);
 
 		this.nodeDescriptor = overlay.getID();
 		this.nodeDescriptor.setBroker();
 
-		logger = Logger.getLogger( "polimi.reds.Router" );
+		logger = Logger.getLogger("polimi.reds.Router");
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#subscribe(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.Filter)
+	 * @see
+	 * polimi.reds.broker.routing.Router#subscribe(polimi.reds.NodeDescriptor,
+	 * polimi.reds.Filter)
 	 */
-	public synchronized void subscribe( NodeDescriptor neighbor, Filter filter ) {
-		this.routingStrategy.subscribe( neighbor, filter );
+	public synchronized void subscribe(NodeDescriptor neighbor, Filter filter) {
+		this.routingStrategy.subscribe(neighbor, filter);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#unsubscribe(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.Filter)
+	 * @see
+	 * polimi.reds.broker.routing.Router#unsubscribe(polimi.reds.NodeDescriptor,
+	 * polimi.reds.Filter)
 	 */
-	public synchronized void unsubscribe( NodeDescriptor neighbor, Filter filter ) {
-		this.routingStrategy.unsubscribe( neighbor, filter );
+	public synchronized void unsubscribe(NodeDescriptor neighbor, Filter filter) {
+		this.routingStrategy.unsubscribe(neighbor, filter);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#unsubscribeAll(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.broker.routing.Router#unsubscribeAll(polimi.reds.NodeDescriptor
+	 * )
 	 */
-	public synchronized void unsubscribeAll( NodeDescriptor neighbor ) {
-		this.routingStrategy.unsubscribeAll( neighbor );
+	public synchronized void unsubscribeAll(NodeDescriptor neighbor) {
+		this.routingStrategy.unsubscribeAll(neighbor);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#publish(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.Message)
+	 * @see
+	 * polimi.reds.broker.routing.Router#publish(polimi.reds.NodeDescriptor,
+	 * polimi.reds.Message)
 	 */
-	public synchronized void publish( NodeDescriptor neighbor, Message message ) {
-		FutureInt totalSentCount = this.routingStrategy.publish( neighbor, message );
-		if ( ( message instanceof Repliable ) && ( replyManager != null ) ) {
-			logger.fine( "Record ID for Repliable Message= " + message.getID() );
-			replyManager.recordRepliableMessage( message.getID(), neighbor, totalSentCount );
+	public synchronized void publish(NodeDescriptor neighbor, Message message) {
+		FutureInt totalSentCount = this.routingStrategy.publish(neighbor, message);
+		if ((message instanceof Repliable) && (replyManager != null)) {
+			logger.fine("Record ID for Repliable Message= " + message.getID());
+			replyManager.recordRepliableMessage(message.getID(), neighbor, totalSentCount);
 		}
 	}
 
@@ -140,23 +145,27 @@ public abstract class AbstractRouter implements Router {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#setRoutingStrategy(polimi.reds.broker.routing.RoutingStrategy)
+	 * @see
+	 * polimi.reds.broker.routing.Router#setRoutingStrategy(polimi.reds.broker
+	 * .routing.RoutingStrategy)
 	 */
-	public void setRoutingStrategy( RoutingStrategy routingStrategy ) {
+	public void setRoutingStrategy(RoutingStrategy routingStrategy) {
 		this.routingStrategy = routingStrategy;
 
-		overlay.addPacketListener( this, Router.PUBLISH );
-		overlay.addPacketListener( this, Router.SUBSCRIBE );
-		overlay.addPacketListener( this, Router.UNSUBSCRIBE );
-		overlay.addPacketListener( this, Router.UNSUBSCRIBEALL );
+		overlay.addPacketListener(this, Router.PUBLISH);
+		overlay.addPacketListener(this, Router.SUBSCRIBE);
+		overlay.addPacketListener(this, Router.UNSUBSCRIBE);
+		overlay.addPacketListener(this, Router.UNSUBSCRIBEALL);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#setSubscriptionTable(polimi.reds.broker.routing.SubscriptionTable)
+	 * @see
+	 * polimi.reds.broker.routing.Router#setSubscriptionTable(polimi.reds.broker
+	 * .routing.SubscriptionTable)
 	 */
-	public void setSubscriptionTable( SubscriptionTable subscriptionTable ) {
+	public void setSubscriptionTable(SubscriptionTable subscriptionTable) {
 		this.subscriptionTable = subscriptionTable;
 	}
 
@@ -165,7 +174,7 @@ public abstract class AbstractRouter implements Router {
 	 * 
 	 * @see polimi.reds.broker.routing.Router#setDebugLevel(int)
 	 */
-	public void setDebugLevel( int debugLevel ) {
+	public void setDebugLevel(int debugLevel) {
 		this.debugLevel = debugLevel;
 	}
 
@@ -181,9 +190,11 @@ public abstract class AbstractRouter implements Router {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#setOverlay(polimi.reds.broker.overlay.Overlay)
+	 * @see
+	 * polimi.reds.broker.routing.Router#setOverlay(polimi.reds.broker.overlay
+	 * .Overlay)
 	 */
-	public void setOverlay( Overlay overlay ) {
+	public void setOverlay(Overlay overlay) {
 		this.overlay = overlay;
 	}
 
@@ -199,13 +210,15 @@ public abstract class AbstractRouter implements Router {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#setReplyManager(polimi.reds.broker.routing.ReplyManager)
+	 * @see
+	 * polimi.reds.broker.routing.Router#setReplyManager(polimi.reds.broker.
+	 * routing.ReplyManager)
 	 */
-	public void setReplyManager( ReplyManager replyManager ) {
-		if ( !( this.replyManager == replyManager ) ) {
+	public void setReplyManager(ReplyManager replyManager) {
+		if (!(this.replyManager == replyManager)) {
 			this.replyManager = replyManager;
-			this.replyManager.setRouter( this );
-			overlay.addPacketListener( this, Router.REPLY );
+			this.replyManager.setRouter(this);
+			overlay.addPacketListener(this, Router.REPLY);
 		}
 	}
 
@@ -221,9 +234,11 @@ public abstract class AbstractRouter implements Router {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.routing.Router#setReplyTable(polimi.reds.broker.routing.ReplyTable)
+	 * @see
+	 * polimi.reds.broker.routing.Router#setReplyTable(polimi.reds.broker.routing
+	 * .ReplyTable)
 	 */
-	public void setReplyTable( ReplyTable replyTable ) {
+	public void setReplyTable(ReplyTable replyTable) {
 		this.replyTable = replyTable;
 	}
 
@@ -241,35 +256,31 @@ public abstract class AbstractRouter implements Router {
 	 * 
 	 * @see polimi.reds.broker.routing.Router#forwardReply(polimi.reds.Reply)
 	 */
-	public synchronized void forwardReply( Reply reply ) {
-		replyManager.forwardReply( reply );
+	public synchronized void forwardReply(Reply reply) {
+		replyManager.forwardReply(reply);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.broker.overlay.PacketListener#signalPacket(java.lang.String,
-	 *      polimi.reds.NodeDescriptor, java.io.Serializable)
+	 * @see
+	 * polimi.reds.broker.overlay.PacketListener#signalPacket(java.lang.String,
+	 * polimi.reds.NodeDescriptor, java.io.Serializable)
 	 */
-	public final void signalPacket( String subject, NodeDescriptor senderID, Serializable payload ) {
-		logger.fine( "Packet received" );
-		if ( subject.equals( Router.PUBLISH ) ) {
-			publish( senderID, (Message) payload );
-		}
-		else if ( subject.equals( Router.REPLY ) ) {
-			forwardReply( (Reply) payload );
-		}
-		else if ( subject.equals( Router.SUBSCRIBE ) ) {
-			subscribe( senderID, (Filter) payload );
-		}
-		else if ( subject.equals( Router.UNSUBSCRIBE ) ) {
-			unsubscribe( senderID, (Filter) payload );
-		}
-		else if ( subject.equals( Router.UNSUBSCRIBEALL ) ) {
-			unsubscribeAll( senderID );
-		}
-		else {
-			customProcessPacket( subject, senderID, payload );
+	public final void signalPacket(String subject, NodeDescriptor senderID, Serializable payload) {
+		logger.fine("Packet received");
+		if (subject.equals(Router.PUBLISH)) {
+			publish(senderID, (Message) payload);
+		} else if (subject.equals(Router.REPLY)) {
+			forwardReply((Reply) payload);
+		} else if (subject.equals(Router.SUBSCRIBE)) {
+			subscribe(senderID, (Filter) payload);
+		} else if (subject.equals(Router.UNSUBSCRIBE)) {
+			unsubscribe(senderID, (Filter) payload);
+		} else if (subject.equals(Router.UNSUBSCRIBEALL)) {
+			unsubscribeAll(senderID);
+		} else {
+			customProcessPacket(subject, senderID, payload);
 		}
 	}
 
@@ -285,6 +296,6 @@ public abstract class AbstractRouter implements Router {
 	 * @param payload
 	 *            the message
 	 */
-	protected abstract void customProcessPacket( String subject, NodeDescriptor senderID, Serializable payload );
+	protected abstract void customProcessPacket(String subject, NodeDescriptor senderID, Serializable payload);
 
 }

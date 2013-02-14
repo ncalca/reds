@@ -23,13 +23,13 @@ package polimi.reds;
 import java.io.Serializable;
 
 /**
- * This class is the basic template to create a reply message.
- * Each reply has the ID of its repliable message and a flag
- * that specifies whether this is the last reply or not.
+ * This class is the basic template to create a reply message. Each reply has
+ * the ID of its repliable message and a flag that specifies whether this is the
+ * last reply or not.
  * 
  * @author Alessandro Monguzzi
  */
-public class Reply implements Serializable{
+public class Reply implements Serializable {
 	/**
 	 * 
 	 */
@@ -37,58 +37,71 @@ public class Reply implements Serializable{
 	private MessageID repliableMessageID;
 	private Message payload;
 	private boolean last;
+
 	/**
 	 * A reply to a given message.
-	 * @param repliableMessageID the id of the replied message 
-	 * @param last <code>true</code> this is the last reply for that message
-	 * @param payload the payload of the reply.
+	 * 
+	 * @param repliableMessageID
+	 *            the id of the replied message
+	 * @param last
+	 *            <code>true</code> this is the last reply for that message
+	 * @param payload
+	 *            the payload of the reply.
 	 */
-	public Reply(MessageID repliableMessageID, boolean last, Message payload){
-	  this.repliableMessageID = repliableMessageID;
-	  this.payload = payload;
-	  this.last = last;
+	public Reply(MessageID repliableMessageID, boolean last, Message payload) {
+		this.repliableMessageID = repliableMessageID;
+		this.payload = payload;
+		this.last = last;
 	}
+
 	/**
 	 * Gets the ID of the message it replies to.
+	 * 
 	 * @return repliable message ID.
 	 */
-	public MessageID getRepliableMessageID(){
+	public MessageID getRepliableMessageID() {
 		return repliableMessageID;
 	}
+
 	/**
 	 * Sets the value of the attribute <code>last</code>.<br>
-	 * TRUE iff this is the last message sent for a specific repliable 
-	 * message from the neighbor which sends it.
+	 * TRUE iff this is the last message sent for a specific repliable message
+	 * from the neighbor which sends it.
 	 * 
-	 * @param value Value of the attribute.
+	 * @param value
+	 *            Value of the attribute.
 	 */
-	public void setLast(boolean value){
+	public void setLast(boolean value) {
 		last = value;
 	}
+
 	/**
 	 * Gets the value of the attribute <code>last</code>.
 	 * 
-	 * @return TRUE iff this is the last message sent for a specific repliable 
-	 * message from the neighbor which sends it.
+	 * @return TRUE iff this is the last message sent for a specific repliable
+	 *         message from the neighbor which sends it.
 	 */
-	public boolean isLast(){
+	public boolean isLast() {
 		return last;
 	}
+
 	/**
 	 * Gets the payload.
 	 * 
 	 * @return the payload.
 	 */
-	public Message getPayload(){
-	  return payload;
+	public Message getPayload() {
+		return payload;
 	}
+
 	/**
-	 * Return a <code>String</code> representation of a <code>Reply</code> object.
+	 * Return a <code>String</code> representation of a <code>Reply</code>
+	 * object.
 	 */
-	public String toString(){
+	public String toString() {
 		String pay = null;
-		if(payload != null)
+		if (payload != null)
 			pay = payload.toString();
 		return "MessageID: " + this.repliableMessageID.toString() + " last: " + this.last + " payload: " + pay;
-	}	
+	}
 }

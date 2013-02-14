@@ -55,77 +55,77 @@ public class LocationBroker {
 	 * Enable logging facility
 	 */
 	public static String LOGGER_ON = "--logger";
-  public static void main(String[] args) {
-    if(args.length ==0) {
-      System.err
-          .println("USAGE: java polimi.reds.examples.Broker <protocol> <localPort> [--logger]");
-      return;
-    }
-    // configuring logging facility
-    Logger logger = Logger.getLogger("polimi.reds");
-    ConsoleHandler ch = new ConsoleHandler();
-    logger.addHandler(ch);
-    if(args.length == 3 && args[2].equals(LOGGER_ON)){
-    	logger.setLevel(Level.ALL);
-        ch.setLevel(Level.ALL);
-    }else{
-    	logger.setLevel(Level.OFF);
-        ch.setLevel(Level.OFF);
-    }
-    // building the broker
-    Transport transport = null;
-    if(args[0].equals(TCP))
-    	transport = new TCPTransport(Integer.parseInt(args[1]));
-    else if(args[0].equals(UDP))
-    	transport = new UDPTransport(Integer.parseInt(args[1]));
-    else{
-    	System.err.println("Unknown protocol");
-    	System.exit(-1);
-    }
-    Set transports = new LinkedHashSet();
-    transports.add(transport);
-    TopologyManager  topologyManager = new LSTreeTopologyManager();
-    Overlay overlay = new GenericOverlay(topologyManager, transports);
-    RoutingStrategy routingStrategy = new LocationForwardingRoutingStrategy(new PhysicalZoneMerger());
-    SubscriptionTable subscriptionTable = new GenericTable();
-    
-    GenericRouter router = new GenericRouter(overlay);
-    
-    routingStrategy.setOverlay(overlay);
-    
-    router.setOverlay(overlay);
-    router.setRoutingStrategy(routingStrategy);
-    router.setSubscriptionTable(subscriptionTable);
-    overlay.start();
-    String url = null;
-    
-    try {
-		url = args[0]+":"+InetAddress.getLocalHost().getHostAddress()+":"+args[1];
-      Locator locator = null;
-      try {
-        locator = new Locator(url);
-        locator.startServer();
-      } catch(java.io.IOException ex) {
-        System.out.println("Unable to start location service");
-      }
-      System.out.println("Press enter to connect to other brokers");
-      System.in.read();
-      // search for other brokers
-      System.out.println("Searching for other brokers...");
-      String[] urls = null;
-      try {
-        urls = locator.locate(1000);
-      } catch(Exception ex) {
-        System.out.println("Unable to use the locator");
-      }
-      if(urls!=null) {
-        System.out.println("Connecting to "+urls[0]);
-        overlay.addNeighbor(urls[0]);
-      } else {
-        System.out.println("No other brokers available");
-      }
-    } catch(Exception ex) {
-      ex.printStackTrace();
-    }
-  }
+
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.err.println("USAGE: java polimi.reds.examples.Broker <protocol> <localPort> [--logger]");
+			return;
+		}
+		// configuring logging facility
+		Logger logger = Logger.getLogger("polimi.reds");
+		ConsoleHandler ch = new ConsoleHandler();
+		logger.addHandler(ch);
+		if (args.length == 3 && args[2].equals(LOGGER_ON)) {
+			logger.setLevel(Level.ALL);
+			ch.setLevel(Level.ALL);
+		} else {
+			logger.setLevel(Level.OFF);
+			ch.setLevel(Level.OFF);
+		}
+		// building the broker
+		Transport transport = null;
+		if (args[0].equals(TCP))
+			transport = new TCPTransport(Integer.parseInt(args[1]));
+		else if (args[0].equals(UDP))
+			transport = new UDPTransport(Integer.parseInt(args[1]));
+		else {
+			System.err.println("Unknown protocol");
+			System.exit(-1);
+		}
+		Set transports = new LinkedHashSet();
+		transports.add(transport);
+		TopologyManager topologyManager = new LSTreeTopologyManager();
+		Overlay overlay = new GenericOverlay(topologyManager, transports);
+		RoutingStrategy routingStrategy = new LocationForwardingRoutingStrategy(new PhysicalZoneMerger());
+		SubscriptionTable subscriptionTable = new GenericTable();
+
+		GenericRouter router = new GenericRouter(overlay);
+
+		routingStrategy.setOverlay(overlay);
+
+		router.setOverlay(overlay);
+		router.setRoutingStrategy(routingStrategy);
+		router.setSubscriptionTable(subscriptionTable);
+		overlay.start();
+		String url = null;
+
+		try {
+			url = args[0] + ":" + InetAddress.getLocalHost().getHostAddress() + ":" + args[1];
+			Locator locator = null;
+			try {
+				locator = new Locator(url);
+				locator.startServer();
+			} catch (java.io.IOException ex) {
+				System.out.println("Unable to start location service");
+			}
+			System.out.println("Press enter to connect to other brokers");
+			System.in.read();
+			// search for other brokers
+			System.out.println("Searching for other brokers...");
+			String[] urls = null;
+			try {
+				urls = locator.locate(1000);
+			} catch (Exception ex) {
+				System.out.println("Unable to use the locator");
+			}
+			if (urls != null) {
+				System.out.println("Connecting to " + urls[0]);
+				overlay.addNeighbor(urls[0]);
+			} else {
+				System.out.println("No other brokers available");
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }

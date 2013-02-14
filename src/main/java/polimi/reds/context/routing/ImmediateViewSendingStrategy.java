@@ -32,25 +32,27 @@ public class ImmediateViewSendingStrategy extends ViewSendingStrategy {
 	/*
 	 * 
 	 */
-	public ImmediateViewSendingStrategy( CARouter caRouter ) {
-		super( caRouter );
+	public ImmediateViewSendingStrategy(CARouter caRouter) {
+		super(caRouter);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ViewSenderStrategy#sendViewDueTo(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.context.routing.ViewSenderStrategy#sendViewDueTo(polimi.reds
+	 * .NodeDescriptor)
 	 */
-	public void sendViewDueTo( NodeDescriptor node ) {
+	public void sendViewDueTo(NodeDescriptor node) {
 
-		for ( NodeDescriptor destinationNode : caRouter.getContextTable().getNodes() ) {
-			if ( !destinationNode.equals( node ) && destinationNode.isBroker() ) {
+		for (NodeDescriptor destinationNode : caRouter.getContextTable().getNodes()) {
+			if (!destinationNode.equals(node) && destinationNode.isBroker()) {
 
-				super.createViewAndPutInTable( destinationNode );
+				super.createViewAndPutInTable(destinationNode);
 
-				super.simplifyViewAndPutInTable( destinationNode );
+				super.simplifyViewAndPutInTable(destinationNode);
 
-				super.sendViewAndPutInTable( destinationNode );
+				super.sendViewAndPutInTable(destinationNode);
 			}
 		}
 

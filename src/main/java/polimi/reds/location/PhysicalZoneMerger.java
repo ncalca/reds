@@ -26,28 +26,27 @@ import java.util.*;
  * A <code>ZoneMerger</code> for <code>PhysicalArea</code>
  */
 public class PhysicalZoneMerger implements ZoneMerger {
-  private static final double MARGIN = 0.01;
+	private static final double MARGIN = 0.01;
 
-  public PhysicalZoneMerger() {
-    super();
-  }
+	public PhysicalZoneMerger() {
+		super();
+	}
 
-  public Zone toZone(Location loc) {
-    PhysicalLocation l = (PhysicalLocation) loc;
-    return new PhysicalArea(l.latitude-MARGIN, l.latitude+MARGIN, l.longitude
-        -MARGIN, l.longitude+MARGIN);
-  }
+	public Zone toZone(Location loc) {
+		PhysicalLocation l = (PhysicalLocation) loc;
+		return new PhysicalArea(l.latitude - MARGIN, l.latitude + MARGIN, l.longitude - MARGIN, l.longitude + MARGIN);
+	}
 
-  public Zone merge(Collection zones) {
-    Iterator it = zones.iterator();
-    PhysicalArea a = new PhysicalArea((PhysicalArea) it.next());
-    while(it.hasNext()) {
-      PhysicalArea a1 = (PhysicalArea) it.next();
-      a.lowestLat = Math.min(a.lowestLat, a1.lowestLat);
-      a.lowestLong = Math.min(a.lowestLong, a1.lowestLong);
-      a.highestLat = Math.max(a.highestLat, a1.highestLat);
-      a.highestLong = Math.max(a.highestLong, a1.highestLong);
-    }
-    return a;
-  }
+	public Zone merge(Collection zones) {
+		Iterator it = zones.iterator();
+		PhysicalArea a = new PhysicalArea((PhysicalArea) it.next());
+		while (it.hasNext()) {
+			PhysicalArea a1 = (PhysicalArea) it.next();
+			a.lowestLat = Math.min(a.lowestLat, a1.lowestLat);
+			a.lowestLong = Math.min(a.lowestLong, a1.lowestLong);
+			a.highestLat = Math.max(a.highestLat, a1.highestLat);
+			a.highestLong = Math.max(a.highestLong, a1.highestLong);
+		}
+		return a;
+	}
 }

@@ -27,46 +27,55 @@ import polimi.reds.NotConnectedException;
 
 /**
  * This interface represents a neighbor of the local node.<br>
- * The concrete implementations of this interface are recommended to be visible only to <code>Transport</code> component, i.e. using
- * private classes.
+ * The concrete implementations of this interface are recommended to be visible
+ * only to <code>Transport</code> component, i.e. using private classes.
  * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
 public interface Proxy {
 
 	/**
 	 * Get informations about the identity of the neighbor.
+	 * 
 	 * @return <code>true</code> iff the neighbor is a broker
 	 */
 	public boolean isBroker();
-	
+
 	/**
 	 * Get informations about the identity of the neighbor.
+	 * 
 	 * @return <code>true</code> iff the neighbor is a client
 	 */
 	public boolean isClient();
-	
+
 	/**
 	 * Get the <code>NodeDescriptor</code> of the neighbor.
+	 * 
 	 * @return
 	 */
 	public NodeDescriptor getID();
-	
+
 	/**
 	 * Check whether the neighbor is connected to the local node.
+	 * 
 	 * @return
 	 */
 	public boolean isConnected();
-		
+
 	/**
 	 * Send a message with a specific subject to the neighbor.
-	 * @param subject the subject of the message
-	 * @param payload the message
-	 * @param trafficClass the given traffic class
+	 * 
+	 * @param subject
+	 *            the subject of the message
+	 * @param payload
+	 *            the message
+	 * @param trafficClass
+	 *            the given traffic class
 	 * @throws NotConnectedException
 	 */
 	public void sendMessage(String subject, Serializable payload, String trafficClass) throws NotConnectedException;
+
 	/**
 	 * Disconnect the local proxy closing the connection with the remote node.
 	 */

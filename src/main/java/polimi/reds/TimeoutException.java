@@ -21,7 +21,9 @@
 package polimi.reds;
 
 /**
- * This exception is thrown when the timeout expires and someone is waiting for a reply.
+ * This exception is thrown when the timeout expires and someone is waiting for
+ * a reply.
+ * 
  * @author Alessandro Monguzzi
  */
 public class TimeoutException extends Exception {
@@ -29,4 +31,5 @@ public class TimeoutException extends Exception {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -8257475039193410509L;}
+	private static final long serialVersionUID = -8257475039193410509L;
+}

@@ -27,8 +27,8 @@ import polimi.reds.broker.overlay.TopologyManager;
 
 public class GuiOverlay extends GenericOverlay {
 
-	public GuiOverlay( TopologyManager topologyManager, Set transport ) {
-		super( topologyManager, transport );
+	public GuiOverlay(TopologyManager topologyManager, Set transport) {
+		super(topologyManager, transport);
 	}
 
 }

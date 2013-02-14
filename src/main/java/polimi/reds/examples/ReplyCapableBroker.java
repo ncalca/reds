@@ -51,7 +51,7 @@ import polimi.reds.broker.routing.SubscriptionTable;
 
 /**
  * @author Alessandro Monguzzi
- *
+ * 
  */
 public class ReplyCapableBroker {
 	/**
@@ -70,73 +70,73 @@ public class ReplyCapableBroker {
 	 * Neighbor to connect to.
 	 */
 	public static String NEIGHBOR_ON = "--neighbor";
-		
+
 	public static void main(String[] args) {
-		if(args.length ==0) {
-	      System.err
-	          .println("USAGE: java polimi.reds.examples.ReplyCapableBroker <protocol> <localPort> [--neighbor <broker url>] " +
-	          		"[--logger <level>]");
-	      return;
-	    }//configuring logging facility
+		if (args.length == 0) {
+			System.err
+					.println("USAGE: java polimi.reds.examples.ReplyCapableBroker <protocol> <localPort> [--neighbor <broker url>] "
+							+ "[--logger <level>]");
+			return;
+		}// configuring logging facility
 		int indexLogger = indexOf(LOGGER_ON, args);
 		Logger logger = null;
 		FileHandler fh = null;
-	    if(indexLogger != NOT_FOUND){
-	    	logger = Logger.getLogger("polimi.reds");
-	    	try {
-	    	fh = new FileHandler(args[indexLogger +1]);
-    		logger.setLevel(getLevel(args[indexLogger + 1]));
-	    	fh.setLevel(logger.getLevel());	
-	    	logger.addHandler(fh);
-	    	} catch (SecurityException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	} catch (IOException e) {
-	    		// TODO Auto-generated catch block
-	    		e.printStackTrace();
-	    	}
+		if (indexLogger != NOT_FOUND) {
+			logger = Logger.getLogger("polimi.reds");
+			try {
+				fh = new FileHandler(args[indexLogger + 1]);
+				logger.setLevel(getLevel(args[indexLogger + 1]));
+				fh.setLevel(logger.getLevel());
+				logger.addHandler(fh);
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
-	    //check neighbor
-	    String url = null;
-	    int indexUrl = indexOf(NEIGHBOR_ON, args);
-	    if(indexUrl != NOT_FOUND)
-	    	url = args[indexUrl+1];
-	    
-	    Transport transport = null;
-	    if(args[0].equals(TCP))
-	    	transport = new TCPTransport(Integer.parseInt(args[1]));
-	    else if(args[0].equals(UDP))
-	    	transport = new UDPTransport(Integer.parseInt(args[1]));
-	    else{
-	    	System.err.println("Unknown protocol");
-	    	System.exit(-1);
-	    }
-	    Set transports = new LinkedHashSet();
-	    transports.add(transport);
-	    TopologyManager topolMgr = new SimpleTopologyManager();
-	    Overlay overlay = new GenericOverlay(topolMgr,transports);
-	    RoutingStrategy routingStrategy = new SubscriptionForwardingRoutingStrategy();
-	    Reconfigurator reconf = new DeferredUnsubscriptionReconfigurator();
-	    GenericRouter router = new GenericRouter(overlay);
-	    
-	    SubscriptionTable subscriptionTable = new GenericTable();
-	    routingStrategy.setOverlay(overlay);
-	    reconf.setOverlay(overlay);
-	    ReplyManager replyMgr = new ImmediateForwardReplyManager();
-	    ReplyTable replyTbl = new HashReplyTable();
-	    replyMgr.setOverlay(overlay);
-	    router.setOverlay(overlay);
-	    router.setSubscriptionTable(subscriptionTable);
-	    router.setRoutingStrategy(routingStrategy);
-	    router.setReplyManager(replyMgr);
-	    router.setReplyTable(replyTbl);
-	    reconf.setRouter(router);
-	    replyMgr.setReplyTable(replyTbl);
-	    overlay.start();
-	    if (url != null){
-	    	try {
+		// check neighbor
+		String url = null;
+		int indexUrl = indexOf(NEIGHBOR_ON, args);
+		if (indexUrl != NOT_FOUND)
+			url = args[indexUrl + 1];
+
+		Transport transport = null;
+		if (args[0].equals(TCP))
+			transport = new TCPTransport(Integer.parseInt(args[1]));
+		else if (args[0].equals(UDP))
+			transport = new UDPTransport(Integer.parseInt(args[1]));
+		else {
+			System.err.println("Unknown protocol");
+			System.exit(-1);
+		}
+		Set transports = new LinkedHashSet();
+		transports.add(transport);
+		TopologyManager topolMgr = new SimpleTopologyManager();
+		Overlay overlay = new GenericOverlay(topolMgr, transports);
+		RoutingStrategy routingStrategy = new SubscriptionForwardingRoutingStrategy();
+		Reconfigurator reconf = new DeferredUnsubscriptionReconfigurator();
+		GenericRouter router = new GenericRouter(overlay);
+
+		SubscriptionTable subscriptionTable = new GenericTable();
+		routingStrategy.setOverlay(overlay);
+		reconf.setOverlay(overlay);
+		ReplyManager replyMgr = new ImmediateForwardReplyManager();
+		ReplyTable replyTbl = new HashReplyTable();
+		replyMgr.setOverlay(overlay);
+		router.setOverlay(overlay);
+		router.setSubscriptionTable(subscriptionTable);
+		router.setRoutingStrategy(routingStrategy);
+		router.setReplyManager(replyMgr);
+		router.setReplyTable(replyTbl);
+		reconf.setRouter(router);
+		replyMgr.setReplyTable(replyTbl);
+		overlay.start();
+		if (url != null) {
+			try {
 				overlay.addNeighbor(url);
-				System.out.println("Connected to "+ url);
+				System.out.println("Connected to " + url);
 			} catch (AlreadyAddedNeighborException e) {
 				e.printStackTrace();
 				System.err.println("already connected neighbor");
@@ -147,27 +147,32 @@ public class ReplyCapableBroker {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	    }
-	    System.out.println("broker started");
-	}//end main
-	
+		}
+		System.out.println("broker started");
+	}// end main
+
 	public static int NOT_FOUND = -1;
+
 	/**
 	 * Search into <code>args</code> the index of <code>searchedArg</code>
-	 * @param searchedArg the searched argument
-	 * @param args the arguments' array
-	 * @return the index of <code>searchedArg</code> if present else <code>NOT_FOUND</code>
+	 * 
+	 * @param searchedArg
+	 *            the searched argument
+	 * @param args
+	 *            the arguments' array
+	 * @return the index of <code>searchedArg</code> if present else
+	 *         <code>NOT_FOUND</code>
 	 */
-	public static int indexOf(String searchedArg, String[] args){
-		int i=0;
-		while(i<args.length){
-			if(args[i].equals(searchedArg))
+	public static int indexOf(String searchedArg, String[] args) {
+		int i = 0;
+		while (i < args.length) {
+			if (args[i].equals(searchedArg))
 				return i;
 			i++;
 		}
 		return NOT_FOUND;
 	}
-	
+
 	public static String SEVERE = "severe";
 	public static String WARNING = "warning";
 	public static String INFO = "info";
@@ -176,22 +181,23 @@ public class ReplyCapableBroker {
 	public static String FINER = "finer";
 	public static String FINEST = "finest";
 	public static String OFF = "off";
-	public static Level getLevel(String level){
-		if(level.equalsIgnoreCase(OFF))
+
+	public static Level getLevel(String level) {
+		if (level.equalsIgnoreCase(OFF))
 			return Level.OFF;
-		else if(level.equalsIgnoreCase(FINEST))
+		else if (level.equalsIgnoreCase(FINEST))
 			return Level.FINEST;
-		else if(level.equalsIgnoreCase(FINER))
+		else if (level.equalsIgnoreCase(FINER))
 			return Level.FINER;
-		else if(level.equalsIgnoreCase(FINE))
+		else if (level.equalsIgnoreCase(FINE))
 			return Level.FINE;
-		else if(level.equalsIgnoreCase(CONFIG))
+		else if (level.equalsIgnoreCase(CONFIG))
 			return Level.CONFIG;
-		else if(level.equalsIgnoreCase(INFO))
+		else if (level.equalsIgnoreCase(INFO))
 			return Level.INFO;
-		else if(level.equalsIgnoreCase(WARNING))
+		else if (level.equalsIgnoreCase(WARNING))
 			return Level.WARNING;
-		else if(level.equalsIgnoreCase(SEVERE))
+		else if (level.equalsIgnoreCase(SEVERE))
 			return Level.SEVERE;
 		else
 			return Level.ALL;

@@ -21,33 +21,35 @@
 package polimi.reds;
 
 /**********************************************************************
- * A REDS filter. Filters are used to subscribe to specific classes of
- * messages, namely messages that match the specified filter. This is the most
- * general interface. See classes implementing this interface for specific
- * type of filters.
+ * A REDS filter. Filters are used to subscribe to specific classes of messages,
+ * namely messages that match the specified filter. This is the most general
+ * interface. See classes implementing this interface for specific type of
+ * filters.
  **********************************************************************/
 public interface Filter extends java.io.Serializable {
-  /**
-   * Test whether this filter matches the given message.
-   *
-   * @param msg The message to match.
-   * @return <tt>true</tt> if the filter matches the given message.
-   */
-  public boolean matches(Message msg);
+	/**
+	 * Test whether this filter matches the given message.
+	 * 
+	 * @param msg
+	 *            The message to match.
+	 * @return <tt>true</tt> if the filter matches the given message.
+	 */
+	public boolean matches(Message msg);
 
-  /**
-  * Test if this filter is equal to another filter
-  *
-  * @param o The filter to compare against.
-  * @return <tt>true</tt> if the two filters are equal.
-  */
-  public boolean equals(Object o);
+	/**
+	 * Test if this filter is equal to another filter
+	 * 
+	 * @param o
+	 *            The filter to compare against.
+	 * @return <tt>true</tt> if the two filters are equal.
+	 */
+	public boolean equals(Object o);
 
-  /**
-  * Returns the hash code of this object. You MUST redefine this method if 
-  * you redefine method <code>equals</code>.
-  *
-  * @return the hash code of this object.
-  */
-  public int hashCode();
+	/**
+	 * Returns the hash code of this object. You MUST redefine this method if
+	 * you redefine method <code>equals</code>.
+	 * 
+	 * @return the hash code of this object.
+	 */
+	public int hashCode();
 }

@@ -19,25 +19,36 @@
  ***/
 
 package polimi.reds.broker.overlay;
+
 import java.io.*;
 
 /**********************************************************************
- * An <code>ObjectInputStream</code> that use the class annotations, if
- * present, as a codebase URL to retrieve the bytecode of the objects to be
- * unmarshalled. It uses the <code>RMIClassLoader</code> to load classes from
- * the given codebase (works only if a security manager is installed).
- *
+ * An <code>ObjectInputStream</code> that use the class annotations, if present,
+ * as a codebase URL to retrieve the bytecode of the objects to be unmarshalled.
+ * It uses the <code>RMIClassLoader</code> to load classes from the given
+ * codebase (works only if a security manager is installed).
+ * 
  * @see polimi.reds.broker.overlay.REDSMarshaller
  **********************************************************************/
 public class REDSUnmarshaller extends ObjectInputStream {
-  public REDSUnmarshaller(InputStream is) throws IOException {
-    super(is);
-  }
-  protected Class resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
-    String codebase = null;
-    try {codebase = (String)super.readObject();}
-    catch(Exception ex) { ex.printStackTrace(); }    
-    if(codebase==null) return super.resolveClass(desc);
-    return java.rmi.server.RMIClassLoader.loadClass(codebase, desc.getName());
-  }
+	public REDSUnmarshaller(InputStream is) throws IOException {
+		super(is);
+	}
+
+	protected Class resolveClass(ObjectStreamClass desc) throws IOException, ClassNotFoundException {
+		String codebase = null;
+		try {
+			codebase = (String) super.readObject();
+		} catch (Exception ex) {
+			throw new RuntimeException("Cannot resolve class " + desc, ex);
+		}
+		try {
+			if (codebase == null)
+				return super.resolveClass(desc);
+		} catch (Exception ex) {
+			throw new RuntimeException("Cannot resolve class " + desc, ex);
+		}
+
+		return java.rmi.server.RMIClassLoader.loadClass(codebase, desc.getName());
+	}
 }

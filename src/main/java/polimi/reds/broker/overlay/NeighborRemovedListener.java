@@ -23,18 +23,24 @@ package polimi.reds.broker.overlay;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the announced removal of a neighbor.<br>
- * Users implement the <code>NeighborRemovedListener</code> interface and register their listeners using the 
- * <code>AddNeighborRemovedListener</code> method. The users should also remove their listeners after they have completed using the 
- * listener.
+ * This interface is the primary method for being notified about the announced
+ * removal of a neighbor.<br>
+ * Users implement the <code>NeighborRemovedListener</code> interface and
+ * register their listeners using the <code>AddNeighborRemovedListener</code>
+ * method. The users should also remove their listeners after they have
+ * completed using the listener.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
-public interface NeighborRemovedListener{
+public interface NeighborRemovedListener {
 
 	/**
-	 * This method is called whenever a neighbor of the local node close its connection.
-	 * @param removedNeighbor the <code>NodeDescriptor</code> of the neighbor
+	 * This method is called whenever a neighbor of the local node close its
+	 * connection.
+	 * 
+	 * @param removedNeighbor
+	 *            the <code>NodeDescriptor</code> of the neighbor
 	 */
 	public void signalNeighborRemoved(NodeDescriptor removedNeighbor);
 }

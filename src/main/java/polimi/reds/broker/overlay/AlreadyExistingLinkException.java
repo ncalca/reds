@@ -22,11 +22,12 @@ package polimi.reds.broker.overlay;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This exception is thrown when the <code>Transport</code> tries to open a connection to an already connected node.<br>
+ * This exception is thrown when the <code>Transport</code> tries to open a
+ * connection to an already connected node.<br>
  * It carries the <code>NodeDescriptor</code> of the remote node.
  * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
 public class AlreadyExistingLinkException extends Exception {
 
@@ -35,18 +36,23 @@ public class AlreadyExistingLinkException extends Exception {
 	 * 
 	 */
 	private static final long serialVersionUID = -301860628355804005L;
+
 	/**
 	 * Create a new exception.
-	 * @param n the <code>NodeDescriptor</code> of the remote node.
+	 * 
+	 * @param n
+	 *            the <code>NodeDescriptor</code> of the remote node.
 	 */
-	public AlreadyExistingLinkException(NodeDescriptor n){
+	public AlreadyExistingLinkException(NodeDescriptor n) {
 		this.remoteNodeDescriptor = n;
 	}
+
 	/**
 	 * Get the <code>NodeDescripton</code> of the remote node.
+	 * 
 	 * @return <code>NodeDescripton</code>
 	 */
-	public NodeDescriptor getRemoteNodeDescriptor(){
+	public NodeDescriptor getRemoteNodeDescriptor() {
 		return remoteNodeDescriptor;
 	}
 }

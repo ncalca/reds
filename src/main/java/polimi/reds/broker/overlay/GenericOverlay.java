@@ -77,8 +77,8 @@ public class GenericOverlay implements Overlay {
 	/**
 	 * Create a new <code>Overlay</code> which uses the given
 	 * <code>TopologyManager</code> and set of <code>Transport</code>.<br>
-	 * It creates the <code>NodeDescriptor</code> for the local node and
-	 * assign it to the <code>TopologyManager</code> and to the<code>Transport</code>.<br>
+	 * It creates the <code>NodeDescriptor</code> for the local node and assign
+	 * it to the <code>TopologyManager</code> and to the<code>Transport</code>.<br>
 	 * Set to itself the <code>TopologyManager</code>'s <code>Overlay</code>
 	 * attribute.
 	 * 
@@ -103,54 +103,61 @@ public class GenericOverlay implements Overlay {
 
 	/**
 	 * Get an instance of <code>LocalTransport</code>. If the
-	 * <code>localTransport</code> does not exist, it creates it, add it to
-	 * the <code>Transport</code>'s <code>Set</code> and returns it; else
-	 * it simply returns it.
+	 * <code>localTransport</code> does not exist, it creates it, add it to the
+	 * <code>Transport</code>'s <code>Set</code> and returns it; else it simply
+	 * returns it.
 	 * 
 	 * @return the <code>LocalTransport</code>
 	 */
-	public LocalTransport getLocalTransport(){
-		if(localTransport == null){
+	public LocalTransport getLocalTransport() {
+		if (localTransport == null) {
 			localTransport = new LocalTransport();
 			addTransport(localTransport);
 			localTransport.start();
 		}
 		return localTransport;
 	}
+
 	/**
 	 * @see Overlay#send(String, Serializable, NodeDescriptor)
 	 */
-	public void send(String subject, Serializable payload,
-			NodeDescriptor receiver) throws NotConnectedException {
+	public void send(String subject, Serializable payload, NodeDescriptor receiver) throws NotConnectedException {
 		send(subject, payload, receiver, getTrafficClass(subject));
 	}
+
 	/**
 	 * @see Overlay#send(String, Serializable, NodeDescriptor, String)
 	 */
-	public void send(String subject, Serializable payload,
-			NodeDescriptor receiver, String trafficClass)throws NotConnectedException {
+	public void send(String subject, Serializable payload, NodeDescriptor receiver, String trafficClass)
+			throws NotConnectedException {
 		Transport t = topologyManager.getTransport(receiver);
 		if (t != null)
 			t.send(subject, payload, receiver, trafficClass);
 		else
-			throw new NotConnectedException();	
+			throw new NotConnectedException();
 	}
+
 	/**
 	 * Get the traffic class associated with the given <code>subject</code>.<br>
-	 * If there is no standard association, the <code>MISCELLANEOUS_CLASS</code> is selected.
-	 * @param subject the message subject
+	 * If there is no standard association, the <code>MISCELLANEOUS_CLASS</code>
+	 * is selected.
+	 * 
+	 * @param subject
+	 *            the message subject
 	 * @return the traffic class associated with the given subject
 	 */
-	private String getTrafficClass(String subject){
-		if(subject.equals(Router.PUBLISH))
+	private String getTrafficClass(String subject) {
+		if (subject.equals(Router.PUBLISH))
 			return Transport.MESSAGE_CLASS;
 		else if (subject.equals(Router.REPLY))
 			return Transport.REPLY_CLASS;
-		else if (subject.equals(Router.SUBSCRIBE) || subject.equals(Router.UNSUBSCRIBE) || subject.equals(Router.UNSUBSCRIBEALL))
+		else if (subject.equals(Router.SUBSCRIBE) || subject.equals(Router.UNSUBSCRIBE)
+				|| subject.equals(Router.UNSUBSCRIBEALL))
 			return Transport.FILTER_CLASS;
-		else 
+		else
 			return Transport.MISCELLANEOUS_CLASS;
 	}
+
 	/**
 	 * @see Overlay#addPacketListener(PacketListener, String)
 	 */
@@ -167,56 +174,64 @@ public class GenericOverlay implements Overlay {
 				((Transport) it.next()).addPacketListener(listener, subject);
 		}
 	}
+
 	/**
 	 * @see Overlay#removePacketListener(PacketListener, String)
 	 */
-	public void removePacketListener(PacketListener listener, String subject){
+	public void removePacketListener(PacketListener listener, String subject) {
 		Collection list = (Collection) listeners.get(subject);
-		if(list != null){
+		if (list != null) {
 			list.remove(listener);
 			synchronized (transport) {
 				Iterator it = transport.iterator();
-				while(it.hasNext())
+				while (it.hasNext())
 					((Transport) it.next()).removePacketListener(listener, subject);
 			}
 		}
 	}
+
 	/**
 	 * @see Overlay#removePacketListener(PacketListener)
 	 */
-	public void removePacketListener(PacketListener listener){
+	public void removePacketListener(PacketListener listener) {
 		Set subjects = listeners.keySet();
 		Iterator it = subjects.iterator();
-		while(it.hasNext()){
+		while (it.hasNext()) {
 			String next = (String) it.next();
 			removePacketListener(listener, next);
 		}
 	}
+
 	/**
 	 * @see Overlay#addNeighborAddedListener(NeighborAddedListener)
 	 */
 	public void addNeighborAddedListener(NeighborAddedListener listener) {
 		topologyManager.addNeighborAddedListener(listener);
 	}
+
 	/**
 	 * @see Overlay#removeNeighborAddedListener(NeighborAddedListener)
-	 * @param listener the listener
+	 * @param listener
+	 *            the listener
 	 */
-	public void removeNeighborAddedListener(NeighborAddedListener listener){
+	public void removeNeighborAddedListener(NeighborAddedListener listener) {
 		topologyManager.removeNeighborAddedListener(listener);
 	}
+
 	/**
 	 * @see Overlay#addNeighborRemovedListener(NeighborRemovedListener)
 	 */
 	public void addNeighborRemovedListener(NeighborRemovedListener listener) {
 		topologyManager.addNeighborRemovedListener(listener);
 	}
+
 	/**
 	 * @see Overlay#removeNeighborRemovedListener(NeighborRemovedListener)
 	 */
-	public void removeNeighborRemovedListener(NeighborRemovedListener listener){
+	public void removeNeighborRemovedListener(NeighborRemovedListener listener) {
 		topologyManager.removeNeighborRemovedListener(listener);
 	}
+
 	/**
 	 * @see Overlay#removeNeighbor(NodeDescriptor)
 	 */
@@ -295,14 +310,15 @@ public class GenericOverlay implements Overlay {
 	public void addNeighborDeadListener(NeighborDeadListener listener) {
 		topologyManager.addNeighborDeadListener(listener);
 	}
-	public void removeNeighborDeadListener(NeighborDeadListener listener){
+
+	public void removeNeighborDeadListener(NeighborDeadListener listener) {
 		topologyManager.removeNeighborDeadListener(listener);
 	}
+
 	/**
 	 * @see Overlay#addNeighbor(String)
 	 */
-	public NodeDescriptor addNeighbor(String url)
-			throws AlreadyAddedNeighborException, ConnectException,
+	public NodeDescriptor addNeighbor(String url) throws AlreadyAddedNeighborException, ConnectException,
 			MalformedURLException {
 		return topologyManager.addNeighbor(url);
 	}
@@ -346,7 +362,7 @@ public class GenericOverlay implements Overlay {
 				Collection listColl = (Collection) next.getValue();
 				Iterator collIt = listColl.iterator();
 				while (collIt.hasNext()) {
-					t.addPacketListener((PacketListener) collIt.next(),	subject);
+					t.addPacketListener((PacketListener) collIt.next(), subject);
 				}
 			}
 		}
@@ -362,7 +378,10 @@ public class GenericOverlay implements Overlay {
 	 * @see Overlay#removeTransport(Transport)
 	 */
 	public void removeTransport(Transport t) {
-		Collection nodes = topologyManager.getNeighbors(t);/*DAVIDE: removed , true);*/
+		Collection nodes = topologyManager.getNeighbors(t);/*
+															 * DAVIDE: removed ,
+															 * true);
+															 */
 		Iterator it = nodes.iterator();
 		while (it.hasNext()) {
 			removeNeighbor((NodeDescriptor) it.next());
@@ -378,17 +397,17 @@ public class GenericOverlay implements Overlay {
 	 * If no <code>Transport</code> supports the given protocol, it returns
 	 * <code>null</code>.
 	 * 
-	 * @param url the url
+	 * @param url
+	 *            the url
 	 * @return the <code>Transport</code> or <code>null</code>
 	 */
 	public Transport resolveUrl(String url) {
 		String[] urlFragment = url.split(Transport.URL_SEPARATOR);
 		synchronized (transport) {
 			Iterator it = transport.iterator();
-			while(it.hasNext()){
+			while (it.hasNext()) {
 				Transport next = (Transport) it.next();
-				String[] transportUrl = ((Transport) next).getURL().split(
-						Transport.URL_SEPARATOR);
+				String[] transportUrl = ((Transport) next).getURL().split(Transport.URL_SEPARATOR);
 				if (transportUrl[0].equals(urlFragment[0]))
 					return next;
 			}

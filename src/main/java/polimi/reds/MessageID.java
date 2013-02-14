@@ -25,42 +25,49 @@ import java.rmi.dgc.VMID;
 
 /**
  * It represents the Universal Unique ID of a message.
+ * 
  * @author Alessandro Monguzzi
  */
 public class MessageID implements Serializable {
-  /**
+	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -2999945363215343435L;
-  private VMID id;
-  /**
-   * Base constructor.
-   *
-   */
-  public MessageID(){
-    id = new VMID();
-  }
-  /**
-   * Return a <code>String</code> representation of the id.
-   * @return a <code>String</code> representing the id
-   */
-  public String toString(){
-    return id.toString();
-  }
-  /**
-   * Check whether the given object has the same id of <code>this</code>.
-   * @return true iff the two object have the same id
-   */
-  public boolean equals(Object o){
-	  if(o instanceof MessageID){
-		  return ((MessageID)o).id.equals(this.id);
-	  }
-	  return false;
-  }
-  /**
-   * Get a hashcode of <code>this</code>
-   */
-  public int hashCode(){
-	  return id.hashCode();
-  }
+	private VMID id;
+
+	/**
+	 * Base constructor.
+	 * 
+	 */
+	public MessageID() {
+		id = new VMID();
+	}
+
+	/**
+	 * Return a <code>String</code> representation of the id.
+	 * 
+	 * @return a <code>String</code> representing the id
+	 */
+	public String toString() {
+		return id.toString();
+	}
+
+	/**
+	 * Check whether the given object has the same id of <code>this</code>.
+	 * 
+	 * @return true iff the two object have the same id
+	 */
+	public boolean equals(Object o) {
+		if (o instanceof MessageID) {
+			return ((MessageID) o).id.equals(this.id);
+		}
+		return false;
+	}
+
+	/**
+	 * Get a hashcode of <code>this</code>
+	 */
+	public int hashCode() {
+		return id.hashCode();
+	}
 }

@@ -41,7 +41,6 @@ public class ContextFilter implements Iterable<Condition>, Serializable {
 		conditions = new HashMap<String, Condition>();
 	}
 
-
 	/**
 	 * Returns an iterator over the Conditions of this filter
 	 */
@@ -49,17 +48,14 @@ public class ContextFilter implements Iterable<Condition>, Serializable {
 		return conditions.values().iterator();
 	}
 
-
-
-
 	/**
 	 * Adds a condition to this
 	 * 
 	 * @param condition
 	 *            a condition
 	 */
-	public void addCondition( Condition condition ) {
-		conditions.put( getConditionID( condition ), condition );
+	public void addCondition(Condition condition) {
+		conditions.put(getConditionID(condition), condition);
 	}
 
 	/**
@@ -72,11 +68,11 @@ public class ContextFilter implements Iterable<Condition>, Serializable {
 	 * @return <tt>null</tt> if the condition doesn't exits else returns the
 	 *         condition
 	 */
-	public Condition getCondition( String name, int dataType ) {
-		return conditions.get( name + dataType );
+	public Condition getCondition(String name, int dataType) {
+		return conditions.get(name + dataType);
 	}
 
-	private String getConditionID( Condition c ) {
+	private String getConditionID(Condition c) {
 		return c.getName() + c.getDataType();
 	}
 
@@ -87,11 +83,11 @@ public class ContextFilter implements Iterable<Condition>, Serializable {
 	 *            the condition to check
 	 * @return <tt>true</tt> is <tt>this</tt> contains c
 	 */
-	public boolean contains( Condition c ) {
+	public boolean contains(Condition c) {
 
-		Condition c1 = this.getCondition( c.getName(), c.getDataType() );
+		Condition c1 = this.getCondition(c.getName(), c.getDataType());
 
-		return c.equals( c1 );
+		return c.equals(c1);
 	}
 
 	/**
@@ -107,7 +103,7 @@ public class ContextFilter implements Iterable<Condition>, Serializable {
 	public String toString() {
 		String result = "ContextFilter:";
 
-		for ( Condition condition : conditions.values() ) {
+		for (Condition condition : conditions.values()) {
 			result += "\n" + condition.toString();
 		}
 
@@ -115,18 +111,18 @@ public class ContextFilter implements Iterable<Condition>, Serializable {
 	}
 
 	@Override
-	public boolean equals( Object o ) {
-		if ( o == null ) {
+	public boolean equals(Object o) {
+		if (o == null) {
 			return false;
 		}
-		if ( !( this.getClass().equals( o.getClass() ) ) ) {
+		if (!(this.getClass().equals(o.getClass()))) {
 			return false;
 		}
 
 		ContextFilter other = (ContextFilter) o;
 
-		for ( Condition condition : conditions.values() ) {
-			if ( !other.contains( condition ) ) {
+		for (Condition condition : conditions.values()) {
+			if (!other.contains(condition)) {
 				return false;
 			}
 		}

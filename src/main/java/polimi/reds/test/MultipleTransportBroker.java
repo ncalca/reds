@@ -21,10 +21,12 @@ import polimi.reds.broker.routing.Router;
 import polimi.reds.broker.routing.RoutingStrategy;
 import polimi.reds.broker.routing.SubscriptionForwardingRoutingStrategy;
 import polimi.reds.broker.routing.SubscriptionTable;
+
 /**
  * Simple example of a broker with two <code>TCPTransport</code>.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
 public class MultipleTransportBroker {
 
@@ -36,19 +38,19 @@ public class MultipleTransportBroker {
 	protected Reconfigurator reconfigurator = null;
 	protected ReplyManager replyManager = null;
 	protected ReplyTable replyTable = null;
-	
-	public MultipleTransportBroker(Set transports){
+
+	public MultipleTransportBroker(Set transports) {
 		topologyManager = new SimpleTopologyManager();
 		overlay = new GenericOverlay(topologyManager, transports);
-		topologyManager.setOverlay((GenericOverlay)overlay);
-		
+		topologyManager.setOverlay((GenericOverlay) overlay);
+
 		router = new GenericRouter(overlay);
 		routingStrategy = new SubscriptionForwardingRoutingStrategy();
 		subscriptionTable = new GenericTable();
 		reconfigurator = new DeferredUnsubscriptionReconfigurator();
 		replyManager = new ImmediateForwardReplyManager();
 		replyTable = new HashReplyTable();
-		
+
 		router.setRoutingStrategy(routingStrategy);
 		router.setSubscriptionTable(subscriptionTable);
 		router.setReplyManager(replyManager);
@@ -59,15 +61,16 @@ public class MultipleTransportBroker {
 		replyManager.setReplyTable(replyTable);
 		reconfigurator.setRouter(router);
 	}
-	
-	public Overlay getOverlay(){
+
+	public Overlay getOverlay() {
 		return overlay;
 	}
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		if(args.length == 0){
+		if (args.length == 0) {
 			System.err.println("USAGE: java polimi.reds.test.MultipleTransportBroker <trasport1port> <transport2port>");
 			System.exit(0);
 		}
@@ -75,7 +78,7 @@ public class MultipleTransportBroker {
 		Transport tcp2 = new TCPTransport(Integer.parseInt(args[1]));
 		Set transports = new LinkedHashSet();
 		transports.add(tcp1);
-		//transports.add(tcp2);
+		// transports.add(tcp2);
 		MultipleTransportBroker broker = new MultipleTransportBroker(transports);
 		broker.getOverlay().start();
 		broker.overlay.addTransport(tcp2);

@@ -48,7 +48,7 @@ public class CAMessage extends Message {
 	 * @param destinationContext
 	 *            a filter that matches the required client context
 	 */
-	public CAMessage( Message message, Context sourceContext, ContextFilter destinationContext ) {
+	public CAMessage(Message message, Context sourceContext, ContextFilter destinationContext) {
 		super();
 		this.message = message;
 		this.sourceContext = sourceContext;
@@ -95,20 +95,20 @@ public class CAMessage extends Message {
 	 * </ul>
 	 */
 	@Override
-	public boolean equals( Object other ) {
-		if ( !( other.getClass().equals( this.getClass() ) ) ) {
+	public boolean equals(Object other) {
+		if (!(other.getClass().equals(this.getClass()))) {
 			return false;
 		}
 
 		CAMessage otherContextMessage = (CAMessage) other;
 
-		if ( !this.message.equals( otherContextMessage.message ) ) {
+		if (!this.message.equals(otherContextMessage.message)) {
 			return false;
 		}
-		if ( !this.sourceContext.equals( otherContextMessage.sourceContext ) ) {
+		if (!this.sourceContext.equals(otherContextMessage.sourceContext)) {
 			return false;
 		}
-		if ( !this.destinationContext.equals( otherContextMessage.destinationContext ) ) {
+		if (!this.destinationContext.equals(otherContextMessage.destinationContext)) {
 			return false;
 		}
 
@@ -121,7 +121,7 @@ public class CAMessage extends Message {
 		result += "ContextMessage: \n" + this.message.toString() + "\nproveniente da " + this.sourceContext.toString();
 		return result;
 	}
-	
+
 	@Override
 	public void createID() {
 		message.createID();

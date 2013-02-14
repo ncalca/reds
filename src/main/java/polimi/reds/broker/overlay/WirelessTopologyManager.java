@@ -29,77 +29,88 @@ import java.util.LinkedList;
 import polimi.reds.NodeDescriptor;
 
 /**
- * A topology manager using the <code>ManetOverlayManager</code>. 
+ * A topology manager using the <code>ManetOverlayManager</code>.
  * 
- *
+ * 
  */
-public class WirelessTopologyManager extends AbstractTopologyManager{
-	
+public class WirelessTopologyManager extends AbstractTopologyManager {
+
 	private ManetTreeOverlayMgr manetOvrMgr = null;
+
 	/**
 	 * Create a new topology manager
-	 * @param manetTopolMgrPort the port used by the manet topology manager
+	 * 
+	 * @param manetTopolMgrPort
+	 *            the port used by the manet topology manager
 	 * 
 	 */
-	public WirelessTopologyManager(int manetTopolMgrPort){
+	public WirelessTopologyManager(int manetTopolMgrPort) {
 		// register to the transport for topologymanagement messages.
 		super.neighborTransport = Collections.synchronizedMap(new HashMap());
-		//super.tempNeighbors = Collections.synchronizedMap(new HashMap());
+		// super.tempNeighbors = Collections.synchronizedMap(new HashMap());
 		super.neighborAddedListeners = Collections.synchronizedList(new LinkedList());
 		super.neighborRemovedListeners = Collections.synchronizedList(new LinkedList());
 		super.neighborDeadListeners = Collections.synchronizedList(new LinkedList());
-	
+
 		manetOvrMgr = new ManetTreeOverlayMgr(manetTopolMgrPort, this);
 	}
+
 	/**
 	 * Stop the topology manager.
 	 */
-	public void stop(){
+	public void stop() {
 		manetOvrMgr.stop();
 	}
+
 	/**
 	 * Start the topology manager.
 	 */
-	public void start(){
+	public void start() {
 		manetOvrMgr.start();
 	}
+
 	/**
 	 * Signal a brutal disconnection and tries a recovery of the tree.
 	 */
-	public void signalLinkDead(NodeDescriptor deadNeighbor){
-		//notify to the listeners
+	public void signalLinkDead(NodeDescriptor deadNeighbor) {
+		// notify to the listeners
 		Iterator it = neighborDeadListeners.iterator();
-		while(it.hasNext())
-			((NeighborDeadListener)it.next()).signalNeighborDead(deadNeighbor);
-		//remove the dead neighbor from the list
+		while (it.hasNext())
+			((NeighborDeadListener) it.next()).signalNeighborDead(deadNeighbor);
+		// remove the dead neighbor from the list
 		neighborTransport.remove(deadNeighbor);
-		//try reconfiguration
+		// try reconfiguration
 		manetOvrMgr.signalLostNeighbor(deadNeighbor.getID());
 	}
 
 	/**
 	 * Get the <code>NodeDescriptor</code>s of the neighbors of the local node.
+	 * 
 	 * @return a collection of <code>NodeDescriptor</code>
 	 */
 	protected Collection getNeighborIDs() {
-	    LinkedList neighbors = new LinkedList(super.neighborTransport.entrySet());
-	    Iterator it = neighbors.iterator();
-	    LinkedList neighborsSet = new LinkedList();
-	    while(it.hasNext()) {
-	    	NodeDescriptor ngh = (NodeDescriptor) it.next();
-	    	if (ngh.isBroker())
-	            neighborsSet.add(ngh.getID());
-	        }
-	   return neighborsSet;
+		LinkedList neighbors = new LinkedList(super.neighborTransport.entrySet());
+		Iterator it = neighbors.iterator();
+		LinkedList neighborsSet = new LinkedList();
+		while (it.hasNext()) {
+			NodeDescriptor ngh = (NodeDescriptor) it.next();
+			if (ngh.isBroker())
+				neighborsSet.add(ngh.getID());
+		}
+		return neighborsSet;
 	}
+
 	/**
-	 * Get the <code>NodeDescriptor</code>s of the neighbors of the local node except the one specified.
-	 * @param neighborID the neighbor excluded
+	 * Get the <code>NodeDescriptor</code>s of the neighbors of the local node
+	 * except the one specified.
+	 * 
+	 * @param neighborID
+	 *            the neighbor excluded
 	 * @return a collection of <code>NodeDescriptor</code>
 	 */
 	protected Collection getNeighborIDsExcept(String neighborID) {
-	    LinkedList neighborsSet = new LinkedList(getNeighborIDs()); 
-	    neighborsSet.remove(neighborID);
-	    return neighborsSet;
-	  }
+		LinkedList neighborsSet = new LinkedList(getNeighborIDs());
+		neighborsSet.remove(neighborID);
+		return neighborsSet;
+	}
 }

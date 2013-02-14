@@ -20,12 +20,11 @@
 
 package polimi.reds.context.routing;
 
-
 public interface PropertyRangeSimplifier {
 	/**
 	 * Merges two PropertyRange.<br>
-	 * A merged PropertyRange is a PropertyRange that is equal or bigger of the union of
-	 * the params.
+	 * A merged PropertyRange is a PropertyRange that is equal or bigger of the
+	 * union of the params.
 	 * 
 	 * @param pr1
 	 *            the first PropertyRange
@@ -33,6 +32,6 @@ public interface PropertyRangeSimplifier {
 	 *            the second PropertyRange
 	 * @return a merged version of the union of pr1 and pr2
 	 */
-	public PropertyRange merge( PropertyRange pr1, PropertyRange pr2 );
+	public PropertyRange merge(PropertyRange pr1, PropertyRange pr2);
 
 }

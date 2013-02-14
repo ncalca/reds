@@ -33,16 +33,16 @@ public class IllegalOperatorException extends RuntimeException {
 		super();
 	}
 
-	public IllegalOperatorException( String arg0, Throwable arg1 ) {
-		super( arg0, arg1 );
+	public IllegalOperatorException(String arg0, Throwable arg1) {
+		super(arg0, arg1);
 	}
 
-	public IllegalOperatorException( String arg0 ) {
-		super( arg0 );
+	public IllegalOperatorException(String arg0) {
+		super(arg0);
 	}
 
-	public IllegalOperatorException( Throwable arg0 ) {
-		super( arg0 );
+	public IllegalOperatorException(Throwable arg0) {
+		super(arg0);
 	}
 
 }

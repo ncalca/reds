@@ -51,10 +51,11 @@ public class GenericContextTable implements ContextTable {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#removeNeighbor(polimi.reds.NodeDescriptor)
+	 * @see polimi.reds.context.routing.ContextTable#removeNeighbor(polimi.reds.
+	 * NodeDescriptor)
 	 */
-	public void removeNeighbor( NodeDescriptor n ) {
-		table.remove( n );
+	public void removeNeighbor(NodeDescriptor n) {
+		table.remove(n);
 	}
 
 	/*
@@ -63,123 +64,133 @@ public class GenericContextTable implements ContextTable {
 	 * @see polimi.reds.context.routing.ContextTable#getNodes()
 	 */
 	public Collection<NodeDescriptor> getNodes() {
-		return new ArrayList<NodeDescriptor>( table.keySet() );
+		return new ArrayList<NodeDescriptor>(table.keySet());
 	}
 
-	private void putField( NodeDescriptor n, ContextSet contextSet, int field ) {
-		if ( !table.containsKey( n ) ) {
-			table.put( n, new ContextSet[4] );
+	private void putField(NodeDescriptor n, ContextSet contextSet, int field) {
+		if (!table.containsKey(n)) {
+			table.put(n, new ContextSet[4]);
 		}
-		ContextSet[] contextSets = table.get( n );
+		ContextSet[] contextSets = table.get(n);
 		contextSets[field] = contextSet;
 	}
 
-	private ContextSet getField( NodeDescriptor n, int field ) {
-		if ( !table.containsKey( n ) ) {
+	private ContextSet getField(NodeDescriptor n, int field) {
+		if (!table.containsKey(n)) {
 			return null;
 		}
-		ContextSet[] contextSets = table.get( n );
+		ContextSet[] contextSets = table.get(n);
 		return contextSets[field];
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#putContextReceived(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.context.definition.ContextSet)
+	 * @see
+	 * polimi.reds.context.routing.ContextTable#putContextReceived(polimi.reds
+	 * .NodeDescriptor, polimi.reds.context.definition.ContextSet)
 	 */
-	public void putContextReceived( NodeDescriptor n, ContextSet contextSet ) {
-		putField( n, contextSet, FIELD_RECEIVED );
+	public void putContextReceived(NodeDescriptor n, ContextSet contextSet) {
+		putField(n, contextSet, FIELD_RECEIVED);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#putContextToSend(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.context.definition.ContextSet)
+	 * @see
+	 * polimi.reds.context.routing.ContextTable#putContextToSend(polimi.reds
+	 * .NodeDescriptor, polimi.reds.context.definition.ContextSet)
 	 */
-	public void putContextToSend( NodeDescriptor n, ContextSet contextSet ) {
-		putField( n, contextSet, FIELD_TOSEND );
+	public void putContextToSend(NodeDescriptor n, ContextSet contextSet) {
+		putField(n, contextSet, FIELD_TOSEND);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#putContextSent(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.context.definition.ContextSet)
+	 * @see polimi.reds.context.routing.ContextTable#putContextSent(polimi.reds.
+	 * NodeDescriptor, polimi.reds.context.definition.ContextSet)
 	 */
-	public void putContextSent( NodeDescriptor n, ContextSet contextSet ) {
-		putField( n, contextSet, FIELD_SENT );
+	public void putContextSent(NodeDescriptor n, ContextSet contextSet) {
+		putField(n, contextSet, FIELD_SENT);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#putContextComputed(polimi.reds.NodeDescriptor,
-	 *      polimi.reds.context.definition.ContextSet)
+	 * @see
+	 * polimi.reds.context.routing.ContextTable#putContextComputed(polimi.reds
+	 * .NodeDescriptor, polimi.reds.context.definition.ContextSet)
 	 */
-	public void putContextComputed( NodeDescriptor n, ContextSet contextSet ) {
-		putField( n, contextSet, FIELD_COMPUTED );
+	public void putContextComputed(NodeDescriptor n, ContextSet contextSet) {
+		putField(n, contextSet, FIELD_COMPUTED);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#getContextReceived(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.context.routing.ContextTable#getContextReceived(polimi.reds
+	 * .NodeDescriptor)
 	 */
-	public ContextSet getContextReceived( NodeDescriptor n ) {
-		return getField( n, FIELD_RECEIVED );
+	public ContextSet getContextReceived(NodeDescriptor n) {
+		return getField(n, FIELD_RECEIVED);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#getContextToSend(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.context.routing.ContextTable#getContextToSend(polimi.reds
+	 * .NodeDescriptor)
 	 */
-	public ContextSet getContextToSend( NodeDescriptor n ) {
-		return getField( n, FIELD_TOSEND );
+	public ContextSet getContextToSend(NodeDescriptor n) {
+		return getField(n, FIELD_TOSEND);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#getContextSent(polimi.reds.NodeDescriptor)
+	 * @see polimi.reds.context.routing.ContextTable#getContextSent(polimi.reds.
+	 * NodeDescriptor)
 	 */
-	public ContextSet getContextSent( NodeDescriptor n ) {
-		return getField( n, FIELD_SENT );
+	public ContextSet getContextSent(NodeDescriptor n) {
+		return getField(n, FIELD_SENT);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ContextTable#getContextComputed(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.context.routing.ContextTable#getContextComputed(polimi.reds
+	 * .NodeDescriptor)
 	 */
-	public ContextSet getContextComputed( NodeDescriptor n ) {
-		return getField( n, FIELD_COMPUTED );
+	public ContextSet getContextComputed(NodeDescriptor n) {
+		return getField(n, FIELD_COMPUTED);
 	}
 
-	public void setContextSetSimplifier( ContextSetSimplifier contextSetSimplifier ) {
+	public void setContextSetSimplifier(ContextSetSimplifier contextSetSimplifier) {
 		this.contextSetSimplifier = contextSetSimplifier;
 	}
 
-	public void createViewAndUpdateTable( NodeDescriptor destinationNode ) {
+	public void createViewAndUpdateTable(NodeDescriptor destinationNode) {
 
 		ContextSet viewForNode = new ContextSet();
-		for ( NodeDescriptor n : this.getNodes() ) {
-			if ( !n.equals( destinationNode ) ) {
-				viewForNode.addAll( this.getContextReceived( n ) );
-				this.putContextComputed( destinationNode, viewForNode );
+		for (NodeDescriptor n : this.getNodes()) {
+			if (!n.equals(destinationNode)) {
+				viewForNode.addAll(this.getContextReceived(n));
+				this.putContextComputed(destinationNode, viewForNode);
 			}
 		}
 	}
 
-	public ContextSet simplifyView( NodeDescriptor destinationNode ) {
-		return contextSetSimplifier.simplify( this.getContextComputed( destinationNode ) );
+	public ContextSet simplifyView(NodeDescriptor destinationNode) {
+		return contextSetSimplifier.simplify(this.getContextComputed(destinationNode));
 	}
 
-	public void simplifyViewAndUpdateTable( NodeDescriptor destinationNode ) {
-		ContextSet simplified = this.simplifyView( destinationNode );
-		this.putContextToSend( destinationNode, simplified );
+	public void simplifyViewAndUpdateTable(NodeDescriptor destinationNode) {
+		ContextSet simplified = this.simplifyView(destinationNode);
+		this.putContextToSend(destinationNode, simplified);
 	}
 
 }

@@ -21,8 +21,8 @@
 package polimi.reds.broker.overlay;
 
 /**
-* This class represents a RREP message.
-**/
+ * This class represents a RREP message.
+ **/
 class ManetOverlayMgrRREP extends ManetOverlayMgrMessage {
 
 	/**
@@ -33,16 +33,19 @@ class ManetOverlayMgrRREP extends ManetOverlayMgrMessage {
 	private long broadcastId;
 	// The URL possibly used for activating a path.
 	private String activationURL;
-	// The most recently known group sequence number at the sender of the message.
+	// The most recently known group sequence number at the sender of the
+	// message.
 	private long groupSequenceNumber;
 
 	/**
 	 * Build a RREP message with a given sender Id and a given activation URL.
-	 * The activationURL is returned by Transport and will represents the parameter
-	 * for Transport.openLink if this path will be activated.
+	 * The activationURL is returned by Transport and will represents the
+	 * parameter for Transport.openLink if this path will be activated.
 	 * 
-	 * @param senderId the Id of the sender of the message.
-	 * @param activationURL the URL for activating this link.
+	 * @param senderId
+	 *            the Id of the sender of the message.
+	 * @param activationURL
+	 *            the URL for activating this link.
 	 */
 	public ManetOverlayMgrRREP(String senderId, String activationURL, long groupSequenceNumber) {
 
@@ -55,14 +58,15 @@ class ManetOverlayMgrRREP extends ManetOverlayMgrMessage {
 	/**
 	 * Set the broadcast Id for this message.
 	 * 
-	 * @param broadcastId the broadcast Id for this message.
+	 * @param broadcastId
+	 *            the broadcast Id for this message.
 	 */
 	public void setBroadcastId(long broadcastId) {
 
 		this.broadcastId = broadcastId;
 	}
 
-	/** 
+	/**
 	 * Return the broadcast Id for this message.
 	 * 
 	 * @return the broadcast Id for this message.
@@ -76,10 +80,10 @@ class ManetOverlayMgrRREP extends ManetOverlayMgrMessage {
 	 * @param string
 	 */
 	public void setActivationURL(String string) {
-		
+
 		activationURL = string;
 	}
-	
+
 	/**
 	 * Return the activation URL for this path.
 	 * 
@@ -89,14 +93,14 @@ class ManetOverlayMgrRREP extends ManetOverlayMgrMessage {
 
 		return activationURL;
 	}
-	
+
 	/**
 	 * Return the group sequence number carried in this message.
 	 * 
 	 * @return the group sequence number in this message.
 	 */
-	public long getGroupSequenceNumber(){
-		
+	public long getGroupSequenceNumber() {
+
 		return groupSequenceNumber;
 	}
 }

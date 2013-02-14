@@ -34,92 +34,91 @@ import polimi.reds.TCPDispatchingService;
 import polimi.reds.UDPDispatchingService;
 
 public class ClientPerturbator {
-public static int PUBLISH = 0;
-public static int SUBSCRIBE = 1;
+	public static int PUBLISH = 0;
+	public static int SUBSCRIBE = 1;
 
-//distanza massima dalla media
-//private static int MAX_DEVIATION = 10;
-private static int ITERATIONS = 10000;
+	// distanza massima dalla media
+	// private static int MAX_DEVIATION = 10;
+	private static int ITERATIONS = 10000;
 
-  
-public static void main(String[] args) {
- 
-	LinkedList filterList = new LinkedList();
-	IntegerFilter f = null;
-	int actualFilters = 0;
-	   
-	if (args.length == 0){
-		System.err.println(
-	      "USAGE: java polimi.reds.examples.ClientTester [reds-tcp | reds-udp]:<brokerAddress>:<brokerPort>" +
-	      " <localPort> <publishProbability> <mean> <stdDev> <minSubscriptions> <maxSubscriptions>");
-	    System.exit(0);
-	}
-	int localPort = Integer.parseInt(args[1]);
-	//configuring logging facility
-	Logger logger = Logger.getLogger("polimi.reds");
-	ConsoleHandler ch = new ConsoleHandler();
-	logger.addHandler(ch);
-	logger.setLevel(Level.ALL);
-	ch.setLevel(Level.CONFIG);
-	DispatchingService ds = null;
-	String[] transportProtocol = args[0].split(":");
-	if(transportProtocol[0].equals("reds-tcp"))
-		ds = new TCPDispatchingService(transportProtocol[1], Integer.parseInt(transportProtocol[2]));
-	else if(transportProtocol[0].equals("reds-udp"))
-		ds = new UDPDispatchingService(transportProtocol[1], Integer.parseInt(transportProtocol[2]),
-				localPort);
-	else throw new IllegalArgumentException();
-	try {
-		ds.open();
-	} catch (ConnectException e) {
-		e.printStackTrace();
-	}
-	long startTime = System.currentTimeMillis();
-	for(int i=0;i<ITERATIONS;i++){
-		//publish probability
-		Random rnd = new Random();
-		if(rnd.nextGaussian() <= Double.parseDouble(args[2])){
-			ds.publish(new IntegerMessage(rnd.nextInt()));
+	public static void main(String[] args) {
+
+		LinkedList filterList = new LinkedList();
+		IntegerFilter f = null;
+		int actualFilters = 0;
+
+		if (args.length == 0) {
+			System.err
+					.println("USAGE: java polimi.reds.examples.ClientTester [reds-tcp | reds-udp]:<brokerAddress>:<brokerPort>"
+							+ " <localPort> <publishProbability> <mean> <stdDev> <minSubscriptions> <maxSubscriptions>");
+			System.exit(0);
 		}
-		else{//subscribe
-			if(actualFilters<Integer.parseInt(args[5])){//subs less than minimum
-				double meanInterv = Double.parseDouble(args[3])+ Double.parseDouble(args[4])*rnd.nextGaussian();
-				f = getFilter(meanInterv, Double.parseDouble(args[4])/4);
-				filterList.addLast(f);
-				actualFilters++;
-				ds.subscribe(f);
-			}
-			else if(actualFilters>Integer.parseInt(args[6])){//subs more than max
-				ds.unsubscribe((Filter)filterList.getFirst());
-				actualFilters--;
-			}
-			else{//random
-				if(rnd.nextGaussian() <= Double.parseDouble(args[2])){
-					//subscribe
-					double meanInterv = Double.parseDouble(args[3])+ Double.parseDouble(args[4])*rnd.nextGaussian();
-					f = getFilter(meanInterv, Double.parseDouble(args[4])/4);
+		int localPort = Integer.parseInt(args[1]);
+		// configuring logging facility
+		Logger logger = Logger.getLogger("polimi.reds");
+		ConsoleHandler ch = new ConsoleHandler();
+		logger.addHandler(ch);
+		logger.setLevel(Level.ALL);
+		ch.setLevel(Level.CONFIG);
+		DispatchingService ds = null;
+		String[] transportProtocol = args[0].split(":");
+		if (transportProtocol[0].equals("reds-tcp"))
+			ds = new TCPDispatchingService(transportProtocol[1], Integer.parseInt(transportProtocol[2]));
+		else if (transportProtocol[0].equals("reds-udp"))
+			ds = new UDPDispatchingService(transportProtocol[1], Integer.parseInt(transportProtocol[2]), localPort);
+		else
+			throw new IllegalArgumentException();
+		try {
+			ds.open();
+		} catch (ConnectException e) {
+			e.printStackTrace();
+		}
+		long startTime = System.currentTimeMillis();
+		for (int i = 0; i < ITERATIONS; i++) {
+			// publish probability
+			Random rnd = new Random();
+			if (rnd.nextGaussian() <= Double.parseDouble(args[2])) {
+				ds.publish(new IntegerMessage(rnd.nextInt()));
+			} else {// subscribe
+				if (actualFilters < Integer.parseInt(args[5])) {// subs less
+																// than minimum
+					double meanInterv = Double.parseDouble(args[3]) + Double.parseDouble(args[4]) * rnd.nextGaussian();
+					f = getFilter(meanInterv, Double.parseDouble(args[4]) / 4);
 					filterList.addLast(f);
 					actualFilters++;
 					ds.subscribe(f);
-	
-				}
-				else{//unsubscribe
-					ds.unsubscribe((Filter)filterList.getFirst());
+				} else if (actualFilters > Integer.parseInt(args[6])) {// subs
+																		// more
+																		// than
+																		// max
+					ds.unsubscribe((Filter) filterList.getFirst());
 					actualFilters--;
+				} else {// random
+					if (rnd.nextGaussian() <= Double.parseDouble(args[2])) {
+						// subscribe
+						double meanInterv = Double.parseDouble(args[3]) + Double.parseDouble(args[4])
+								* rnd.nextGaussian();
+						f = getFilter(meanInterv, Double.parseDouble(args[4]) / 4);
+						filterList.addLast(f);
+						actualFilters++;
+						ds.subscribe(f);
+
+					} else {// unsubscribe
+						ds.unsubscribe((Filter) filterList.getFirst());
+						actualFilters--;
+					}
 				}
 			}
 		}
+		ds.close();
+		System.out.println("Exit after " + (System.currentTimeMillis() - startTime) + " milliseconds");
 	}
-	ds.close();
-	System.out.println("Exit after " + (System.currentTimeMillis()-startTime) + " milliseconds");
-}
-	
 
-private static IntegerFilter getFilter(double mean, double std){
-	Random rnd = new Random();
-	int maxDist = (int)std*2;
-	int v =(int)(mean +std*rnd.nextGaussian());
-	return new IntegerFilter(v-maxDist, v+maxDist);
-}
-	
+	private static IntegerFilter getFilter(double mean, double std) {
+		Random rnd = new Random();
+		int maxDist = (int) std * 2;
+		int v = (int) (mean + std * rnd.nextGaussian());
+		return new IntegerFilter(v - maxDist, v + maxDist);
+	}
+
 }

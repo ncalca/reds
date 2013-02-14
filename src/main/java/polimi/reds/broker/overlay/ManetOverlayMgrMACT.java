@@ -20,46 +20,48 @@
 
 package polimi.reds.broker.overlay;
 
-
 /**
- * This class represent a MACT message used for activating a path 
- * to the multicast tree.
+ * This class represent a MACT message used for activating a path to the
+ * multicast tree.
  **/
 class ManetOverlayMgrMACT extends ManetOverlayMgrMessage {
-	
+
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 6992950503359991388L;
 	// The URL possibly used for activating a path.
 	private String activationURL;
-	
+
 	/**
-	 * Creates a MACT message with the given sender Id,
-	 * when the message is a group hello message, the logical sender field
-	 * will be used as the group leader id.
+	 * Creates a MACT message with the given sender Id, when the message is a
+	 * group hello message, the logical sender field will be used as the group
+	 * leader id.
 	 * 
-	 * @param senderId the Id of the physical sender.
+	 * @param senderId
+	 *            the Id of the physical sender.
 	 */
-	public ManetOverlayMgrMACT(String senderId){
-	
-		super (senderId,ManetOverlayMgrMessage.MANET_MACT);
+	public ManetOverlayMgrMACT(String senderId) {
+
+		super(senderId, ManetOverlayMgrMessage.MANET_MACT);
 	}
-	
+
 	/**
-	 * Creates a MACT message with the given sender Id and activationURL,
-	 * when the message is a group hello message, the logical sender field
-	 * will be used as the group leader id.
+	 * Creates a MACT message with the given sender Id and activationURL, when
+	 * the message is a group hello message, the logical sender field will be
+	 * used as the group leader id.
 	 * 
-	 * @param senderId the Id of the physical sender.
-	 * @param activationURL the activation URL for this path being activated.
+	 * @param senderId
+	 *            the Id of the physical sender.
+	 * @param activationURL
+	 *            the activation URL for this path being activated.
 	 */
-	public ManetOverlayMgrMACT(String senderId, String activationURL){
-	
-		super (senderId,ManetOverlayMgrMessage.MANET_MACT);
+	public ManetOverlayMgrMACT(String senderId, String activationURL) {
+
+		super(senderId, ManetOverlayMgrMessage.MANET_MACT);
 		this.activationURL = activationURL;
 	}
-	
+
 	/**
 	 * Returns the activation URL for this path.
 	 * 

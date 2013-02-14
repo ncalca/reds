@@ -26,39 +26,42 @@ package polimi.reds.location;
  * @see polimi.reds.location.LocationDispatchingService
  */
 public interface Zone extends java.io.Serializable {
-  /**
-   * A method used to test if this zone includes the given location.
-   * 
-   * @param loc the location t be tested for inclusion.
-   * @return <code>true</code> if location <code>loc</code> is included into
-   *         this zone.
-   */
-  public boolean includes(Location loc);
+	/**
+	 * A method used to test if this zone includes the given location.
+	 * 
+	 * @param loc
+	 *            the location t be tested for inclusion.
+	 * @return <code>true</code> if location <code>loc</code> is included into
+	 *         this zone.
+	 */
+	public boolean includes(Location loc);
 
-  /**
-   * A method used to test if this zone overlaps the one passed as a parameter.
-   * 
-   * @param zone the zone to be tested for overlapping.
-   * @return <code>true</code> if the zone passed as a parameter overlaps with
-   *         this zone.
-   */
-  public boolean overlaps(Zone zone);
+	/**
+	 * A method used to test if this zone overlaps the one passed as a
+	 * parameter.
+	 * 
+	 * @param zone
+	 *            the zone to be tested for overlapping.
+	 * @return <code>true</code> if the zone passed as a parameter overlaps with
+	 *         this zone.
+	 */
+	public boolean overlaps(Zone zone);
 
-  /**
-   * Tests if two objects (in most of the cases two zones) matches.
-   * 
-   * @param o the object (i.e., zone) to be compared with
-   *          <code>this</code>.
-   * @return <code>true</code> if the two objects (i.e., zones) equals,
-   */
-  public boolean equals(Object o);
+	/**
+	 * Tests if two objects (in most of the cases two zones) matches.
+	 * 
+	 * @param o
+	 *            the object (i.e., zone) to be compared with <code>this</code>.
+	 * @return <code>true</code> if the two objects (i.e., zones) equals,
+	 */
+	public boolean equals(Object o);
 
-  /**
-   * Returns the hash code of this object. You MUST redefine this method if you
-   * redefine method <code>equals</code>. Indeed, the Java library prescribes
-   * that if two objects equals they MUST have the same hash code.
-   * 
-   * @return the hash code of this object.
-   */
-  public int hashCode();
+	/**
+	 * Returns the hash code of this object. You MUST redefine this method if
+	 * you redefine method <code>equals</code>. Indeed, the Java library
+	 * prescribes that if two objects equals they MUST have the same hash code.
+	 * 
+	 * @return the hash code of this object.
+	 */
+	public int hashCode();
 }

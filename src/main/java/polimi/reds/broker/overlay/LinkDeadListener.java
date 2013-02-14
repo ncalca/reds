@@ -23,19 +23,24 @@ package polimi.reds.broker.overlay;
 import polimi.reds.NodeDescriptor;
 
 /**
- * This interface is the primary method for being notified about the brutal break of a connection.<br>
- * Users implement the <code>LinkDeadListener</code> interface and register their listener using the 
- * <code>AddLinkDeadListener</code> method. The users should also remove their listener after they have completed using the 
+ * This interface is the primary method for being notified about the brutal
+ * break of a connection.<br>
+ * Users implement the <code>LinkDeadListener</code> interface and register
+ * their listener using the <code>AddLinkDeadListener</code> method. The users
+ * should also remove their listener after they have completed using the
  * listener.
+ * 
  * @author Alessandro Monguzzi
- *
+ * 
  */
 interface LinkDeadListener {
-	
+
 	/**
 	 * This method is called whenever a link with a neighbor is broken.
-	 * @param deadNeighbor the lost neighbor
+	 * 
+	 * @param deadNeighbor
+	 *            the lost neighbor
 	 */
 	public void signalLinkDead(NodeDescriptor deadNeighbor);
-	
+
 }

@@ -42,25 +42,24 @@ public class CAFilter implements Filter {
 	 * 
 	 * @see polimi.reds.Filter#matches(polimi.reds.Message)
 	 */
-	public boolean matches( Message msg ) {
+	public boolean matches(Message msg) {
 
-		if ( msg instanceof CAMessage ) {
+		if (msg instanceof CAMessage) {
 			CAMessage contextMessage = (CAMessage) msg;
-			if ( !this.contentFilter.matches( contextMessage.getMessage() ) ) {
+			if (!this.contentFilter.matches(contextMessage.getMessage())) {
 				return false;
 			}
-			if ( !contextMessage.getSourceContext().isMatchedBy( this.contextFilter ) ) {
+			if (!contextMessage.getSourceContext().isMatchedBy(this.contextFilter)) {
 				return false;
 			}
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 
 	}
 
-	public CAFilter( Filter contentFilter, ContextFilter contextFilter ) {
+	public CAFilter(Filter contentFilter, ContextFilter contextFilter) {
 		super();
 		this.contentFilter = contentFilter;
 		this.contextFilter = contextFilter;
@@ -87,26 +86,26 @@ public class CAFilter implements Filter {
 	@Override
 	public String toString() {
 		String result = "\nFilter: Content " + this.contentFilter.toString() + " / Context "
-						+ this.contextFilter.toString();
+				+ this.contextFilter.toString();
 		return result;
 	}
 
 	@Override
-	public boolean equals( Object other ) {
-		if ( other == null ) {
+	public boolean equals(Object other) {
+		if (other == null) {
 			return false;
 		}
 
-		if ( !( other.getClass().equals( this.getClass() ) ) ) {
+		if (!(other.getClass().equals(this.getClass()))) {
 			return false;
 		}
 
 		CAFilter otherContextFilter = (CAFilter) other;
 
-		boolean contentEquals = otherContextFilter.contentFilter.equals( this.contentFilter );
-		boolean contextEquals = otherContextFilter.contextFilter.equals( this.contextFilter );
+		boolean contentEquals = otherContextFilter.contentFilter.equals(this.contentFilter);
+		boolean contextEquals = otherContextFilter.contextFilter.equals(this.contextFilter);
 
-		return ( contentEquals && contextEquals );
+		return (contentEquals && contextEquals);
 	}
 
 }

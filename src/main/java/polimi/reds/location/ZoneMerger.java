@@ -24,28 +24,30 @@ import java.util.Collection;
 
 /**
  * <code>ZoneMerger</code>s encapsulate the merging policies used by
- * <code>LocationForwardingBroker</code>s. They define how locations have to
- * be merged in zones and zones have to be merged together.
+ * <code>LocationForwardingBroker</code>s. They define how locations have to be
+ * merged in zones and zones have to be merged together.
  */
 public interface ZoneMerger {
-  /**
-   * Enlarges a location to a zone, which includes it. More precisely:<br>
-   * toZone(loc).includes(loc) must be true <br>
-   * It is used by <code>LocationForwardingBroker</code>s to approximate
-   * locations of clients.
-   * 
-   * @param loc the location to be approximated with th returned zone.
-   * @return a zone that approximates the given location.
-   */
-  public Zone toZone(Location loc);
+	/**
+	 * Enlarges a location to a zone, which includes it. More precisely:<br>
+	 * toZone(loc).includes(loc) must be true <br>
+	 * It is used by <code>LocationForwardingBroker</code>s to approximate
+	 * locations of clients.
+	 * 
+	 * @param loc
+	 *            the location to be approximated with th returned zone.
+	 * @return a zone that approximates the given location.
+	 */
+	public Zone toZone(Location loc);
 
-  /**
-   * Merges a collection of zones into a single zone, which includes all of
-   * them. Formally:<br>
-   * foreach z in zones : merge(zones).overlaps(z)
-   * 
-   * @param zones the zones to be merged.
-   * @return a zone that merges the given ones.
-   */
-  public Zone merge(Collection zones);
+	/**
+	 * Merges a collection of zones into a single zone, which includes all of
+	 * them. Formally:<br>
+	 * foreach z in zones : merge(zones).overlaps(z)
+	 * 
+	 * @param zones
+	 *            the zones to be merged.
+	 * @return a zone that merges the given ones.
+	 */
+	public Zone merge(Collection zones);
 }

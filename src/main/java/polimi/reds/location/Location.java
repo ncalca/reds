@@ -27,21 +27,22 @@ package polimi.reds.location;
  * @see polimi.reds.location.LocationDispatchingService
  */
 public interface Location extends java.io.Serializable {
-  /**
-   * Tests if two objects (in most of the cases two locations) matches.
-   * 
-   * @param o the object (i.e., location) to be compared with
-   *          <code>this</code>.
-   * @return <code>true</code> if the two objects (i.e., locations) equals,
-   */
-  public boolean equals(Object o);
+	/**
+	 * Tests if two objects (in most of the cases two locations) matches.
+	 * 
+	 * @param o
+	 *            the object (i.e., location) to be compared with
+	 *            <code>this</code>.
+	 * @return <code>true</code> if the two objects (i.e., locations) equals,
+	 */
+	public boolean equals(Object o);
 
-  /**
-   * Returns the hash code of this object. You MUST redefine this method if you
-   * redefine method <code>equals</code>. Indeed, the Java library prescribes
-   * that if two objects equals they MUST have the same hash code.
-   * 
-   * @return the hash code of this object.
-   */
-  public int hashCode();
+	/**
+	 * Returns the hash code of this object. You MUST redefine this method if
+	 * you redefine method <code>equals</code>. Indeed, the Java library
+	 * prescribes that if two objects equals they MUST have the same hash code.
+	 * 
+	 * @return the hash code of this object.
+	 */
+	public int hashCode();
 }

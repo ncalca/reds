@@ -42,22 +42,21 @@ public class LazyViewSendingStrategy extends ViewSendingStrategy {
 		@Override
 		public void run() {
 
-			while ( true ) {
+			while (true) {
 				try {
-					Thread.sleep( 20000 );
-				}
-				catch ( InterruptedException e ) {
+					Thread.sleep(20000);
+				} catch (InterruptedException e) {
 				}
 
 				ContextTable contextTable = caRouter.getContextTable();
-				for ( NodeDescriptor destinationNode : contextTable.getNodes() ) {
-					if ( destinationNode.isBroker() ) {
+				for (NodeDescriptor destinationNode : contextTable.getNodes()) {
+					if (destinationNode.isBroker()) {
 
-						createViewAndPutInTable( destinationNode );
-						simplifyViewAndPutInTable( destinationNode );
-						sendViewAndPutInTable( destinationNode );
+						createViewAndPutInTable(destinationNode);
+						simplifyViewAndPutInTable(destinationNode);
+						sendViewAndPutInTable(destinationNode);
 
-						saveView( destinationNode );
+						saveView(destinationNode);
 
 					}
 				}
@@ -66,8 +65,8 @@ public class LazyViewSendingStrategy extends ViewSendingStrategy {
 		}
 	}
 
-	public LazyViewSendingStrategy( CARouter caRouter ) {
-		super( caRouter );
+	public LazyViewSendingStrategy(CARouter caRouter) {
+		super(caRouter);
 
 		this.table = new HashMap<NodeDescriptor, ContextSet>();
 
@@ -78,51 +77,52 @@ public class LazyViewSendingStrategy extends ViewSendingStrategy {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see polimi.reds.context.routing.ViewSenderStrategy#sendViewDueTo(polimi.reds.NodeDescriptor)
+	 * @see
+	 * polimi.reds.context.routing.ViewSenderStrategy#sendViewDueTo(polimi.reds
+	 * .NodeDescriptor)
 	 */
 	@Override
-	public void sendViewDueTo( NodeDescriptor senderNode ) {
+	public void sendViewDueTo(NodeDescriptor senderNode) {
 
 		ContextTable contextTable = caRouter.getContextTable();
 
-		ContextSet savedContextSet = table.get( senderNode );
-		if ( savedContextSet == null ) {
+		ContextSet savedContextSet = table.get(senderNode);
+		if (savedContextSet == null) {
 			savedContextSet = new ContextSet();
 		}
-		ComparisonResult receivedCompareResult = contextTable.getContextReceived( senderNode ).compareTo( savedContextSet );
-		if ( ( receivedCompareResult == ComparisonResult.BIGGER )
-				|| ( receivedCompareResult == ComparisonResult.NOT_COMPARABLE ) ) {
+		ComparisonResult receivedCompareResult = contextTable.getContextReceived(senderNode).compareTo(savedContextSet);
+		if ((receivedCompareResult == ComparisonResult.BIGGER)
+				|| (receivedCompareResult == ComparisonResult.NOT_COMPARABLE)) {
 
-			logger.finer(  "Il contesto e' BIGGER o NC e faccio partire l'algoritmo" );
+			logger.finer("Il contesto e' BIGGER o NC e faccio partire l'algoritmo");
 
-			for ( NodeDescriptor destinationNode : caRouter.getContextTable().getNodes() ) {
-				if ( !destinationNode.equals( senderNode ) && destinationNode.isBroker() ) {
+			for (NodeDescriptor destinationNode : caRouter.getContextTable().getNodes()) {
+				if (!destinationNode.equals(senderNode) && destinationNode.isBroker()) {
 
-					super.createViewAndPutInTable( destinationNode );
-					ContextSet simplified = super.simplifyView( destinationNode );
+					super.createViewAndPutInTable(destinationNode);
+					ContextSet simplified = super.simplifyView(destinationNode);
 
-					ComparisonResult compareResult = simplified.compareTo( contextTable.getContextSent( destinationNode ) );
-					if ( ( compareResult == ComparisonResult.BIGGER )
-							|| ( compareResult == ComparisonResult.NOT_COMPARABLE ) ) {
-						super.sendViewAndPutInTable( destinationNode );
-						this.saveView( destinationNode );
+					ComparisonResult compareResult = simplified.compareTo(contextTable.getContextSent(destinationNode));
+					if ((compareResult == ComparisonResult.BIGGER)
+							|| (compareResult == ComparisonResult.NOT_COMPARABLE)) {
+						super.sendViewAndPutInTable(destinationNode);
+						this.saveView(destinationNode);
 					}
 
 				}
 			}
 
-		}
-		else {
-			logger.finer(  "Il contesto ricevuto e' piu' piccolo e non faccio niente" );
+		} else {
+			logger.finer("Il contesto ricevuto e' piu' piccolo e non faccio niente");
 		}
 
 	}
 
-	private void saveView( NodeDescriptor node ) {
+	private void saveView(NodeDescriptor node) {
 		ContextTable contextTable = caRouter.getContextTable();
-		ContextSet contextSetToSave = contextTable.getContextReceived( node );
+		ContextSet contextSetToSave = contextTable.getContextReceived(node);
 
-		table.put( node, contextSetToSave );
+		table.put(node, contextSetToSave);
 	}
 
 }

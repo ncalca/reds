@@ -29,7 +29,7 @@ import java.util.Collection;
  * network in MANET environments.
  * 
  **/
-class ManetOverlayMgrMessage implements Serializable{
+class ManetOverlayMgrMessage implements Serializable {
 
 	/**
 	 * 
@@ -38,7 +38,7 @@ class ManetOverlayMgrMessage implements Serializable{
 
 	// The number of hops the message traversed.
 	private int hopCount;
-	
+
 	// True if the message is broadcast.
 	private boolean isBroadcast;
 	// True if the message is multicast.
@@ -54,10 +54,10 @@ class ManetOverlayMgrMessage implements Serializable{
 	private String logicalReceiverId;
 	// A list of the intended logical receivers if the message is multicast.
 	private ArrayList receivers;
-	
+
 	// The type of the message.
 	private int messageType;
-	
+
 	// The possible types of the message.
 	public static final int MANET_RREQ = 0;
 	public static final int MANET_RREP = 1;
@@ -65,19 +65,21 @@ class ManetOverlayMgrMessage implements Serializable{
 	public static final int MANET_GPRH = 3;
 
 	/**
-	 * Build a new message with a given sender id. 
-	 * At object creation time the physical sender and the logical sender
-	 * always concide. The message created is a unicast message, i.e.
-	 * isBroadcast() and isMulticast() return false.
+	 * Build a new message with a given sender id. At object creation time the
+	 * physical sender and the logical sender always concide. The message
+	 * created is a unicast message, i.e. isBroadcast() and isMulticast() return
+	 * false.
 	 * 
-	 * @param senderId the Id of the sender of the message.
-	 * @param messageType the type of message.
+	 * @param senderId
+	 *            the Id of the sender of the message.
+	 * @param messageType
+	 *            the type of message.
 	 */
 	public ManetOverlayMgrMessage(String senderId, int messageType) {
 
 		this.senderId = senderId;
 		this.logicalSenderId = senderId;
-		
+
 		this.messageType = messageType;
 
 		this.hopCount = 0;
@@ -93,7 +95,7 @@ class ManetOverlayMgrMessage implements Serializable{
 
 		hopCount++;
 	}
-	
+
 	/**
 	 * Returns the number of hops the message traversed.
 	 * 
@@ -103,11 +105,12 @@ class ManetOverlayMgrMessage implements Serializable{
 
 		return hopCount;
 	}
-	
+
 	/**
 	 * Set the hop count for this message.
 	 * 
-	 * @param hopCount the number of hops for this message.
+	 * @param hopCount
+	 *            the number of hops for this message.
 	 */
 	public void setHopCount(int hopCount) {
 
@@ -117,74 +120,78 @@ class ManetOverlayMgrMessage implements Serializable{
 	/**
 	 * Sets the message type
 	 * 
-	 * @param messageType the message type, it can be MANET_ROUTE_REQUEST,
-	 * MANET_ROUTE_REPLY or MANET_ROUTE_MACT.
+	 * @param messageType
+	 *            the message type, it can be MANET_ROUTE_REQUEST,
+	 *            MANET_ROUTE_REPLY or MANET_ROUTE_MACT.
 	 */
-	public void setMessageType (int messageType){
-		
+	public void setMessageType(int messageType) {
+
 		this.messageType = messageType;
 	}
-	
+
 	/**
 	 * Return the type of message.
 	 * 
 	 * @return the type of this message.
 	 */
-	public int getMessageType(){
-		
+	public int getMessageType() {
+
 		return messageType;
 	}
 
 	/**
 	 * Set the physical sender id of this message.
 	 * 
-	 * @param senderId the Id of the physical sender.
+	 * @param senderId
+	 *            the Id of the physical sender.
 	 */
-	public void setSenderId (String senderId){
-		
+	public void setSenderId(String senderId) {
+
 		this.senderId = senderId;
 	}
-	
+
 	/**
 	 * Return the Id of the physical sender of the message.
 	 * 
 	 * @return the Id of the physical sender.
 	 */
-	public String getSenderId(){
-		
+	public String getSenderId() {
+
 		return senderId;
 	}
 
 	/**
 	 * Set the Id of the physical receiver for this message.
 	 * 
-	 * @param receiverId the Id of the physical receiver.
+	 * @param receiverId
+	 *            the Id of the physical receiver.
 	 */
-	public void setReceiverId (String receiverId){
-		
+	public void setReceiverId(String receiverId) {
+
 		this.receiverId = receiverId;
 	}
-	
+
 	/**
 	 * Return the Id of the physical receiver of the message.
 	 * 
 	 * @return the Id of the physical receiver.
 	 */
-	public String getReceiverId(){
-		
+	public String getReceiverId() {
+
 		return receiverId;
 	}
 
 	/**
 	 * Set a flag if this message is intended to be broadcast.
 	 * 
-	 * @param broadcast true if this message is broadcast.
+	 * @param broadcast
+	 *            true if this message is broadcast.
 	 */
 	public void setBroadcast(boolean broadcast) {
 
 		this.isBroadcast = broadcast;
 	}
-	
+
 	/**
 	 * Return true if the message is broadcast.
 	 * 
@@ -198,13 +205,14 @@ class ManetOverlayMgrMessage implements Serializable{
 	/**
 	 * Set a flag if this message is intended to be multicast.
 	 * 
-	 * @param multicast true if this message is multicast.
+	 * @param multicast
+	 *            true if this message is multicast.
 	 */
 	public void setMulticast(boolean multicast) {
 
 		this.isMulticast = multicast;
 	}
-	
+
 	/**
 	 * Return true if the message is multicast.
 	 * 
@@ -218,7 +226,8 @@ class ManetOverlayMgrMessage implements Serializable{
 	/**
 	 * Set the intended receivers of a multicast message.
 	 * 
-	 * @param rec a list of all the intended receivers.
+	 * @param rec
+	 *            a list of all the intended receivers.
 	 */
 	public void setReceiversIds(Collection rec) {
 
@@ -234,34 +243,35 @@ class ManetOverlayMgrMessage implements Serializable{
 
 		return receivers;
 	}
-	
+
 	/**
 	 * Return the logical sender of this message.
 	 * 
 	 * @return the logical sender of this message.
 	 */
-	public String getLogicalSenderId(){
-		
+	public String getLogicalSenderId() {
+
 		return logicalSenderId;
 	}
-	
+
 	/**
 	 * Set the logical receiver of this message.
 	 * 
-	 * @param logicalReceiverId the logical receiver of this message.
+	 * @param logicalReceiverId
+	 *            the logical receiver of this message.
 	 */
-	public void setLogicalReceiverId(String logicalReceiverId){
-		
-			this.logicalReceiverId = logicalReceiverId;
+	public void setLogicalReceiverId(String logicalReceiverId) {
+
+		this.logicalReceiverId = logicalReceiverId;
 	}
-	
+
 	/**
 	 * Return the logical receiver of this message.
 	 * 
 	 * @return the logical receiver of this message.
 	 */
-	public String getLogicalReceiverId(){
-		
+	public String getLogicalReceiverId() {
+
 		return logicalReceiverId;
 	}
 }

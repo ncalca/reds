@@ -26,35 +26,38 @@ package polimi.reds;
  * is <code>false</code>.
  */
 public class Replies {
-  private Message[] replies;
-  private boolean all = false;
+	private Message[] replies;
+	private boolean all = false;
 
-  /**
-   * Base constructor.
-   * @param replies the replies
-   * @param areAll <code>true</code> iff it contains all the replies.
-   */
-  public Replies(Message[] replies, boolean areAll) {
-    this.replies = replies;
-    this.all = areAll;
-  }
+	/**
+	 * Base constructor.
+	 * 
+	 * @param replies
+	 *            the replies
+	 * @param areAll
+	 *            <code>true</code> iff it contains all the replies.
+	 */
+	public Replies(Message[] replies, boolean areAll) {
+		this.replies = replies;
+		this.all = areAll;
+	}
 
-  /**
-   * Returns all the replies.
-   * 
-   * @return all the replies.
-   */
-  public Message[] getReplies() {
-    return replies;
-  }
+	/**
+	 * Returns all the replies.
+	 * 
+	 * @return all the replies.
+	 */
+	public Message[] getReplies() {
+		return replies;
+	}
 
-  /**
-   * Check whether all the replies arrived.
-   * 
-   * @return <code>true</code> if all the replies arrived in time,
-   *         <code>false</code> if noty.
-   */
-  public boolean areAllReplies() {
-    return all;
-  }
+	/**
+	 * Check whether all the replies arrived.
+	 * 
+	 * @return <code>true</code> if all the replies arrived in time,
+	 *         <code>false</code> if noty.
+	 */
+	public boolean areAllReplies() {
+		return all;
+	}
 }

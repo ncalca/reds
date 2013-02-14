@@ -33,35 +33,37 @@ public class ReplyCapableClientReplier {
 	private static String TCP = "reds-tcp";
 	private static String UDP = "reds-udp";
 	public static int NUMBER_OF_MESSAGES = 2;
+
 	public static void main(String[] args) {
-		
-		if (args.length == 0){
-			System.err.println(
-		      "USAGE: java polimi.reds.examples.reply.ReplyCapableSubjectClientSender <brokerUrl> [<localPort>]");
-		    System.exit(0);
+
+		if (args.length == 0) {
+			System.err
+					.println("USAGE: java polimi.reds.examples.reply.ReplyCapableSubjectClientSender <brokerUrl> [<localPort>]");
+			System.exit(0);
 		}
 		DispatchingService ds = null;
 		String urlFragments[] = args[0].split(":");
 		if (urlFragments[0].equals(TCP))
-		  ds =  new TCPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]));
-		else if(urlFragments[0].equals(UDP))
-		  ds = new UDPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]), Integer.parseInt(args[1]));
-		else{
+			ds = new TCPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]));
+		else if (urlFragments[0].equals(UDP))
+			ds = new UDPDispatchingService(urlFragments[1], Integer.parseInt(urlFragments[2]),
+					Integer.parseInt(args[1]));
+		else {
 			System.err.println("Malformed url");
 			System.exit(-1);
 		}
-		
-		try{
+
+		try {
 			ds.open();
 			System.out.println("Replier: open ok");
 			ds.subscribe(new TextFilter("prova", TextFilter.CONTAINS));
 			System.out.println("Replier: suscribe ok");
-			for (int i=0; i<NUMBER_OF_MESSAGES; i++){
+			for (int i = 0; i < NUMBER_OF_MESSAGES; i++) {
 				Message m = ds.getNextMessage();
-				ds.reply(m,m.getID());
-				System.out.println("Replier: reply ok :"+ m.getID().toString());
+				ds.reply(m, m.getID());
+				System.out.println("Replier: reply ok :" + m.getID().toString());
 			}
-		}catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		ds.close();

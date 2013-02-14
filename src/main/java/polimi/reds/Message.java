@@ -20,32 +20,32 @@
 
 package polimi.reds;
 
-
 /**********************************************************************
- * A REDS message. See classes extending this abstract class for the specific behaviour.<br>
+ * A REDS message. See classes extending this abstract class for the specific
+ * behaviour.<br>
  * It has a unique <code>MessageID</code>.
  **********************************************************************/
 public abstract class Message implements java.io.Serializable {
-  
- /**
-  * The unique ID of this message.
-  */ 
- protected MessageID id;
- 
- /**
-  * Creates a new unique id for the message.
-  *
-  */
- public void createID(){
-	 id = new MessageID();
- }
- 
- 
- /**
-  * Gets the ID of this message.
-  * @return the message ID.
-  */
- public MessageID getID(){
-   return id;
- }
+
+	/**
+	 * The unique ID of this message.
+	 */
+	protected MessageID id;
+
+	/**
+	 * Creates a new unique id for the message.
+	 * 
+	 */
+	public void createID() {
+		id = new MessageID();
+	}
+
+	/**
+	 * Gets the ID of this message.
+	 * 
+	 * @return the message ID.
+	 */
+	public MessageID getID() {
+		return id;
+	}
 }

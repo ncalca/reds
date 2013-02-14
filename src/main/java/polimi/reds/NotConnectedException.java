@@ -23,13 +23,14 @@ package polimi.reds;
 import java.net.SocketException;
 
 /**
- * This class represents an exception that has to be raised 
- * when a method in charge fo sending data to a neighboring broker
- * is invoked while that broker is not connected.
+ * This class represents an exception that has to be raised when a method in
+ * charge fo sending data to a neighboring broker is invoked while that broker
+ * is not connected.
  */
 public class NotConnectedException extends SocketException {
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -5671857973559060939L;}
+	private static final long serialVersionUID = -5671857973559060939L;
+}
