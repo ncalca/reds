@@ -40,13 +40,13 @@ public class REDSUnmarshaller extends ObjectInputStream {
 		try {
 			codebase = (String) super.readObject();
 		} catch (Exception ex) {
-			throw new RuntimeException("Cannot resolve class " + desc, ex);
+			ex.printStackTrace();
 		}
 		try {
 			if (codebase == null)
 				return super.resolveClass(desc);
 		} catch (Exception ex) {
-			throw new RuntimeException("Cannot resolve class " + desc, ex);
+			ex.printStackTrace();
 		}
 
 		return java.rmi.server.RMIClassLoader.loadClass(codebase, desc.getName());
