@@ -153,6 +153,7 @@ public class TCPDispatchingService implements DispatchingService, Runnable {
 		} catch (SocketException ex) {
 			ex.printStackTrace();
 		}
+		long count = 0;
 		while (opened) {
 			// wait for a new message
 			msg = null;

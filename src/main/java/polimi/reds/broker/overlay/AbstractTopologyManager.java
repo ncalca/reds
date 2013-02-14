@@ -344,35 +344,42 @@ public abstract class AbstractTopologyManager implements TopologyManager/*
 	 */
 	public void signalLinkClosed(NodeDescriptor closingNeighbor) {
 		logger.finer("Link closed " + closingNeighbor.toString());
+		boolean containsKey;
 		synchronized (neighborTransport) {
-			if (neighborTransport.containsKey(closingNeighbor)) {
-				// notify to the listeners
-				Iterator it = neighborRemovedListeners.iterator();
-				while (it.hasNext()) {
-					NeighborRemovedListener l = (NeighborRemovedListener) it.next();
-					l.signalNeighborRemoved(closingNeighbor);
-				}
-				// remove the neighbor from the list
-				/*
-				 * Be careful if you remove the dead neighbor BEFORE the
-				 * notifications. In this case operations will not consider the
-				 * dead neighbor.
-				 */
-				neighborTransport.remove(closingNeighbor);
-				if (closingNeighbor.isBroker()) {
-					numberOfBrokers--;
-					logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " REMOVEDLINK to neighbor "
-							+ closingNeighbor.getUrls()[0] + " as a neighbor");
-				}
-			} /*
-			 * DAVIDE: removed: else
-			 * if(tempNeighbors.containsKey(closingNeighbor)){
-			 * System.out.println("removing "+
-			 * closingNeighbor.getUrls()[0]+" from tempNeighbors (CLOSE)");
-			 * 
-			 * tempNeighbors.remove(closingNeighbor); }
-			 */
+			containsKey = neighborTransport.containsKey(closingNeighbor);
 		}
+
+		if (containsKey) {
+			// notify to the listeners
+			Iterator it = neighborRemovedListeners.iterator();
+			while (it.hasNext()) {
+				NeighborRemovedListener l = (NeighborRemovedListener) it.next();
+				l.signalNeighborRemoved(closingNeighbor);
+			}
+		}
+
+		// remove the neighbor from the list
+		/*
+		 * Be careful if you remove the dead neighbor BEFORE the notifications.
+		 * In this case operations will not consider the dead neighbor.
+		 */
+		synchronized (neighborTransport) {
+			neighborTransport.remove(closingNeighbor);
+			if (closingNeighbor.isBroker()) {
+				numberOfBrokers--;
+				logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " REMOVEDLINK to neighbor "
+						+ closingNeighbor.getUrls()[0] + " as a neighbor");
+			}
+		}
+
+		/*
+		 * DAVIDE: removed: else if(tempNeighbors.containsKey(closingNeighbor)){
+		 * System.out.println("removing "+
+		 * closingNeighbor.getUrls()[0]+" from tempNeighbors (CLOSE)");
+		 * 
+		 * tempNeighbors.remove(closingNeighbor); }
+		 */
+
 	}
 
 	/**
