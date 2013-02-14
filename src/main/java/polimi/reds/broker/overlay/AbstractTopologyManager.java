@@ -149,17 +149,18 @@ public abstract class AbstractTopologyManager implements TopologyManager/*
 	 *            the <code>Transport</code> it is connected to
 	 */
 	protected void confirmNeighbor(NodeDescriptor id, Transport transport) {
-		synchronized (neighborTransport) {// FIXME:check if necessary
-			neighborTransport.put(id, transport);
-			if (id.isBroker()) {
-				numberOfBrokers++;
-				logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " ADDEDLINK to  neighbor "
-						+ id.getUrls()[0] + " is broker " + id.isBroker());
-			} else
-				logger.finer("TopologyManager: Node " + localID + " ADDEDLINK to NONBROKER  neighbor "
-						+ id.getUrls()[0] + " is broker " + id.isBroker());
+		// nicola: remove synchronized
+		// synchronized (neighborTransport) {// FIXME:check if necessary
+		neighborTransport.put(id, transport);
+		if (id.isBroker()) {
+			numberOfBrokers++;
+			logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " ADDEDLINK to  neighbor " + id.getUrls()[0]
+					+ " is broker " + id.isBroker());
+		} else
+			logger.finer("TopologyManager: Node " + localID + " ADDEDLINK to NONBROKER  neighbor " + id.getUrls()[0]
+					+ " is broker " + id.isBroker());
 
-		}
+		// }
 		// notify to listeners
 		Iterator it = neighborAddedListeners.iterator();
 		while (it.hasNext())
@@ -171,28 +172,29 @@ public abstract class AbstractTopologyManager implements TopologyManager/*
 	 * @see LinkOpenedListener#signalLinkOpened(NodeDescriptor, Transport)
 	 */
 	public void signalLinkOpened(NodeDescriptor senderID, Transport t) {
-		synchronized (neighborTransport) {// FIXME: may not be necessary
+		// nicola: removed synchronized
+		// synchronized (neighborTransport) {// FIXME: may not be necessary
 
-			if (senderID.isBroker()) {
+		if (senderID.isBroker()) {
 
-				System.out.println("signalLinkOpened to" + senderID.getUrls()[0]);
-				logger.finer("signalLinkOpened to" + senderID.getUrls()[0]);
-				// add the new neighbor to the list on temp neighbors
-				// DAvIDE: removed System.out.println("adding "+
-				// senderID.getUrls()[0]+", "+t+ " to tempNeighbors");
-				// DAVIDE: removed tempNeighbors.put(senderID, t);
-				/*
-				 * Here if necessary insert a dialogue with the other neighbor.
-				 */
-			} else {
-				// a client is automatically a neighbor.
-				neighborTransport.put(senderID, t);
-				// notify to listeners
-				Iterator it = neighborAddedListeners.iterator();
-				while (it.hasNext())
-					((NeighborAddedListener) it.next()).signalNeighborAdded(senderID);
-			}
+			System.out.println("signalLinkOpened to" + senderID.getUrls()[0]);
+			logger.finer("signalLinkOpened to" + senderID.getUrls()[0]);
+			// add the new neighbor to the list on temp neighbors
+			// DAvIDE: removed System.out.println("adding "+
+			// senderID.getUrls()[0]+", "+t+ " to tempNeighbors");
+			// DAVIDE: removed tempNeighbors.put(senderID, t);
+			/*
+			 * Here if necessary insert a dialogue with the other neighbor.
+			 */
+		} else {
+			// a client is automatically a neighbor.
+			neighborTransport.put(senderID, t);
+			// notify to listeners
+			Iterator it = neighborAddedListeners.iterator();
+			while (it.hasNext())
+				((NeighborAddedListener) it.next()).signalNeighborAdded(senderID);
 		}
+		// }
 	}
 
 	/**
@@ -365,11 +367,12 @@ public abstract class AbstractTopologyManager implements TopologyManager/*
 		 */
 		synchronized (neighborTransport) {
 			neighborTransport.remove(closingNeighbor);
-			if (closingNeighbor.isBroker()) {
-				numberOfBrokers--;
-				logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " REMOVEDLINK to neighbor "
-						+ closingNeighbor.getUrls()[0] + " as a neighbor");
-			}
+		}
+
+		if (closingNeighbor.isBroker()) {
+			numberOfBrokers--;
+			logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " REMOVEDLINK to neighbor "
+					+ closingNeighbor.getUrls()[0] + " as a neighbor");
 		}
 
 		/*
@@ -391,54 +394,57 @@ public abstract class AbstractTopologyManager implements TopologyManager/*
 		} catch (NullPointerException e) {
 			logger.warning("Link dead");
 		}
+		boolean isLinkDead;
 		synchronized (neighborTransport) {
-			if (neighborTransport.containsKey(deadNeighbor)) {
-				// notify to the listeners
-				Iterator it = neighborDeadListeners.iterator();
-				while (it.hasNext())
-					((NeighborDeadListener) it.next()).signalNeighborDead(deadNeighbor);
-				// remove the dead neighbor from the list
-				/*
-				 * Be careful if you remove the dead neighbor BEFORE the
-				 * notifications. In this case operations will not consider the
-				 * dead neighbor.
-				 */
-				neighborTransport.remove(deadNeighbor);
-				if (deadNeighbor != null && deadNeighbor.isBroker()) {
-					this.numberOfBrokers--;
-					logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " LOSTLINK to neighbor "
-							+ deadNeighbor.getUrls()[0] + " as a neighbor");
-				}
-			} /* DAVIDE: removed else *//* DAVIDE Added this else block - *//*
-																		 * if(
-																		 * tempNeighbors
-																		 * .
-																		 * containsKey
-																		 * (
-																		 * deadNeighbor
-																		 * )){
-																		 * System
-																		 * .out.
-																		 * println
-																		 * (
-																		 * "removing "
-																		 * +
-																		 * deadNeighbor
-																		 * .
-																		 * getUrls
-																		 * (
-																		 * )[0]+
-																		 * " from tempNeighbors (DEAD)"
-																		 * );
-																		 * 
-																		 * tempNeighbors
-																		 * .
-																		 * remove
-																		 * (
-																		 * deadNeighbor
-																		 * ); }
-																		 */
+			isLinkDead = neighborTransport.containsKey(deadNeighbor);
+
 		}
+		if (isLinkDead) {
+			// notify to the listeners
+			Iterator it = neighborDeadListeners.iterator();
+			while (it.hasNext())
+				((NeighborDeadListener) it.next()).signalNeighborDead(deadNeighbor);
+			// remove the dead neighbor from the list
+			/*
+			 * Be careful if you remove the dead neighbor BEFORE the
+			 * notifications. In this case operations will not consider the dead
+			 * neighbor.
+			 */
+			synchronized (neighborTransport) {
+				neighborTransport.remove(deadNeighbor);
+			}
+
+			if (deadNeighbor != null && deadNeighbor.isBroker()) {
+				this.numberOfBrokers--;
+				logger.finer("TopologyManager: Node " + localID.getUrls()[0] + " LOSTLINK to neighbor "
+						+ deadNeighbor.getUrls()[0] + " as a neighbor");
+			}
+		} /* DAVIDE: removed else *//* DAVIDE Added this else block - *//*
+																	 * if(
+																	 * tempNeighbors
+																	 * .
+																	 * containsKey
+																	 * (
+																	 * deadNeighbor
+																	 * )){
+																	 * System
+																	 * .out.
+																	 * println (
+																	 * "removing "
+																	 * +
+																	 * deadNeighbor
+																	 * . getUrls
+																	 * ( )[0]+
+																	 * " from tempNeighbors (DEAD)"
+																	 * );
+																	 * 
+																	 * tempNeighbors
+																	 * . remove
+																	 * (
+																	 * deadNeighbor
+																	 * ); }
+																	 */
+
 	}
 
 	/**
